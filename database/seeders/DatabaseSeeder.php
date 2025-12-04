@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             User::create([
                 'name'              => 'Admin',
                 'email'             => 'admin@admin',
-                'password'          => Hash::make('admin'),
+                'password'          => 'admin',
                 'email_verified_at' => now(),
                 'locale'            => 'en',
                 'active'            => true,
