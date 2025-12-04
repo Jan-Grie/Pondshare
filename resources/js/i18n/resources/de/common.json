@@ -1,0 +1,54 @@
+{
+  "app_name": "Pondshare",
+
+  "actions": {
+    "save": "Speichern",
+    "saving": "Speichert...",
+    "cancel": "Abbrechen",
+    "close": "Schließen",
+    "create": "Erstellen",
+    "update": "Aktualisieren",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "confirm": "Bestätigen",
+    "copy": "Kopieren",
+    "share": "Teilen",
+    "retry": "Erneut versuchen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "continue": "Fortfahren"
+  },
+
+  "states": {
+    "loading": "Lädt...",
+    "processing": "Verarbeite...",
+    "empty": "Keine Einträge vorhanden",
+    "none": "Keine",
+    "active": "Aktiv",
+    "inactive": "Inaktiv"
+  },
+
+  "dialogs": {
+    "are_you_sure": "Bist du sicher?",
+    "this_action_cannot_be_undone": "Diese Aktion kann nicht rückgängig gemacht werden."
+  },
+
+  "feedback": {
+    "copied": "In die Zwischenablage kopiert!",
+    "error": "Ein Fehler ist aufgetreten.",
+    "success": "Vorgang erfolgreich abgeschlossen.",
+    "unexpected_error": "Ein unerwarteter Fehler ist aufgetreten.",
+    "saving_failed": "Speichern fehlgeschlagen."
+  },
+
+  "pagination": {
+    "showing": "Zeige {{start}}–{{end}} von {{total}} Einträgen"
+  },
+
+  "form": {
+    "required": "Pflichtfeld",
+    "optional": "Optional",
+    "search": "Suchen...",
+    "name": "Name"
+  }
+}
