@@ -1,6 +1,11 @@
 {
   "app_name": "Pondshare",
 
+  "storage_full": "Storage Full",
+  "storage_almost_full": "Storage Almost Full",
+  "almost": "almost",
+  "storage_warning": "Your storage is {{percent}}% full{{almost}}. Please consider deleting files to free up space.",
+
   "actions": {
     "save": "Save",
     "saving": "Saving...",
@@ -16,7 +21,8 @@
     "retry": "Retry",
     "back": "Back",
     "next": "Next",
-    "continue": "Continue"
+    "continue": "Continue",
+    "previous": "Previous"    
   },
 
   "states": {
@@ -42,7 +48,9 @@
   },
 
   "pagination": {
-    "showing": "Showing {{start}}–{{end}} of {{total}} entries"
+    "showing": "Showing {{start}}–{{end}} of {{total}} entries",
+    "empty": "No entries found"
+
   },
 
   "form": {
@@ -50,6 +58,34 @@
     "optional": "Optional",
     "search": "Search...",
     "name": "Name"
+  }, 
+
+  "previewDialog": {
+      "description": "Preview – close the dialog to return.",
+      "unsupported_file_type": "Preview not available for this file type."
+  },
+
+  "download": {
+    "title": "Download",
+    "preparing": "Preparing download…",
+    "loading": "Your file is being loaded.",
+    "started": "Download started",
+    "in_progress": "The file is being downloaded."
+  },
+
+  "zip_download": {
+    "preparing": "Preparing ZIP download…",
+    "loading": "Your ZIP archive is being generated.",
+    "error": "ZIP download failed",
+    "error_description": "The ZIP file could not be created. Please try again later.",
+    "success": "ZIP download started",
+    "success_description": "Your ZIP file is being downloaded."
   }
+
+
+
+
+
+
 }
 

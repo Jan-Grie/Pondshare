@@ -21,13 +21,15 @@ class DatabaseSeeder extends Seeder
         // If there are no users yet, create a default admin user
         if (User::count() === 0) {
             User::create([
-                'name'              => 'Admin',
-                'email'             => 'admin@admin',
-                'password'          => 'admin',
-                'email_verified_at' => now(),
-                'locale'            => 'en',
-                'active'            => true,
-                'must_change_password' => true,
+                'name'                  => 'Admin',
+                'email'                 => 'admin@admin',
+                'password'              => 'admin',
+                'email_verified_at'     => now(),
+                'locale'                => 'en',
+                'active'                => true,
+                'must_change_password'  => true,
+                'role_id'               => 1,
+                'quota_bytes'           => 10737418240,         
             ]);
         }
     }

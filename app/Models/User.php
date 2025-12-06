@@ -119,4 +119,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return round(($this->usedQuota() / $max) * 100, 2);
     }
 
+    
+    protected $appends = ['avatar'];
+
+    public function getAvatarAttribute()
+    {
+        $hash = md5(strtolower(trim($this->email)));
+        return "https://www.gravatar.com/avatar/{$hash}?s=200&d=mp";
+    }
 }

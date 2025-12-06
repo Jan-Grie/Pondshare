@@ -1,0 +1,83 @@
+{
+    "title": "Dashboard",
+    "used_space_heading": "Used storage space",
+    "used": "used",
+    "plenty_of_space": "Plenty of free space",
+    "more_than_half_occupied": "More than half occupied",
+    "slowly_getting_tight": "It's slowly getting tight",
+    "soon_no_more_storage_space": "Soon no more storage space",
+    "no_storage_space_available": "No storage space available",
+    "delte_files_no_disk_space_available": "Delete files. No disk space available.",
+    "current_usage": "Currently using {{used}}",
+    "limit_reached": "Storage limit reached",
+
+    "your_ponds": "Your Ponds",    
+    "count_your_ponds_one": "{{count}} Pond",
+    "count_your_ponds_other": "{{count}} Ponds",
+    "no_ponds": "No ponds created",
+    "active": "active",
+    "inactive": "inactive",
+    "total_ponds_one": "{{count}} pond in total",
+    "total_ponds_other": "{{count}} ponds in total",
+    "you_have_not_created_any_ponds_yet": "You have not created any ponds yet",
+
+    "expiring_shared_links": "Expiring shared links",
+    "count_links_one": "{{count}} Link",
+    "count_links_other": "{{count}} Links",    
+    "everything_valid": "All valid",
+    "expiring_soon": "Expiring soon",
+    "expires_today": "Expire today",
+    "all_links_valid": "All links are valid",
+    "links_expiring_soon": "{{count}} link(s) expire soon",
+
+    "external_upload_links": "External upload links",
+    "there_are_currently_no_active_external_upload_links": "There are currently no active external upload links",
+
+    "next_expirations": "Next expirations",
+    "no_links_expiring": "No shares expire soon",
+
+  "usage": {
+    "title": "Storage Usage",
+    "subtitle": "You have used {{used}} of {{max}}",
+
+    "storage_full_warning_title": "Storage Almost Full!",
+    "storage_full_warning_desc": "You only have {{free}} left. Please delete older files or contact your administrator.",
+
+    "progress": {
+      "used_percent": "{{percent}}% used"
+    },
+
+    "cards": {
+      "total_files": "Total Files",
+      "total_downloads": "Total Downloads",
+      "average_file_size": "Avg. File Size",
+      "largest_file": "Largest File",
+      "last_upload": "Last Upload",
+      "top_file_type": "Most Popular File Type",
+      "active_links": "Active Share Links"
+    },
+
+    "stats": {
+      "downloads_description": "all historical file downloads"
+    },
+
+    "charts": {
+      "downloads_per_day": "Daily Downloads per Pond"
+    }
+  },
+
+    "expiring_links_heading": "Expiring Links",
+    "name": "Name",
+    "type": "Type",
+    "pond": "Pond",
+    "expires_at": "Expires at",
+    "actions": "Actions",
+
+    "type_share": "Share Link",
+    "type_upload": "Upload Link",
+
+    "extend_link": "Extend Link",
+    "day": "day",
+    "days": "days"
+
+}

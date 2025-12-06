@@ -1,0 +1,61 @@
+{
+    "title": "Trash ({{trashSize}})",
+    "description": "Items you delete will appear here until permanently removed.",
+
+    "ponds_tab_title": "Deleted Ponds {{count}} ({{size}})",
+    "files_tab_title": "{{count}} deleted files ({{size}} total)",
+
+    "empty_title": "Trash is empty",
+    "empty_message": "No deleted ponds or files found.",
+
+    "ponds_section": "Deleted Ponds",
+    "files_section": "Deleted Files",
+
+    "columns": {
+        "name": "Name",
+        "size": "Size",
+        "deleted_at": "Deleted At",
+        "actions": "Actions"
+    },
+
+    "actions": {
+        "restore": "Restore",
+        "restore_all": "Restore All",
+        "delete_permanently": "Delete Permanently",
+        "delete_selected": "Delete Selected",
+        "empty_trash": "Empty Trash"
+    },
+
+    "confirm_restore": {
+        "title": "Restore Item",
+        "message": "Are you sure you want to restore this item?"
+    },
+
+    "confirm_delete": {
+        "title": "Delete Permanently",
+        "message": "This action cannot be undone. The item will be permanently removed."
+    },
+
+    "confirm_empty": {
+        "title": "Empty Trash",
+        "message": "All deleted items will be permanently removed. This action cannot be undone."
+    },
+
+    "messages": {
+        "restored_success": "Item successfully restored.",
+        "deleted_success": "Item permanently deleted.",
+        "empty_success": "Trash has been emptied."
+    }, 
+
+    "table": {
+        "pond_name": "Pond Name",
+        "file_name": "File Name",
+        "size": "Size",
+        "deleted_at": "Deleted At",
+        "expires_at": "Expires At",
+        "actions": "Actions",
+        "no_ponds": "No deleted ponds found.",
+        "no_files": "No deleted files found."
+
+    }    
+}

@@ -38,7 +38,7 @@ class CreateNewUser implements CreatesNewUsers
                     //If registration domain restrictions are enabled
                     if(SystemSetting::getValue('restrict_registration_to_domains', false)){
                         if(!AllowedEmailDomain::isAllowed($value)){
-                            $fail('The email domain is not allowed to register.');
+                            $fail('The email domain is not allowed to register.'); //TODO => Translation
                         }
                     }
                 },

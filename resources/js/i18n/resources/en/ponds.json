@@ -1,0 +1,152 @@
+{
+  "title": "My Ponds",
+  "subtitle": "You have {{count}} ponds",
+  "create_button": "Create a new Pond",
+  "dialog_title": "Create a Pond",
+  "dialog_text": "Create a new pond to save and share your files.",
+  "name": "Name",
+  "files": "Files",
+  "size": "Size",
+  "created_at": "Created at",
+  "shared_links": "Shared Links",
+  "actions": "Actions",
+
+  "table": {
+    "name": "Pond Name",
+    "files": "Files",
+    "size": "Size",
+    "created_at": "Created At",
+    "shared_links": "Shared Links",
+    "actions": "Actions",
+    "no_files": "No files uploaded yet"
+
+  },
+
+  "search_placeholder": "Search for a name",
+
+  "delete_confirm_title": "Are you sure?",
+  "delete_confirm_message": "Do you really want to delete this pond?",
+  "delete_confirm_yes": "Yes, delete",
+  "cancel": "Cancel",
+
+  "pagination_no_entries": "No entries available",
+  "pagination_showing": "Showing {{start}}–{{end}} of {{total}} entries",
+
+  "no_entries_found": "No entries found",
+
+  "create": "Create",
+  
+  
+  
+  "details": {
+    "title": "Pond Details",
+    "summary": "{{count}} files · Created {{date}} · {{size}}",
+    "delete_button": "Delete Pond",
+    "delete_title": "Delete Pond?",
+    "delete_text": "Do you really want to delete the pond <strong>{{name}}</strong>?",
+    "upload_zone_idle": "Drag files here or click to upload",
+    "upload_drag_active": "Drop files to upload them",
+    "upload_running": "Upload in progress…",
+    "upload_eta": "Remaining time: {{eta}}",
+    "upload_speed": "Speed: {{speed}}",
+    "upload_cancel": "Cancel upload",
+    "files_title": "Files in this Pond",
+    "download_zip": "Download ZIP",
+    "delete_confirm": "Yes, delete Pond",
+    "delete_file_title": "Delete File",
+    "delete_file_message": "Do you really want to delete the file \"{{name}}\"?",
+    "scan": {
+      "pending": "Scan pending",
+      "clean": "No threats found",
+      "infected": "Threats detected",
+      "failed": "Scan failed"
+    },
+
+
+    "table": {
+      "name": "Name",
+      "size": "Size",
+      "uploaded_at": "Uploaded At",
+      "uploaded_by": "Uploaded By",
+      "actions": "Actions",
+      "filter_placeholder": "Filter files...",
+      "scan_status": "Scan Status"
+    },
+
+    "share_links": {
+      "title": "Share links",
+      "filter_placeholder": "Filter share links...",
+      "table": {
+        "name": "Name",
+        "created_at": "Created at",
+        "expires_at": "Expires at",
+        "password": "Password",
+        "downloads": "Downloads",
+        "actions": "Actions"
+      },          
+      
+      "delete_title": "Delete share link",
+      "delete_message": "Do you really want to delete the link \"{{name}}\"?",
+      "no_entries": "No share links available.",
+      "copied": "Share link copied to clipboard!",
+      "success": "Share link created successfully!",
+      "success_description": "You can now share your link with others."
+    },
+    
+    "upload_links": {
+      "title": "Upload links",
+      "filter_placeholder": "Filter upload links...",
+      "table": {
+        "name": "Name",
+        "created_at": "Created at",
+        "expires_at": "Expires at",
+        "password": "Password",
+        "downloads": "Downloads",
+        "actions": "Actions"
+      },          
+      
+      "delete_title": "Delete upload link",
+      "delete_message": "Do you really want to delete the link \"{{name}}\"?",
+      "no_entries": "No upload links available.",
+      "copied": "Upload link copied to clipboard!",
+      "success": "Upload link created successfully!",
+      "success_description": "You can now share your link with others."
+    }  
+  },
+  "share_dialog": {
+    "create_title": "Create Share Link",
+    "description": "Create a shareable link for this pond.",
+    "name": "Link Name",
+    "expires_at": "Expires At",
+    "password_protect": "Password Protect",
+    "password": "Password",
+    "password_min_length": "Password must be at least {{minLength}} characters long",
+    "password_optional": "(optional - min. {{min}})",
+    "password_required": "(required - min. {{min}})",
+    "create_button": "Create Share Link",
+    "cancel_button": "Cancel",
+    "open_button": "Create new Share Link",
+    "choose_date": "Pick a date"
+  },
+  "upload_dialog": {
+    "open_button": "Create Upload Link",
+    "create_title": "Create a new Upload Link",
+    "created_title": "Upload Link created",
+    "description": "Create a secure Upload Link.",
+    "name": "Name",
+    "password": "Password",
+    "password_new": "New Password",
+    "password_optional": "(optional - min. {{min}})",
+    "password_required": "(required - min. {{min}})",
+    "expires_at": "Expiration date",
+    "choose_date": "Choose a date",
+    "preparing": "Preparing upload link...",
+    "loading": "Loading settings...",
+    "success": "Upload link created!",
+    "success_description": "The upload link has been successfully created.",
+    "your_link": "Your upload link",
+    "create_button": "Create",
+    "share_title": "Share upload link",
+    "share_text": "Here is your new upload link."
+  }  
+}
