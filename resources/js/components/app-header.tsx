@@ -32,29 +32,29 @@ import { cn, isSameUrl, resolveUrl } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
-import AppLogo from './app-logo';
+
 import AppLogoIcon from './app-logo-icon';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-];
+import { index as PondIdex } from '@/routes/ponds';
+import { usage } from "@/routes"
+import { index as BinIndex } from '@/routes/bin';
+import { BookOpen, Folder, LayoutGrid, FolderOpen, FileChartPie, Trash2, Menu, Search } from 'lucide-react';
+import AppLogo from './app-logo';
+import { useTranslation } from 'react-i18next'; 
+import AppearanceToggleDropdown from './appearance-dropdown';
+
 
 const rightNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
+    // {
+    //     title: 'Repository',
+    //     href: 'https://github.com/laravel/react-starter-kit',
+    //     icon: Folder,
+    // },
+    // {
+    //     title: 'Documentation',
+    //     href: 'https://laravel.com/docs/starter-kits#react',
+    //     icon: BookOpen,
+    // },
 ];
 
 const activeItemStyles =
@@ -65,7 +65,30 @@ interface AppHeaderProps {
 }
 
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
+    const { t } = useTranslation();
     const page = usePage<SharedData>();
+    const mainNavItems: NavItem[] = [
+            {
+                title: t('sidebar:dashboard_title'),
+                href: dashboard(),
+                icon: LayoutGrid,
+            },
+            {
+                title: t('sidebar:ponds_title'),
+                href: PondIdex(),
+                icon: FolderOpen,
+            },
+            {
+                title: t('sidebar:usage_title'),
+                href: usage(),
+                icon: FileChartPie,
+            },
+            {
+                title: t('sidebar:bin_title'),
+                href: BinIndex(),
+                icon: Trash2,
+            }
+    ];
     const { auth } = page.props;
     const getInitials = useInitials();
     return (
@@ -193,6 +216,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                             >
                                 <Search className="!size-5 opacity-80 group-hover:opacity-100" />
                             </Button>
+                            <AppearanceToggleDropdown className="ml-auto" />
                             <div className="hidden lg:flex">
                                 {rightNavItems.map((item) => (
                                     <TooltipProvider
