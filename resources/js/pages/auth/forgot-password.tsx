@@ -32,6 +32,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email address</Label>
                                 <Input
+                                    aria-invalid={!!errors.email}
                                     id="email"
                                     type="email"
                                     name="email"

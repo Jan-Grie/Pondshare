@@ -13,6 +13,7 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { edit } from '@/routes/profile';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -48,7 +49,7 @@ export default function Profile({
                         }}
                         className="space-y-6"
                     >
-                        {({ processing, recentlySuccessful, errors }) => (
+                        {({ processing, recentlySuccessful, errors }) => (                            
                             <>
                                 <div className="grid gap-2">
                                     <Label htmlFor="name">Name</Label>
@@ -61,6 +62,7 @@ export default function Profile({
                                         required
                                         autoComplete="name"
                                         placeholder="Full name"
+                                        aria-invalid={!!errors.name}
                                     />
 
                                     <InputError
@@ -81,6 +83,7 @@ export default function Profile({
                                         required
                                         autoComplete="username"
                                         placeholder="Email address"
+                                        aria-invalid={!!errors.email}
                                     />
 
                                     <InputError
@@ -114,7 +117,13 @@ export default function Profile({
                                                 </div>
                                             )}
                                         </div>
-                                    )}
+                                    )
+                                }
+
+                                <div>
+                                    TODO LOCALE einbauen, sonst gibt es einen Fehler.
+                                </div>
+                                
 
                                 <div className="flex items-center gap-4">
                                     <Button
@@ -131,10 +140,22 @@ export default function Profile({
                                         leave="transition ease-in-out"
                                         leaveTo="opacity-0"
                                     >
-                                        <p className="text-sm text-neutral-600">
+                                        <p className="text-sm text-green-600">
                                             Saved
                                         </p>
-                                    </Transition>
+                                    </Transition>                                    
+
+                                    <Transition
+                                        show={Object.keys(errors).length > 0}
+                                        enter="transition ease-in-out"
+                                        enterFrom="opacity-0"
+                                        leave="transition ease-in-out"
+                                        leaveTo="opacity-0"
+                                    >
+                                        <p className="text-sm text-destructive">
+                                            Failed to save
+                                        </p>
+                                    </Transition>                                    
                                 </div>
                             </>
                         )}

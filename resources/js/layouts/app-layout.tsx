@@ -15,7 +15,7 @@ interface AppLayoutProps {
 }
 
 export default function AppLayout({ children, breadcrumbs, user, ...props }: AppLayoutProps) {
-    const layout = user?.settings?.layout ?? "sidebar";
+    const layout = user?.settings?.layout ?? "topnav";
     
     const LayoutComponent =
         layout === "sidebar"

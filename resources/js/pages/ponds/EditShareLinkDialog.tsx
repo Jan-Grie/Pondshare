@@ -200,8 +200,9 @@ export default function EditShareLinkDialog({
         <form onSubmit={handleSubmit} className="flex flex-col gap-6 py-4">
           {/* NAME */}
           <div className="flex flex-col">
-            <Label className="mb-2">{t("ponds:share_dialog.name")}</Label>
+            <Label className="mb-2">{t("ponds:share_dialog.name")}</Label>            
             <Input
+              aria-invalid={!!errors.name}
               required
               disabled={saving}
               value={name}
@@ -228,6 +229,7 @@ export default function EditShareLinkDialog({
             </Label>
 
             <Input
+              aria-invalid={!!errors.password}
               type="password"
               disabled={saving}
               value={password}

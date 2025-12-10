@@ -37,6 +37,7 @@ export default function ChangePassword() {
           </label>
           <div className="relative mt-1">
             <Input
+              aria-invalid={!!errors.password}
               id="password"
               name="password"
               type={showPwd ? 'text' : 'password'}
@@ -62,6 +63,7 @@ export default function ChangePassword() {
           </label>
           <div className="relative mt-1">
             <Input
+              aria-invalid={!!errors.password_confirmation}
               id="password_confirmation"
               name="password_confirmation"
               type={showConfirm ? 'text' : 'password'}

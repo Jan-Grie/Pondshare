@@ -72,6 +72,7 @@ export default function Password() {
                                         className="mt-1 block w-full"
                                         autoComplete="current-password"
                                         placeholder="Current password"
+                                        aria-invalid={!!errors.current_password}
                                     />
 
                                     <InputError
@@ -92,6 +93,7 @@ export default function Password() {
                                         className="mt-1 block w-full"
                                         autoComplete="new-password"
                                         placeholder="New password"
+                                        aria-invalid={!!errors.password}
                                     />
 
                                     <InputError message={errors.password} />
@@ -109,6 +111,7 @@ export default function Password() {
                                         className="mt-1 block w-full"
                                         autoComplete="new-password"
                                         placeholder="Confirm password"
+                                        aria-invalid={!!errors.password_confirmation}
                                     />
 
                                     <InputError

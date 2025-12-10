@@ -37,18 +37,6 @@ import { type BreadcrumbItem } from "@/types"
 import { useTranslation } from 'react-i18next';
 import { formatBytes } from '@/lib/formatBytes';
 
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: "Dashboard",
-        href: dashboard().url,
-    },
-    {
-        title: "Papierkorb",
-        href: index().url,
-    },
-]
-
 //Helperfunction to calculate the expiration date (deleted_at + 30 days)
 function getDeletionExpiry(deleted_at: string){
     const deletedDate = new Date(deleted_at);
@@ -67,6 +55,16 @@ export default function TrashPage() {
     const totalPondSize = trashedPonds.reduce((total, pond) => total + pond.size, 0);
     const totalFileSize = trashedFiles.reduce((total, file) => total + file.size, 0);
     const totalSize = totalPondSize + totalFileSize;
+
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: t('bin:title', { trashSize: formatBytes(totalSize) }),
+            href: index().url,
+        },
+    ];
+
+    
 
     //Pagination States
     const [pondPage, setPondPage] = React.useState(0);

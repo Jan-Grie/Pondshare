@@ -29,6 +29,7 @@ export default function Register() {
                             <div className="grid gap-2">
                                 <Label htmlFor="name">Name</Label>
                                 <Input
+                                    aria-invalid={!!errors.name}
                                     id="name"
                                     type="text"
                                     required
@@ -47,6 +48,7 @@ export default function Register() {
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email address</Label>
                                 <Input
+                                    aria-invalid={!!errors.email}
                                     id="email"
                                     type="email"
                                     required
@@ -61,6 +63,7 @@ export default function Register() {
                             <div className="grid gap-2">
                                 <Label htmlFor="password">Password</Label>
                                 <Input
+                                    aria-invalid={!!errors.password}
                                     id="password"
                                     type="password"
                                     required
@@ -77,6 +80,7 @@ export default function Register() {
                                     Confirm password
                                 </Label>
                                 <Input
+                                    aria-invalid={!!errors.password_confirmation}
                                     id="password_confirmation"
                                     type="password"
                                     required

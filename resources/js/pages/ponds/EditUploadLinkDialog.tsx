@@ -207,6 +207,7 @@ export default function EditUploadLinkDialog({
               {t("ponds:upload_dialog.name")}
             </Label>
             <Input
+              aria-invalid={!!errors.name}
               required
               disabled={saving}
               value={name}
@@ -233,6 +234,7 @@ export default function EditUploadLinkDialog({
             </Label>
 
             <Input
+              aria-invalid={!!errors.password}
               type="password"
               value={password}
               disabled={saving}

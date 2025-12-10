@@ -73,6 +73,7 @@ export default function DeleteUser() {
                                         </Label>
 
                                         <Input
+                                            aria-invalid={!!errors.password}
                                             id="password"
                                             type="password"
                                             name="password"

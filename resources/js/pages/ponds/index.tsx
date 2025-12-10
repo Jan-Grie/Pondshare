@@ -267,6 +267,7 @@ export default function MyPonds() {
                                     <div>
                                         <Label htmlFor="name">{t("ponds:name")}</Label>
                                         <Input
+                                            aria-invalid={!!errors.name}
                                             id="name"
                                             name="name"
                                             value={data.name}

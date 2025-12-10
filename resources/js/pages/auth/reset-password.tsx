@@ -31,6 +31,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                         <div className="grid gap-2">
                             <Label htmlFor="email">Email</Label>
                             <Input
+                                aria-invalid={!!errors.email}
                                 id="email"
                                 type="email"
                                 name="email"
@@ -48,6 +49,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                         <div className="grid gap-2">
                             <Label htmlFor="password">Password</Label>
                             <Input
+                                aria-invalid={!!errors.password}
                                 id="password"
                                 type="password"
                                 name="password"
@@ -64,6 +66,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                 Confirm password
                             </Label>
                             <Input
+                                aria-invalid={!!errors.password_confirmation}
                                 id="password_confirmation"
                                 type="password"
                                 name="password_confirmation"

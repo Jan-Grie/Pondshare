@@ -269,6 +269,7 @@ export default function CreateUploadLinkDialog({
               <Input
                 value={linkName}
                 required
+                aria-invalid={!!errors.name}
                 disabled={creating}
                 onChange={(e) => setLinkName(e.target.value)}
               />
@@ -289,6 +290,7 @@ export default function CreateUploadLinkDialog({
               </Label>
 
               <Input
+                aria-invalid={!!errors.password || (password.length > 0 && password.length < minLengthPassword)}
                 type="password"
                 disabled={creating}
                 value={password}

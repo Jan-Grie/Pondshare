@@ -21,6 +21,7 @@ export default function ConfirmPassword() {
                         <div className="grid gap-2">
                             <Label htmlFor="password">Password</Label>
                             <Input
+                                aria-invalid={!!errors.password}
                                 id="password"
                                 type="password"
                                 name="password"

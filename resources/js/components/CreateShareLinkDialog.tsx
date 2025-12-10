@@ -253,6 +253,7 @@ export default function CreateShareLinkDialog({
             <div className="flex flex-col">
               <Label className="mb-2">{t("ponds:share_dialog.name")}</Label>
               <Input
+                aria-invalid={!!errors.name}
                 value={linkName}
                 required
                 disabled={creating}
@@ -275,6 +276,7 @@ export default function CreateShareLinkDialog({
               </Label>
 
               <Input
+                aria-invalid={!!errors.password}
                 type="password"
                 disabled={creating}
                 value={password}

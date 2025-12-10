@@ -40,6 +40,7 @@ export default function Login({
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email address</Label>
                                 <Input
+                                    aria-invalid={!!errors.email}
                                     id="email"
                                     type="email"
                                     name="email"
@@ -66,6 +67,7 @@ export default function Login({
                                     )}
                                 </div>
                                 <Input
+                                    aria-invalid={!!errors.password}
                                     id="password"
                                     type="password"
                                     name="password"
