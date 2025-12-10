@@ -40,6 +40,17 @@ Route::middleware(['auth', 'verified', 'password.change', 'activated'])->group(f
     // })->name('bin');    
 });
 
+// Route::get('/debug/errors/{code}', function (string $code) {
+//     return match ($code) {
+//         '403' => abort(403),
+//         '404' => abort(404),
+//         '500' => throw new \RuntimeException('Test 500'),
+//         '503' => abort(503),
+//         default => abort(404),
+//     };
+// })->whereIn('code', ['403', '404', '500', '503']);
+
+
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
 require __DIR__.'/bin.php';

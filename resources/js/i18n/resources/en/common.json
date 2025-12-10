@@ -22,7 +22,8 @@
     "back": "Back",
     "next": "Next",
     "continue": "Continue",
-    "previous": "Previous"    
+    "previous": "Previous",
+    "home": "Go to Homepage" 
   },
 
   "states": {

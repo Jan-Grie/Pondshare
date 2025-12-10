@@ -1,0 +1,18 @@
+{
+    "404": {
+        "title": "Page Not Found",
+        "description": "The page you are looking for does not exist."
+    },
+    "403": {
+        "title": "Forbidden",
+        "description": "You do not have permission to access this resource."
+    },
+    "500": {
+        "title": "Internal Server Error",
+        "description": "Something went wrong on our end. Please try again later."
+    },
+    "503": {
+        "title": "Service Unavailable",
+        "description": "The service is currently unavailable. Please try again later."
+    }
+}
