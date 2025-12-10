@@ -78,12 +78,20 @@ export default function PondFilesTable({ files, onDeleteFile, onPreview, showNew
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [globalFilter, setGlobalFilter] = React.useState("")
-
   const handleReloadClick = async () => {
     setIsReloading(true)
     await onReloadFiles()   // Router.reload kommt aus der Parent-Komponente
     setIsReloading(false)
   }
+  
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get("file") ?? params.get("q") ?? "";
+    setGlobalFilter(q);
+
+    //TODO => Search Param läschen, damit bei reload nicht wieder darauf gefiltert wird
+  }, []);
+
 
   const scanIconMap: Record<string, React.ReactNode> = {
     pending: (

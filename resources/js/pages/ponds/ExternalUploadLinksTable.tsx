@@ -102,6 +102,14 @@ export default function ExternalUploadLinksTable({
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
 
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get("upload_link") ?? params.get("q") ?? "";
+    setGlobalFilter(q);
+
+    //TODO => Search Param läschen, damit bei reload nicht wieder darauf gefiltert wird
+  }, []);
+
   // ---------------------------------------------------------------------------
   // COLUMNS
   // ---------------------------------------------------------------------------

@@ -66,6 +66,24 @@
       "unsupported_file_type": "Preview not available for this file type."
   },
 
+  "search": {
+    "placeholder": "Search...",
+    "loading": "Searching...",
+    "no_results": "No results found.",
+    "items": {
+      "link": "Link",
+      "upload_link": "Upload link"
+    },
+    "sections": {
+      "navigation": "Navigation",
+      "ponds": "Ponds",
+      "files": "Files",
+      "links": "Links",
+      "upload_links": "Upload Links",
+      "users": "Users"
+    }
+  },
+
   "download": {
     "title": "Download",
     "preparing": "Preparing download…",
