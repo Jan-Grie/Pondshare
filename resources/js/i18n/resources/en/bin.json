@@ -2,8 +2,8 @@
     "title": "Trash ({{trashSize}})",
     "description": "Items you delete will appear here until permanently removed.",
 
-    "ponds_tab_title": "Deleted Ponds {{count}} ({{size}})",
-    "files_tab_title": "{{count}} deleted files ({{size}} total)",
+    "ponds_tab_title": "Deleted Ponds ({{count}}) ",
+    "files_tab_title": "Deleted Files ({{count}}) ({{size}})",
 
     "empty_title": "Trash is empty",
     "empty_message": "No deleted ponds or files found.",

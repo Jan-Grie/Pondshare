@@ -1,5 +1,5 @@
 export function formatBytes(bytes?: number): string {
-  
+  //TODO => Translation support for units
   if (!bytes || isNaN(bytes)) return '0 B';
 
   const base = 1024;

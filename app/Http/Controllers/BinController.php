@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-// use App\Jobs\DeletePondFiles;
+
+
+use App\Jobs\DeletePondFiles;
 
 class BinController extends Controller
 {
@@ -37,28 +39,36 @@ class BinController extends Controller
                 return [
                     'id' => $pond->id,
                     'name' => $pond->name,
+                    'size' => $sizeBytes,
                     'deleted_at' => $pond->deleted_at,
                     'files_count' => $pond->files_count,
                     'size_mb' => round($sizeMB, 2),
                 ];
             });
 
-        //Get all soft-deleted files
+        //Get all soft-deleted files from not deleted ponds
         $trashedFiles = File::onlyTrashed()
-            ->where('user_id', $user->id)
+            ->whereHas('pond', function($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
             ->get()
-            ->map(function($file){
+            ->map(function ($file) {
                 return [
                     'id' => $file->id,
-                    'original_name' => $file->original_name,
-                    'size_mb' => round($file->size / (1024 * 1024), 2),
+                    'name' => $file->name . "." . $file->extension,
+                    'size' => $file->size,
                     'deleted_at' => $file->deleted_at,
+                    'pond_id' => $file->pond_id,
+                    'pond_name' => $file->pond->name,
                 ];
             });
 
         return Inertia::render('bin/index', [
             'trashedPonds' => $trashedPonds,
+            'totalPondSize' => $trashedPonds->sum('size'),
             'trashedFiles' => $trashedFiles,
+            'totalFileSize' => $trashedFiles->sum('size'),
+            'totalSize' => $trashedPonds->sum('size') + $trashedFiles->sum('size'),
         ]);            
     }
 
@@ -106,6 +116,17 @@ class BinController extends Controller
 
         return Redirect::route('bin.index')
             ->with('success', __('messages.pond_restored'));
+    }
+
+
+    public function restoreFile(int $id)
+    {
+        $file = File::withTrashed()->findOrFail($id);
+        $this->authorize('restore', $file);
+
+        $file->restore();
+
+        return back()->with('success', __('messages.file_restored'));
     }
 
     /**
