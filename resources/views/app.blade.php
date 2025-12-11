@@ -42,6 +42,9 @@
         @viteReactRefresh
         @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
         @inertiaHead
+
+        <!-- <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+        <script>eruda.init();</script> -->
     </head>
     <body class="font-sans antialiased">
         @inertia

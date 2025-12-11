@@ -69,6 +69,8 @@ import { downloadZip } from "@/routes/ponds"
 import { DownloadZipButton } from "@/components/download-zip-button"
 import { toast } from "sonner"
 import { Label } from "@/components/ui/label";
+import { useEcho, echo } from "@laravel/echo-react";
+
 
 // -----------------------------------------------------------------------------
 // Types
@@ -175,7 +177,7 @@ export default function PondDetailedPage(props: PondDetailProps) {
 
     const onDrop = useCallback(async (acceptedFiles: File[]) => {
         if (!acceptedFiles.length) return
-
+    
         setUploading(true)
         setUploadErrors([])
         setUploadPercent(0)
@@ -205,7 +207,7 @@ export default function PondDetailedPage(props: PondDetailProps) {
 
                 const res = await axios.post(`/ponds/${pond.id}/files`, formData, {
                     cancelToken: source.token,
-                    headers: { "Content-Type": "multipart/form-data" },
+                    headers: { "Content-Type": "multipart/form-data", 'X-Socket-ID': echo().socketId() },
 
                     onUploadProgress: (e) => {
                         const now = Date.now()
@@ -323,6 +325,14 @@ export default function PondDetailedPage(props: PondDetailProps) {
             }
         );
     };
+
+    useEcho(
+        `pond.${pond.id}`,
+        ".file.uploaded",  // ✅ RICHTIG - muss mit broadcastAs() übereinstimmen
+        (e: any) => {
+            setShowNewFilesBanner(true)
+        },
+    );  
 
     // -------------------------------------------------------------------------
     // Render

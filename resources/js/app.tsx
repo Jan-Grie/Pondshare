@@ -7,6 +7,7 @@ import { createRoot } from 'react-dom/client';
 import { initializeTheme } from './hooks/use-appearance';
 import { configureEcho } from '@laravel/echo-react';
 import './i18n';
+import "@/bootstrap";
 
 configureEcho({
     broadcaster: 'reverb',

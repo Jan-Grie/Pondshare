@@ -24,4 +24,13 @@ export default defineConfig({
     esbuild: {
         jsx: 'automatic',
     },
+    server: {
+        host: "0.0.0.0",   // ← IPv4 erzwingen
+        port: 5173,
+        strictPort: true,
+        hmr: {
+        host: "192.168.178.234",  // ← deine LAN-IP hier eintragen
+        port: 5173,
+        }
+    },
 });

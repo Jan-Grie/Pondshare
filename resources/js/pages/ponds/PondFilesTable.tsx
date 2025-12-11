@@ -334,7 +334,7 @@ export default function PondFilesTable({ files, onDeleteFile, onPreview, showNew
           <Button
             size="icon"
             variant="outline"
-            className="ml-4 hover:bg-muted transition"
+            className="ml-4 hover:bg-muted transition animate-bounce"
             onClick={handleReloadClick}
             disabled={isReloading}
             title={t("ponds:details.reload_files")}

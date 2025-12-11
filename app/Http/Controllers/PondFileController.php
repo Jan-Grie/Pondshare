@@ -10,6 +10,10 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Models\Pond;
 use App\Models\File;
 
+//Events
+use App\Events\FileUploaded;
+
+
 class PondFileController extends Controller
 {
     use AuthorizesRequests;
@@ -88,6 +92,9 @@ class PondFileController extends Controller
                 "size" => $sizeInBytes,
                 "scan_status" => "pending",
             ]);
+
+            broadcast(new FileUploaded($newFile->id, $pond->id, "owner"))->toOthers();
+            // FileUploaded::dispatch($newFile->id, $pond->id, "owner");
 
             $saved[] = [
                 "id" => $newFile->id,
