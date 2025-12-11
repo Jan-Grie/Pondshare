@@ -9,6 +9,7 @@ import { forceDelete as forceDeleteFile } from '@/routes/bin/files';
 import AppLayout from "@/layouts/app-layout"
 import { Head, usePage, router } from "@inertiajs/react"
 import * as React from 'react'
+import { toast } from 'sonner';
 import {
     Tabs, 
     TabsContent,
@@ -110,6 +111,29 @@ export default function TrashPage() {
             {
                 preserveScroll: true,
                 preserveState: true,
+                onSuccess: () => {
+                    toast.success(t('bin:toast.pond_restored'), {
+                        duration: 5000,
+                        style: {
+                            "--normal-bg":
+                            "light-dark(var(--color-green-600), var(--color-green-400))",
+                            "--normal-text": "var(--color-white)",
+                            "--normal-border":
+                            "light-dark(var(--color-green-600), var(--color-green-400))",
+                        } as React.CSSProperties,                        
+                    });
+                },
+                onError: () => {
+                    toast.error(t('bin:toast.pond_restore_error'), {
+                        duration: 5000,
+                        style: {
+                            "--normal-bg":
+                            "light-dark(var(--destructive), color-mix(in oklab, var(--destructive) 60%, var(--background)))",
+                            "--normal-text": "var(--color-white)",
+                            "--normal-border": "transparent",
+                        } as React.CSSProperties,                        
+                    });
+                }                
             }
         )
     }
@@ -120,6 +144,29 @@ export default function TrashPage() {
             {
                 preserveScroll: true,
                 preserveState: true,
+                onSuccess: () => {
+                    toast.success(t('bin:toast.pond_deleted_permanently'), {
+                        duration: 5000,
+                        style: {
+                            "--normal-bg":
+                            "light-dark(var(--color-green-600), var(--color-green-400))",
+                            "--normal-text": "var(--color-white)",
+                            "--normal-border":
+                            "light-dark(var(--color-green-600), var(--color-green-400))",
+                        } as React.CSSProperties,                        
+                    });
+                },
+                onError: () => {
+                    toast.error(t('bin:toast.pond_delete_error'), {
+                        duration: 5000,
+                        style: {
+                            "--normal-bg":
+                            "light-dark(var(--destructive), color-mix(in oklab, var(--destructive) 60%, var(--background)))",
+                            "--normal-text": "var(--color-white)",
+                            "--normal-border": "transparent",
+                        } as React.CSSProperties,                        
+                    });
+                }
             }
         )
     }
@@ -131,6 +178,29 @@ export default function TrashPage() {
             {
                 preserveScroll: true,
                 preserveState: true,
+                onSuccess: () => {
+                    toast.success(t('bin:toast.file_restored'), {
+                        duration: 5000,
+                        style: {
+                            "--normal-bg":
+                            "light-dark(var(--color-green-600), var(--color-green-400))",
+                            "--normal-text": "var(--color-white)",
+                            "--normal-border":
+                            "light-dark(var(--color-green-600), var(--color-green-400))",
+                        } as React.CSSProperties,                        
+                    });
+                },
+                onError: () => {
+                    toast.error(t('bin:toast.file_delete_error'), {
+                        duration: 5000,
+                        style: {
+                            "--normal-bg":
+                            "light-dark(var(--destructive), color-mix(in oklab, var(--destructive) 60%, var(--background)))",
+                            "--normal-text": "var(--color-white)",
+                            "--normal-border": "transparent",
+                        } as React.CSSProperties,                        
+                    });
+                }
             }
         )
     }
@@ -141,6 +211,29 @@ export default function TrashPage() {
             {
                 preserveScroll: true,
                 preserveState: true,
+                onSuccess: () => {
+                    toast.success(t('bin:toast.file_deleted_permanently'), {
+                        duration: 5000,
+                        style: {
+                            "--normal-bg":
+                            "light-dark(var(--color-green-600), var(--color-green-400))",
+                            "--normal-text": "var(--color-white)",
+                            "--normal-border":
+                            "light-dark(var(--color-green-600), var(--color-green-400))",
+                        } as React.CSSProperties,                        
+                    });
+                },
+                onError: () => {
+                    toast.error(t('bin:toast.file_delete_error'), {
+                        duration: 5000,
+                        style: {
+                            "--normal-bg":
+                            "light-dark(var(--destructive), color-mix(in oklab, var(--destructive) 60%, var(--background)))",
+                            "--normal-text": "var(--color-white)",
+                            "--normal-border": "transparent",
+                        } as React.CSSProperties,                        
+                    });
+                }                
             }
         )
     }
