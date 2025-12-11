@@ -38,6 +38,8 @@ Route::middleware(['auth', 'verified', 'password.change', 'activated'])->group(f
     Route::put('/ponds/{pond}/share-links/{shareLink}', [ShareLinkController::class, 'update'])
     ->name('ponds.share-links.update');
 
+    Route::put("/ponds/{pond}", [PondController::class, 'update'])->name('ponds.update');
+
 
     Route::get('/files/{file}/preview', [PondFileController::class, 'preview'])->name('files.preview');
     Route::get('/files/{file}/download', [PondFileController::class, 'download'])->name('files.download');

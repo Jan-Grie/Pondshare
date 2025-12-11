@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useCallback, useState } from "react"
+import React, { use, useCallback, useState } from "react"
 import {
     Head,
     router,
@@ -34,12 +34,24 @@ import {
     AlertDialogAction,
 } from "@/components/ui/alert-dialog"
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 // Icons
 import {
     UploadCloud,
     FolderOpen,
     Trash2,
-    FileIcon
+    FileIcon,
+    Pencil
 } from "lucide-react"
 
 // Child Components
@@ -52,9 +64,11 @@ import PreviewDialog from "@/components/PreviewDialog"
 import { show, destroy as destroyPond } from "@/routes/ponds"
 import { destroy as destroyFile } from "@/routes/ponds/files"
 import { preview as previewFile } from "@/routes/files"
+import { update as updatePond } from "@/routes/ponds"
 import { downloadZip } from "@/routes/ponds"
 import { DownloadZipButton } from "@/components/download-zip-button"
 import { toast } from "sonner"
+import { Label } from "@/components/ui/label";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -216,7 +230,15 @@ export default function PondDetailedPage(props: PondDetailProps) {
 
                 // const added: FileItem[] = res.data.files
                 // setFiles((prev) => [...added, ...prev])
-                toast.info(t("ponds:details.new_files_ready"))
+                toast.info(t("ponds:details.new_files_ready"), {                    
+                    duration: 3000,
+                    style: {
+                    "--normal-bg": "light-dark(var(--color-sky-600), var(--color-sky-400))",
+                    "--normal-text": "var(--color-white)",
+                    "--normal-border": "light-dark(var(--color-sky-600), var(--color-sky-400))",
+                    } as React.CSSProperties,
+                });
+
 
                 router.reload({ only: ["files"] })
             }
@@ -238,6 +260,69 @@ export default function PondDetailedPage(props: PondDetailProps) {
         disabled: uploading,
         maxSize: 5 * 1024 * 1024 * 1024, // 5 GB
     })
+
+    const [updating, setUpdating] = useState(false);
+    const [editDialogOpen, setEditDialogOpen] = useState(false);
+    const [errors, setErrors] = useState<Record<string, string[]>>({});
+
+    const handleDialogOpenChange = (open: boolean) => {
+        setEditDialogOpen(open);
+        if (!open) {
+            setErrors({});
+        }
+    };  
+
+    const handleUpdatePond = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setUpdating(true);
+        
+        const formData = new FormData(e.currentTarget);
+        const newName = formData.get("pond_name") as string;
+
+        router.put(
+            updatePond.url(pond.id),
+            { name: newName },
+            {
+                preserveScroll: true,
+                preserveState: true,
+                onSuccess: () => {
+                toast.success(t("ponds:details.update_success"), {
+                        style: {
+                        "--normal-bg": "light-dark(var(--color-green-600), var(--color-green-400))",
+                        "--normal-text": "var(--color-white)",
+                        "--normal-border": "light-dark(var(--color-green-600), var(--color-green-400))",
+                        } as React.CSSProperties,
+                    });
+                    router.reload({ only: ["pond"] });
+                    setUpdating(false);
+                    setEditDialogOpen(false);
+                },
+                onError: (errors: any) => {
+                    const formattedErrors: Record<string, string[]> = {};
+                    Object.keys(errors).forEach((key) => {
+                        const value = errors[key];
+                        formattedErrors[key] = Array.isArray(value) ? value : [String(value)];
+                    });
+                    setErrors(formattedErrors);
+                    
+                    Object.values(formattedErrors)
+                        .flat()
+                        .forEach((msg) =>
+                            toast.error(t("common:error.unknown"), {
+                                description: msg,
+                                style: {
+                                "--normal-bg":
+                                    "light-dark(var(--destructive), color-mix(in oklab, var(--destructive) 60%, var(--background)))",
+                                "--normal-text": "var(--color-white)",
+                                "--normal-border": "transparent",
+                                } as React.CSSProperties,
+                            })
+                        );
+                    setUpdating(false);
+                },
+            }
+        );
+    };
 
     // -------------------------------------------------------------------------
     // Render
@@ -269,45 +354,88 @@ export default function PondDetailedPage(props: PondDetailProps) {
                             </p>
                         </div>
 
-                        {/* DELETE POND BUTTON */}
-                        <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                                <Button variant="destructive">
-                                    {t("ponds:details.delete_button")}
-                                </Button>
-                            </AlertDialogTrigger>
+                        <div className="flex items-center gap-2">
+                            <Dialog open={editDialogOpen} onOpenChange={handleDialogOpenChange}>                                
+                                    <DialogTrigger asChild>
+                                        <Button variant="outline">
+                                            <Pencil />                                        
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-[425px]">
+                                    <form onSubmit={handleUpdatePond}>
+                                    <DialogHeader>
+                                        <DialogTitle>{t("ponds:details.edit_pond_title")}</DialogTitle>
+                                        {/* <DialogDescription>
+                                            {t("ponds:details.edit_pond_description")}
+                                        </DialogDescription> */}
+                                    </DialogHeader>
+                                    <div className="grid gap-4 mt-3">
+                                        <div className="grid gap-3">   
+                                            <Label className="text-sm font-medium leading-none">
+                                                {t("ponds:details.edit_pond_name_label")}
+                                            </Label>                                 
+                                            <Input 
+                                                id="pond_name" 
+                                                name="pond_name" 
+                                                defaultValue={pond.name} 
+                                                disabled={updating}
+                                                aria-invalid={!!errors.name}
+                                            />
+                                            {errors.name && <p className="text-red-600 text-sm">{errors.name[0]}</p>}
+                                        </div>
+                                    </div>
+                                    <DialogFooter className="mt-2">
+                                        <DialogClose asChild>
+                                        <Button variant="outline">{t("common:actions.cancel")}</Button>
+                                        </DialogClose>
+                                            <Button type="submit" disabled={updating}>
+                                                {updating ? t("common:actions.saving") : t("common:actions.save")}
+                                            </Button>
+                                    </DialogFooter>
+                                    </form>
+                                    </DialogContent>
+                            </Dialog>                            
 
-                            <AlertDialogContent>
-                                <AlertDialogHeader>
-                                    <AlertDialogTitle>
-                                        {t("ponds:details.delete_title")}
-                                    </AlertDialogTitle>
+                            {/* DELETE POND BUTTON */}
+                            <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                    <Button variant="destructive">
+                                        {t("ponds:details.delete_button")}
+                                    </Button>
+                                </AlertDialogTrigger>
 
-                                    <AlertDialogDescription>
-                                        <Trans
-                                            i18nKey="ponds:details.delete_text"
-                                            values={{ name: pond.name }}
-                                            components={{ strong: <strong /> }}
-                                        />
-                                    </AlertDialogDescription>
-                                </AlertDialogHeader>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>
+                                            {t("ponds:details.delete_title")}
+                                        </AlertDialogTitle>
 
-                                <AlertDialogFooter>
-                                    <AlertDialogCancel>
-                                        {t("common:actions.cancel")}
-                                    </AlertDialogCancel>
+                                        <AlertDialogDescription>
+                                            <Trans
+                                                i18nKey="ponds:details.delete_text"
+                                                values={{ name: pond.name }}
+                                                components={{ strong: <strong /> }}
+                                            />
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
 
-                                    <AlertDialogAction
-                                        className={buttonVariants({ variant: "destructive" })}
-                                        onClick={() =>
-                                            router.delete(destroyPond.url(pond.id))
-                                        }
-                                    >
-                                        {t("ponds:details.delete_confirm")}
-                                    </AlertDialogAction>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialog>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>
+                                            {t("common:actions.cancel")}
+                                        </AlertDialogCancel>
+
+                                        <AlertDialogAction
+                                            className={buttonVariants({ variant: "destructive" })}
+                                            onClick={() =>
+                                                router.delete(destroyPond.url(pond.id))
+                                            }
+                                        >
+                                            {t("ponds:details.delete_confirm")}
+                                        </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+                        </div>
                     </div>
                 </div>
 

@@ -397,7 +397,7 @@ export default function PondShareLinksTable({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="text-center py-4">
+                <TableCell colSpan={columns.length} className="text-center py-4 text-muted-foreground">
                   {t("ponds:details.share_links.no_entries")}
                 </TableCell>
               </TableRow>

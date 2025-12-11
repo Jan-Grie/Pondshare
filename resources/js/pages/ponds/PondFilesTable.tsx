@@ -377,7 +377,7 @@ export default function PondFilesTable({ files, onDeleteFile, onPreview, showNew
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="text-center py-4">
+              <TableCell colSpan={columns.length} className="text-center py-4 text-muted-foreground">
                 {t("ponds:details.table.no_files")}
               </TableCell>
             </TableRow>

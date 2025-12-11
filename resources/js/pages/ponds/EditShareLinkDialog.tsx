@@ -317,7 +317,7 @@ export default function EditShareLinkDialog({
                 (password.length > 0 && password.length < minLengthPassword)
               }
             >
-              {saving ? t("common:please_wait") : t("common:actions.save")}
+              {saving ? t("common:actions.saving") : t("common:actions.save")}
             </Button>
           </div>
         </form>

@@ -55,6 +55,9 @@
     "delete_confirm": "Yes, delete Pond",
     "delete_file_title": "Delete File",
     "delete_file_message": "Do you really want to delete the file \"{{name}}\"?",
+    "update_success": "Pond updated successfully.",
+    "new_files_ready": "New files have been uploaded to this pond.",
+    "upload_canceled": "Upload canceled.",
     "scan": {
       "pending": "Scan pending",
       "clean": "No threats found",
@@ -62,7 +65,10 @@
       "failed": "Scan failed"
     },
 
-
+    "edit_pond_title": "Edit Pond",
+    "edit_pond_description": "Update the pond details below.",
+    "edit_pond_name_label": "Pond Name",
+    "edit_pond_name_placeholder": "Enter pond name",    
     "table": {
       "name": "Name",
       "size": "Size",
@@ -70,7 +76,8 @@
       "uploaded_by": "Uploaded By",
       "actions": "Actions",
       "filter_placeholder": "Filter files...",
-      "scan_status": "Scan Status"
+      "scan_status": "Scan Status",
+      "no_files": "No files in this pond."
     },
 
     "share_links": {

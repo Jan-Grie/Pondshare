@@ -144,5 +144,18 @@ class PondController extends Controller
         return Redirect::route('ponds.index')->with('success', __('Pond deleted successfully.'));
     }
 
+    public function update(Request $request, Pond $pond)
+    {
+        $this->authorize('update', $pond);
+
+        $validated = $request->validate([
+            "name" => ["required", "string", "min:1", "max:255"],
+        ]);
+
+        $pond->update($validated);
+
+        return Redirect::route("ponds.show", $pond->id)
+            ->with('success', __('messages.pond_updated'));
+    }
 
 }

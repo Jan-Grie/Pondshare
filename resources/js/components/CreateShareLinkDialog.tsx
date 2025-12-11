@@ -350,8 +350,8 @@ export default function CreateShareLinkDialog({
                 </Button>
               </DialogClose>
 
-              <Button disabled={creating || (forcePasswordForLinks && password.length < minLengthPassword) || (forceExpirationDate && !expiresAt)}>
-                {creating ? t("common:please_wait") : t("ponds:share_dialog.create_button")}
+              <Button disabled={creating || (forcePasswordForLinks && password.length < minLengthPassword) || (forceExpirationDate && !expiresAt)}>                
+                {creating ? t("common:actions.saving") : t("ponds:share_dialog.create_button")}
               </Button>
             </div>
 

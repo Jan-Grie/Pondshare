@@ -39,8 +39,8 @@ class PondPolicy
      * Determine whether the user can update the model.
      */
     public function update(User $user, Pond $pond): bool
-    {
-        return false;
+    {        
+        return $pond->user_id === $user->id;
     }
 
     /**
