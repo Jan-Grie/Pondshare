@@ -1,0 +1,15 @@
+{    
+    "profile": {
+        "title": "Profile Settings",
+        "description": "Update your account's profile information and email address.",
+        "labels": {
+            "name": "Name",
+            "email": "Email",
+            "locale": "Language",
+            "app_layout": "App Layout",
+            "select_layout": "Select Layout"
+        },
+        "sidebar": "Sidebar",
+        "topnav": "Top Navigation Bar"
+    }    
+}

@@ -29,6 +29,7 @@ class ProfileUpdateRequest extends FormRequest
             ],
 
             'locale' => ['required', 'string', 'in:en,de'],
+            'app_layout' => ['required', 'string', 'in:sidebar,topnav'],
         ];
     }
 }

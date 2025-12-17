@@ -13,7 +13,16 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { edit } from '@/routes/profile';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { useTranslation } from "react-i18next"
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -30,6 +39,9 @@ export default function Profile({
     status?: string;
 }) {
     const { auth } = usePage<SharedData>().props;
+
+    const { t, i18n } = useTranslation();
+    
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -121,9 +133,54 @@ export default function Profile({
                                 }
 
                                 <div>
-                                    TODO LOCALE einbauen, sonst gibt es einen Fehler.
+                                    TODO LOCALE einbauen, sonst gibt es einen Fehler.                                    
                                 </div>
                                 
+                                <div className="grid gap-2">
+                                    <Label htmlFor="locale">{t("settings:language")}</Label>
+
+                                    <Select defaultValue={auth.user.locale || "en"} name="locale">
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select language" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectLabel>{t("settings:language")}</SelectLabel>
+                                                <SelectItem value="en">English</SelectItem>
+                                                <SelectItem value="de">Deutsch</SelectItem>
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+
+                                    <InputError
+                                        className="mt-2"
+                                        message={errors.locale}
+                                    />
+                                </div>
+
+
+                                <div className="grid gap-2">
+                                    <Label htmlFor="layout">{t("settings:profile.labels.app_layout")}</Label>
+
+                                    <Select defaultValue={auth.user.app_layout} name="app_layout">
+                                        <SelectTrigger>
+                                            <SelectValue placeholder={t("settings:profile.labels.select_layout")} />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectLabel>{t("settings:profile.labels.app_layout")}</SelectLabel>
+                                                <SelectItem value="sidebar">{t("settings:profile.sidebar")}</SelectItem>
+                                                <SelectItem value="topnav">{t("settings:profile.topnav")}</SelectItem>
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+
+                                    <InputError
+                                        className="mt-2"
+                                        message={errors.app_layout}
+                                    />
+                                </div>
+
 
                                 <div className="flex items-center gap-4">
                                     <Button

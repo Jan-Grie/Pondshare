@@ -3,24 +3,29 @@ import { type BreadcrumbItem } from "@/types";
 import AppLayoutSidebar from "@/layouts/app/app-sidebar-layout";
 import AppLayoutTopnav from "@/layouts/app/app-header-layout";
 import { Toaster } from "@/components/ui/sonner";
+import { usePage } from "@inertiajs/react";
+
 
 interface AppLayoutProps {
     children: ReactNode;
     breadcrumbs?: BreadcrumbItem[];
-    user?: {
-        settings?: {
-            layout?: "sidebar" | "topnav";            
+    auth?: {
+        user?: {
+            app_layout?: "sidebar" | "topnav";
         };
     };
 }
 
-export default function AppLayout({ children, breadcrumbs, user, ...props }: AppLayoutProps) {
-    const layout = user?.settings?.layout ?? "topnav";
-    
+export default function AppLayout({ children, breadcrumbs, ...props }: AppLayoutProps) {
+    const page = usePage();
+
+    const user = (page.props as any).auth?.user;
+    const layout = user?.app_layout ?? "topnav";
+
     const LayoutComponent =
         layout === "sidebar"
-            ? AppLayoutSidebar      
-            : AppLayoutTopnav;      
+            ? AppLayoutSidebar
+            : AppLayoutTopnav;
 
     return (
         <LayoutComponent breadcrumbs={breadcrumbs} {...props}>
@@ -29,6 +34,7 @@ export default function AppLayout({ children, breadcrumbs, user, ...props }: App
         </LayoutComponent>
     );
 }
+
 
 
 // import AppLayoutTemplate from '@/layouts/app/app-header-layout';

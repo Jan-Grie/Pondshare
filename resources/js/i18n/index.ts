@@ -9,6 +9,7 @@ import enPonds from "./resources/en/ponds.json";
 import enDashboard from "./resources/en/dashboard.json";
 import enSidebar from "./resources/en/sidebar.json";
 import enErrors from "./resources/en/errors.json";
+import enSettings from "./resources/en/settings.json";
 
 
 const initialLanguage = (window as any).APP_LOCAL || "en";
@@ -32,10 +33,11 @@ i18n
                 dashboard: enDashboard,
                 sidebar: enSidebar,
                 errors: enErrors,
+                settings: enSettings,
             },
         },
         defaultNS: 'common',
-        ns: ['common', 'auth', 'bin', 'ponds', 'dashboard', 'sidebar', 'errors'],
+        ns: ['common', 'auth', 'bin', 'ponds', 'dashboard', 'sidebar', 'errors', 'settings'],
     })
 
 export default i18n;
