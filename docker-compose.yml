@@ -1,0 +1,159 @@
+version: "3.9"
+
+services:
+  init_app_code:
+    image: registry.griesenbeck.net/pondshare/shareitself:latest
+    container_name: pondshare_init_app_code
+    restart: "no"
+    command: sh -c "cp -R /var/www/html/. /mnt && chown -R www-data:www-data /mnt"
+    volumes:
+      - app_code:/mnt
+    networks:
+      - pondshare
+
+  app:
+    image: registry.griesenbeck.net/pondshare/shareitself:latest
+    container_name: pondshare_app
+    restart: unless-stopped
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_URL: https://example.com
+      APP_KEY: "base64:CHANGEME_RUN_php_artisan_key_generate_show"
+
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: pondshare
+      DB_USERNAME: pondshare
+      DB_PASSWORD: changeme
+
+      QUEUE_CONNECTION: database
+
+      REVERB_APP_ID: pondshare
+      REVERB_APP_KEY: changeme
+      REVERB_APP_SECRET: changeme
+      REVERB_HOST: 0.0.0.0
+      REVERB_PORT: 8080
+      REVERB_SCHEME: https
+
+      VITE_REVERB_APP_KEY: ivbycj6sruuzjlcaffma
+      VITE_REVERB_HOST: dockertest.pondshare.com
+      VITE_REVERB_PORT: 8081
+      VITE_REVERB_SCHEME: https
+
+      CLAMAV_HOST: clamav
+      CLAMAV_PORT: 3310
+
+      RUN_MIGRATIONS: "true"
+      RUN_SEED: "false"
+
+    volumes:
+      - app_code:/var/www/html
+      - storage:/var/www/html/storage
+    depends_on:
+      - init_app_code
+      - mysql
+      - clamav
+    networks:
+      - pondshare
+
+  apache:
+    image: registry.griesenbeck.net/pondshare/pondshare-apache:latest
+    container_name: pondshare_apache
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - app_code:/var/www/html
+      - storage:/var/www/html/storage
+    depends_on:
+      - init_app_code
+      - app
+      - reverb
+    networks:
+      - pondshare
+
+  queue:
+    image: registry.griesenbeck.net/pondshare/shareitself:latest
+    container_name: pondshare_queue
+    restart: unless-stopped
+    command: php artisan queue:work --sleep=3 --tries=3
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_KEY: "base64:CHANGEME_RUN_php_artisan_key_generate_show"
+
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: pondshare
+      DB_USERNAME: pondshare
+      DB_PASSWORD: changeme
+
+      CLAMAV_HOST: clamav
+      CLAMAV_PORT: 3310
+    depends_on:
+      - mysql
+      - app
+    networks:
+      - pondshare
+
+  reverb:
+    image: registry.griesenbeck.net/pondshare/shareitself:latest
+    container_name: pondshare_reverb
+    restart: unless-stopped
+    command: php artisan reverb:start
+    environment:
+      APP_ENV: production
+      APP_KEY: "base64:CHANGEME_RUN_php_artisan_key_generate_show"
+      REVERB_HOST: 0.0.0.0
+      REVERB_PORT: 8080
+    ports:
+      # No host mapping needed; Apache proxies internally. Change if you need external access.
+      - "8081:8080"
+    depends_on:
+      - app
+    networks:
+      - pondshare
+
+  mysql:
+    image: mysql:8.0
+    container_name: pondshare_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: pondshare
+      MYSQL_USER: pondshare
+      MYSQL_PASSWORD: changeme
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - mysql:/var/lib/mysql
+    networks:
+      - pondshare
+
+  clamav:
+    image: clamav/clamav:latest
+    container_name: pondshare_clamav
+    restart: unless-stopped
+    environment:
+      FRESHCLAM_CHECKS: 24
+    ports:
+      - "3310:3310"
+    volumes:
+      - clamav:/var/lib/clamav
+    networks:
+      - pondshare
+
+volumes:
+  mysql:
+    driver: local
+  storage:
+    driver: local
+  clamav:
+    driver: local
+  app_code:
+    driver: local
+
+networks:
+  pondshare:
+    driver: bridge

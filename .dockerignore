@@ -1,0 +1,25 @@
+# Exclude environment files
+.env
+.env.*
+
+# Node artifacts
+node_modules/
+
+# Composer artifacts (built inside image)
+vendor/
+
+# Git & editor noise
+.git/
+.gitignore
+.idea/
+.vscode/
+
+# Local caches & runtime files
+storage/app/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/testing/*
+bootstrap/cache/*
+
+# Build outputs from host (rebuilt in image)
+public/build/
