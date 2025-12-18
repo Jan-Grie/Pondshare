@@ -10,6 +10,7 @@ import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
 import { Form, Head } from '@inertiajs/react';
+import { Microsoft } from "developer-icons";
 
 interface LoginProps {
     status?: string;
@@ -60,7 +61,7 @@ export default function Login({
                                         <TextLink
                                             href={request()}
                                             className="ml-auto text-sm"
-                                            tabIndex={5}
+                                            tabIndex={6}
                                         >
                                             Forgot password?
                                         </TextLink>
@@ -89,15 +90,27 @@ export default function Login({
                             </div>
 
                             <Button
-                                type="submit"
+                                type="button"
                                 className="mt-4 w-full"
                                 tabIndex={4}
+                                variant="outline"
+                                disabled={true}
+                            >
+                                <Microsoft /> Log in with Microsoft
+                            </Button>
+
+
+                            <Button
+                                type="submit"
+                                className=" w-full"
+                                tabIndex={5}
                                 disabled={processing}
                                 data-test="login-button"
                             >
                                 {processing && <Spinner />}
                                 Log in
                             </Button>
+
                         </div>
 
                         {canRegister && (
