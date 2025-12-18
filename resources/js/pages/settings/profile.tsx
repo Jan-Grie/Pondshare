@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useTranslation } from "react-i18next"
+import { useEffect } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -30,6 +31,8 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: edit().url,
     },
 ];
+
+
 
 export default function Profile({
     mustVerifyEmail,
@@ -41,8 +44,14 @@ export default function Profile({
     const { auth } = usePage<SharedData>().props;
 
     const { t, i18n } = useTranslation();
-    
+    const userLocale = auth.user.locale;
 
+    useEffect(() => {
+        if (userLocale) {
+            i18n.changeLanguage(userLocale);
+            console.log('Locale changed to:', userLocale);
+        }
+    }, [userLocale, i18n]);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Profile settings" />
@@ -54,11 +63,19 @@ export default function Profile({
                         description="Update your name and email address"
                     />
 
-                    <Form
+                    <Form 
+                        // onSuccess={() => {
+                        //     const locale = props.auth.user.locale || 'en';
+                        //     if(locale) i18n.changeLanguage(locale);
+                        //     console.log("Locale changed to:", locale);
+                        // }}
                         {...ProfileController.update.form()}
+                        
                         options={{
                             preserveScroll: true,
+                            
                         }}
+                        
                         className="space-y-6"
                     >
                         {({ processing, recentlySuccessful, errors }) => (                            

@@ -2,6 +2,7 @@ import { Breadcrumbs } from '@/components/breadcrumbs';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { type BreadcrumbItem as BreadcrumbItemType } from '@/types';
 import AppearanceToggleDropdown from './appearance-dropdown';
+import { SearchCommand } from '@/components/SearchCommand';
 
 
 export function AppSidebarHeader({
@@ -14,7 +15,10 @@ export function AppSidebarHeader({
             <div className="flex w-full items-center gap-2">
                 <SidebarTrigger className="-ml-1" />
                 <Breadcrumbs breadcrumbs={breadcrumbs} />
-                <AppearanceToggleDropdown className="ml-auto" />
+                <div className="ml-auto flex items-center gap-2">
+                    <SearchCommand />
+                    <AppearanceToggleDropdown />
+                </div>
 
             </div>
         </header>

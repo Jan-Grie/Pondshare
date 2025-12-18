@@ -1,9 +1,14 @@
 {
   "app_name": "Pondshare",
 
+  "storage_full": "Speicher voll",
+  "storage_almost_full": "Speicher fast voll",
+  "almost": "fast",
+  "storage_warning": "Dein Speicher ist zu {{percent}} % {{almost}} belegt. Bitte lösche Dateien, um Speicherplatz freizugeben.",
+
   "actions": {
     "save": "Speichern",
-    "saving": "Speichert...",
+    "saving": "Speichert …",
     "cancel": "Abbrechen",
     "close": "Schließen",
     "create": "Erstellen",
@@ -16,12 +21,14 @@
     "retry": "Erneut versuchen",
     "back": "Zurück",
     "next": "Weiter",
-    "continue": "Fortfahren"
+    "continue": "Fortfahren",
+    "previous": "Zurück",
+    "home": "Zur Startseite"
   },
 
   "states": {
-    "loading": "Lädt...",
-    "processing": "Verarbeite...",
+    "loading": "Lädt …",
+    "processing": "Wird verarbeitet …",
     "empty": "Keine Einträge vorhanden",
     "none": "Keine",
     "active": "Aktiv",
@@ -36,19 +43,60 @@
   "feedback": {
     "copied": "In die Zwischenablage kopiert!",
     "error": "Ein Fehler ist aufgetreten.",
-    "success": "Vorgang erfolgreich abgeschlossen.",
+    "success": "Aktion erfolgreich abgeschlossen.",
     "unexpected_error": "Ein unerwarteter Fehler ist aufgetreten.",
     "saving_failed": "Speichern fehlgeschlagen."
   },
 
   "pagination": {
-    "showing": "Zeige {{start}}–{{end}} von {{total}} Einträgen"
+    "showing": "Zeige {{start}}–{{end}} von {{total}} Einträgen",
+    "empty": "Keine Einträge gefunden"
   },
 
   "form": {
     "required": "Pflichtfeld",
     "optional": "Optional",
-    "search": "Suchen...",
+    "search": "Suchen …",
     "name": "Name"
+  },
+
+  "previewDialog": {
+    "description": "Vorschau – schließe den Dialog, um zurückzukehren.",
+    "unsupported_file_type": "Für diesen Dateityp ist keine Vorschau verfügbar."
+  },
+
+  "search": {
+    "placeholder": "Suchen …",
+    "loading": "Suche läuft …",
+    "no_results": "Keine Ergebnisse gefunden.",
+    "items": {
+      "link": "Link",
+      "upload_link": "Upload-Link"
+    },
+    "sections": {
+      "navigation": "Navigation",
+      "ponds": "Ponds",
+      "files": "Dateien",
+      "links": "Links",
+      "upload_links": "Upload-Links",
+      "users": "Benutzer"
+    }
+  },
+
+  "download": {
+    "title": "Download",
+    "preparing": "Download wird vorbereitet …",
+    "loading": "Deine Datei wird geladen.",
+    "started": "Download gestartet",
+    "in_progress": "Die Datei wird heruntergeladen."
+  },
+
+  "zip_download": {
+    "preparing": "ZIP-Download wird vorbereitet …",
+    "loading": "Dein ZIP-Archiv wird erstellt.",
+    "error": "ZIP-Download fehlgeschlagen",
+    "error_description": "Die ZIP-Datei konnte nicht erstellt werden. Bitte versuche es später erneut.",
+    "success": "ZIP-Download gestartet",
+    "success_description": "Dein ZIP-Archiv wird heruntergeladen."
   }
 }

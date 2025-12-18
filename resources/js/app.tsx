@@ -6,14 +6,17 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { initializeTheme } from './hooks/use-appearance';
 import { configureEcho } from '@laravel/echo-react';
-import './i18n';
+import i18n from './i18n';
 import "@/bootstrap";
 
 configureEcho({
     broadcaster: 'reverb',
 });
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+
+
+
+const appName = import.meta.env.VITE_APP_NAME || 'Pondshare';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
@@ -25,11 +28,18 @@ createInertiaApp({
     setup({ el, App, props }) {
         const root = createRoot(el);
 
-        root.render(
-            <StrictMode>
-                <App {...props} />
-            </StrictMode>,
-        );
+        const locale =
+            (props.initialPage.props as any)?.auth?.user?.locale ?? 'en';
+
+        (async () => {
+            await i18n.changeLanguage(locale);
+
+            root.render(
+                <StrictMode>
+                    <App {...props} />
+                </StrictMode>
+            );
+        })();
     },
     progress: {
         color: '#4B5563',

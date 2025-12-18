@@ -17,8 +17,12 @@ type SearchResult = {
     users: Array<{ id: number; name: string; email: string }>;
 };
 
+type SearchCommandProps = {
+    className?: string;
+};
 
-export function SearchCommand() {
+
+export function SearchCommand({ className }: SearchCommandProps) {
     const [open, setOpen] = useState(false);
     const [term, setTerm] = useState("");
     const [loading, setLoading] = useState(false);
@@ -82,7 +86,7 @@ export function SearchCommand() {
     }, []);
 
     return (
-        <>
+        <div className={className}>
             <Button variant="ghost" className="group h-9 w-9 cursor-pointer" onClick={() => setOpen(true)}>
                 <Search className="!size-5 opacity-80 group-hover:opacity-100"/>
             </Button>
@@ -189,6 +193,6 @@ export function SearchCommand() {
                         </CommandList>
                     </Command>
             </CommandDialog>
-        </>
+        </div>
     )
 }
