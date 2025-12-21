@@ -5,6 +5,7 @@ use Inertia\Inertia;
 use Laravel\Fortify\Features;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\Auth\SocialAuthController;
 
 
 Route::get('/', function () {
@@ -37,6 +38,13 @@ Route::middleware(['auth', 'verified', 'password.change', 'activated'])->group(f
 //         default => abort(404),
 //     };
 // })->whereIn('code', ['403', '404', '500', '503']);
+
+
+Route::get('/auth/azure/redirect', [SocialAuthController::class, 'redirectAzure'])
+    ->name('auth.azure.redirect');
+
+Route::get('/auth/azure/callback', [SocialAuthController::class, 'callbackAzure'])
+    ->name('auth.azure.callback');
 
 
 require __DIR__.'/settings.php';

@@ -92,6 +92,7 @@ export default function Profile({
                                         autoComplete="name"
                                         placeholder="Full name"
                                         aria-invalid={!!errors.name}
+                                        disabled={auth.user.provider !== null}
                                     />
 
                                     <InputError
@@ -113,6 +114,8 @@ export default function Profile({
                                         autoComplete="username"
                                         placeholder="Email address"
                                         aria-invalid={!!errors.email}
+                                        disabled={auth.user.provider !== null}
+
                                     />
 
                                     <InputError
@@ -148,10 +151,6 @@ export default function Profile({
                                         </div>
                                     )
                                 }
-
-                                <div>
-                                    TODO LOCALE einbauen, sonst gibt es einen Fehler.                                    
-                                </div>
                                 
                                 <div className="grid gap-2">
                                     <Label htmlFor="locale">{t("settings:language")}</Label>
@@ -236,7 +235,9 @@ export default function Profile({
                     </Form>
                 </div>
 
-                <DeleteUser />
+                {auth.user.provider === null && (
+                    <DeleteUser />
+                )}              
             </SettingsLayout>
         </AppLayout>
     );

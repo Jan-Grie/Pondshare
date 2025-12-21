@@ -116,7 +116,10 @@ export default function Login({
                                 type="button"
                                 className=" w-full"
                                 tabIndex={4}
-                                variant="outline"                                
+                                variant="outline"     
+                                onClick={() => {
+                                    window.location.href = '/auth/azure/redirect'
+                                }}                                                           
                             >
                                 <Microsoft /> Log in with Microsoft
                             </Button>                            

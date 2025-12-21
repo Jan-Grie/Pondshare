@@ -9,31 +9,42 @@ import { edit as editPassword } from '@/routes/user-password';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
+import { usePage } from "@inertiajs/react";
 
-const sidebarNavItems: NavItem[] = [
-    {
-        title: 'Profile',
-        href: edit(),
-        icon: null,
-    },
-    {
-        title: 'Password',
-        href: editPassword(),
-        icon: null,
-    },
-    {
-        title: 'Two-Factor Auth',
-        href: show(),
-        icon: null,
-    },
-    {
-        title: 'Appearance',
-        href: editAppearance(),
-        icon: null,
-    },
-];
+
+
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
+    const page = usePage();
+    const user = (page.props as any).auth?.user;
+
+    const sidebarNavItems: NavItem[] = [
+        {
+            title: 'Profile',
+            href: edit(),
+            icon: null,
+        },
+        ...(user?.provider === null
+            ? [
+                {
+                title: 'Password',
+                href: editPassword(),
+                icon: null,
+                },
+                {
+                title: 'Two-Factor Auth',
+                href: show(),
+                icon: null,
+                },
+            ]
+            : []),
+        {
+            title: 'Appearance',
+            href: editAppearance(),
+            icon: null,
+        },
+    ];
+
     // When server-side rendering, we only render the layout on the client...
     if (typeof window === 'undefined') {
         return null;
