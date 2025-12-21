@@ -46,6 +46,7 @@ class SocialAuthController extends Controller
                 'provider'          => 'azure',
                 'provider_id'       => $azureUser->getId(),                
                 'provider_token'    => Crypt::encryptString($azureUser->token),
+                'quota_bytes'      => 1073741824, // 1 GB Standard-Quota
             ]);
         } else {
             // Optional: Provider nachziehen
