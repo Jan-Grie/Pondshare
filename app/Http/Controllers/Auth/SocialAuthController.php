@@ -44,8 +44,7 @@ class SocialAuthController extends Controller
                 'password'          => bcrypt(Str::random(32)),
                 'email_verified_at' => now(),
                 'provider'          => 'azure',
-                'provider_id'       => $azureUser->getId(),
-                'email_verified_at' => now(),
+                'provider_id'       => $azureUser->getId(),                
                 'provider_token'    => Crypt::encryptString($azureUser->token),
             ]);
         } else {
