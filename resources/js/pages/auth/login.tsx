@@ -11,6 +11,7 @@ import { store } from '@/routes/login';
 import { request } from '@/routes/password';
 import { Form, Head } from '@inertiajs/react';
 import { Microsoft } from "developer-icons";
+import { Separator } from "@/components/ui/separator";
 
 interface LoginProps {
     status?: string;
@@ -90,17 +91,6 @@ export default function Login({
                             </div>
 
                             <Button
-                                type="button"
-                                className="mt-4 w-full"
-                                tabIndex={4}
-                                variant="outline"
-                                disabled={true}
-                            >
-                                <Microsoft /> Log in with Microsoft
-                            </Button>
-
-
-                            <Button
                                 type="submit"
                                 className=" w-full"
                                 tabIndex={5}
@@ -110,6 +100,26 @@ export default function Login({
                                 {processing && <Spinner />}
                                 Log in
                             </Button>
+
+                            <div className="relative">
+                                <div className="absolute inset-0 flex items-center">
+                                <Separator />
+                                </div>
+                                <div className="relative flex justify-center text-xs uppercase">
+                                <span className="bg-background px-2 text-muted-foreground">
+                                    Or continue with
+                                </span>
+                                </div>
+                            </div>
+
+                            <Button
+                                type="button"
+                                className=" w-full"
+                                tabIndex={4}
+                                variant="outline"                                
+                            >
+                                <Microsoft /> Log in with Microsoft
+                            </Button>                            
 
                         </div>
 
