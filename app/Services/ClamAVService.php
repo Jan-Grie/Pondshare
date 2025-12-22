@@ -19,7 +19,7 @@ final class ClamAVService
         $this->readTimeout = 30;
     }
 
-public function scan(string $filePath): bool
+public function scan(string $filePath): array
 {
     if (!is_readable($filePath)) {
         throw new RuntimeException('File not readable');
@@ -37,16 +37,29 @@ public function scan(string $filePath): bool
         );
 
         $scanner = new QuahogClient($client, 30, PHP_NORMAL_READ);
-
-        $result = $scanner->scanResourceStream($stream);
-    } catch (\Exception $e) {
+        $result  = $scanner->scanResourceStream($stream);
+    } finally {
         fclose($stream);
-        return false;
     }
 
-    fclose($stream);
+    if ($result->isOk()) {
+        return [
+            'status' => 'clean',
+            'virus'  => null,
+        ];
+    }
 
-    return $result->isOk();
+    if ($result->isFound()) {
+        return [
+            'status' => 'infected',
+            'virus'  => $result->getReason(),
+        ];
+    }
+
+    throw new RuntimeException('ClamAV scan error');
 }
+
+
+
 
 }

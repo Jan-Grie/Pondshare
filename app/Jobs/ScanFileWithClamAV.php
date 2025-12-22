@@ -39,30 +39,18 @@ class ScanFileWithClamAV implements ShouldQueue
 
             $path = Storage::disk('local')->path($file->path);
 
-            $isClean = $clamav->scan($path);
+            $result = $clamav->scan($path);
 
-            $status  = $isClean ? 'clean' : 'infected';
-            $message = $isClean ? 'OK' : 'File failed virus scan';
-
-            // Scan Event
             $scan->update([
-                'status'  => $status,
-                'message' => $message,
+                'status'  => $result['status'],
+                'message' => $result['virus'] ?? 'OK',
             ]);
 
             $file->update([
-                'scan_status' => $status,
+                'scan_status' => $result['status'],
                 'scanned_at'  => now(),
             ]);
 
-            Log::info('File after update', [
-                'scan_status' => $file->fresh()->scan_status,
-            ]);
-
-            // Optional: infizierte Datei löschen
-            // if (!$isClean) {
-            //     @unlink(storage_path('app/' . $file->path));
-            // }
 
         } catch (\Throwable $e) {
             Log::error('ClamAV scan failed', [
@@ -83,5 +71,4 @@ class ScanFileWithClamAV implements ShouldQueue
 
         event(new FileScanFinished($file, $scan));
     }
-
 }

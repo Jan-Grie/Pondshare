@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2Icon, FolderDownIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-export function DownloadZipButton({ pondId, pondName }: { pondId: number; pondName: string }) {
+export function DownloadZipButton({ pondId, pondName, disabled }: { pondId: number; pondName: string; disabled?: boolean }) {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -72,7 +72,7 @@ export function DownloadZipButton({ pondId, pondName }: { pondId: number; pondNa
   };
 
   return (
-    <Button size="sm" variant="outline" onClick={handleDownload} disabled={isLoading}>
+    <Button size="sm" variant="outline" onClick={handleDownload} disabled={isLoading || disabled}>
       {isLoading ? (
         <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
       ) : (

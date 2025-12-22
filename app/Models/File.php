@@ -105,6 +105,10 @@ class File extends Model
 
     public function isPreviewable(): bool
     {
+        if ($this->scan_status === 'infected') {
+            return false;
+        }
+
         return in_array($this->mime_type, self::$previewableMimeTypes, true);
     }
 

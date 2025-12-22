@@ -134,6 +134,14 @@ export default function PondDetailedPage(props: PondDetailProps) {
     // const [files, setFiles] = useState<FileItem[]>(props.files)
     const files = props.files
 
+    const hasFiles = files.length > 0
+
+    const hasDownloadableFiles = files.some(
+        (file) => file.scan_status !== "infected"
+    )
+
+    const disableDownload = files.length === 0 || !hasDownloadableFiles
+
     const totalFiles = files.length
     const totalSizeBytes = files.reduce((sum, f) => sum + f.size, 0)
 
@@ -549,7 +557,7 @@ export default function PondDetailedPage(props: PondDetailProps) {
                             <FileIcon className="mr-2 h-5 w-5" /> {t("ponds:details.files_title")}
                         </h2>
 
-                        < DownloadZipButton pondId={pond.id} pondName={pond.name}/>
+                        < DownloadZipButton pondId={pond.id} pondName={pond.name} disabled={disableDownload} />
                     </div>
 
                     <PondFilesTable
