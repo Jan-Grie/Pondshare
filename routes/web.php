@@ -6,7 +6,7 @@ use Laravel\Fortify\Features;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\Auth\SocialAuthController;
-
+use App\Http\Controllers\Settings\ProfileController;
 
 Route::get('/', function () {
     return Inertia::render('welcome', [
@@ -46,6 +46,12 @@ Route::get('/auth/azure/redirect', [SocialAuthController::class, 'redirectAzure'
 Route::get('/auth/azure/callback', [SocialAuthController::class, 'callbackAzure'])
     ->name('auth.azure.callback');
 
+
+Route::middleware(['auth', 'verified', 'password.change', 'activated'])->group(function () {
+    Route::get('/avatars/{path}', [ProfileController::class, 'avatar'])
+        ->where('path', '.*')        
+        ->name('avatar.show');
+});
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

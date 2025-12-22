@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Storage;
+
 
 class ProfileController extends Controller
 {
@@ -60,4 +62,22 @@ class ProfileController extends Controller
 
         return redirect('/');
     }
+
+    public function avatar(string $path)
+    {
+        $user = auth()->user();
+
+
+        // Existenz prüfen
+        if (! Storage::exists($user->avatar_url)) {
+            abort(404);
+        }
+
+        return response()->file(
+            Storage::path($user->avatar_url),
+            [
+                'Cache-Control' => 'private, max-age=86400',
+            ]
+        );
+    } 
 }

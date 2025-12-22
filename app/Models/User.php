@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Illuminate\Support\Str;
+
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -127,9 +129,16 @@ class User extends Authenticatable implements MustVerifyEmail
     
     protected $appends = ['avatar'];
 
-    public function getAvatarAttribute()
+    public function getAvatarAttribute(): string
     {
+        if ($this->avatar_url) {
+            return route('avatar.show', [
+                'path' => Str::after($this->avatar_url, 'avatars/'),
+            ]);
+        }
+
         $hash = md5(strtolower(trim($this->email)));
+
         return "https://www.gravatar.com/avatar/{$hash}?s=200&d=404";
     }
 }

@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class SocialAuthController extends Controller
 {
@@ -60,6 +62,40 @@ class SocialAuthController extends Controller
 
         Auth::login($user, true);
 
+        // Avatar bei jedem Login synchronisieren
+        $this->storeMicrosoftAvatar(
+            $azureUser->token,
+            $user
+        );
+
         return redirect()->intended('/dashboard');
     }
+
+    private function storeMicrosoftAvatar(string $accessToken, User $user): void
+    {
+        $response = Http::withToken($accessToken)
+            ->get('https://graph.microsoft.com/v1.0/me/photo/$value');
+
+        // Kein Avatar vorhanden → ruhig abbrechen
+        if ($response->failed()) {
+            return;
+        }
+
+        // sicherer, nicht erratbarer Dateiname
+        $filename = Str::uuid() . '.jpg';
+        $path = "avatars/azure/{$filename}";
+
+        // 🔒 PRIVAT speichern (storage/app/...)
+        Storage::put($path, $response->body());
+
+        // optional: alten Avatar löschen
+        if ($user->avatar_url) {
+            Storage::delete($user->avatar_url);
+        }
+
+        // Pfad in DB speichern
+        $user->forceFill([
+            'avatar_url' => $path,
+        ])->save();
+    }    
 }
