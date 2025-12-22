@@ -120,9 +120,10 @@ class PondFileController extends Controller
             ]);
 
             ScanFileWithClamAV::dispatch(
-                fileId: $newFile->id,
-                scanId: $scan->id
-            );
+                $newFile->id,
+                $scan->id
+            )->delay(now()->addSeconds(2));
+
         }
 
         return response()->json([

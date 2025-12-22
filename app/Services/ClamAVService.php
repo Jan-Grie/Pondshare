@@ -3,69 +3,50 @@
 namespace App\Services;
 
 use RuntimeException;
+use Xenolope\Quahog\Client as QuahogClient;
+use Socket\Raw\Factory as SocketFactory;
 
 final class ClamAVService
 {
-    private string $host;
-    private int $port;
-    private int $timeout;
+    private string $socket;
+    private int $connectTimeout;
+    private int $readTimeout;
 
     public function __construct()
     {
-        $this->host    = config('clamav.host', '127.0.0.1');
-        $this->port    = config('clamav.port', 3310);
-        $this->timeout = config('clamav.timeout', 10);
+        $this->socket = config('clamav.socket', 'tcp://127.0.0.1:3310');
+        $this->connectTimeout = 5;
+        $this->readTimeout = 30;
     }
 
-    public function scan(string $filePath): array
-    {
-        if (! is_readable($filePath)) {
-            throw new RuntimeException('File not readable');
-        }
+public function scan(string $filePath): bool
+{
+    if (!is_readable($filePath)) {
+        throw new RuntimeException('File not readable');
+    }
 
-        $socket = fsockopen(
-            $this->host,
-            $this->port,
-            $errno,
-            $errstr,
-            $this->timeout
+    $stream = fopen($filePath, 'rb');
+    if ($stream === false) {
+        throw new RuntimeException('Cannot open file');
+    }
+
+    try {
+        $client = (new SocketFactory())->createClient(
+            config('clamav.socket', 'tcp://127.0.0.1:3310'),
+            5
         );
 
-        if (! $socket) {
-            throw new RuntimeException("ClamAV connection failed: $errstr");
-        }
+        $scanner = new QuahogClient($client, 30, PHP_NORMAL_READ);
 
-        // ✅ RICHTIGER INSTREAM COMMAND
-        fwrite($socket, "INSTREAM\n");
-
-        $file = fopen($filePath, 'rb');
-
-        while (! feof($file)) {
-            $chunk = fread($file, 8192);
-
-            if ($chunk === false || $chunk === '') {
-                break;
-            }
-
-            fwrite($socket, pack('N', strlen($chunk)));
-            fwrite($socket, $chunk);
-        }
-
-        // Stream-Ende
-        fwrite($socket, pack('N', 0));
-
-        fclose($file);
-
-        $response = fgets($socket);
-        fclose($socket);
-
-        if ($response === false) {
-            throw new RuntimeException('No response from ClamAV');
-        }
-
-        return [
-            'clean' => str_contains($response, 'OK'),
-            'raw'   => trim($response),
-        ];
+        $result = $scanner->scanResourceStream($stream);
+    } catch (\Exception $e) {
+        fclose($stream);
+        return false;
     }
+
+    fclose($stream);
+
+    return $result->isOk();
+}
+
 }

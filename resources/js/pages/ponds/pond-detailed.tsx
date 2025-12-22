@@ -1,6 +1,6 @@
 "use client"
 
-import React, { use, useCallback, useState } from "react"
+import React, { use, useCallback, useEffect, useState } from "react"
 import {
     Head,
     router,
@@ -138,8 +138,14 @@ export default function PondDetailedPage(props: PondDetailProps) {
     const totalSizeBytes = files.reduce((sum, f) => sum + f.size, 0)
 
     const [showNewFilesBanner, setShowNewFilesBanner] = useState(false)
+    const showNewFilesRef = React.useRef(showNewFilesBanner);
+    useEffect(() => {
+    showNewFilesRef.current = showNewFilesBanner;
+    }, [showNewFilesBanner]);
+
 
     const onReloadFiles = async () => {
+        console.log("Reload files called")
         await router.reload({ only: ["files"] })
         setShowNewFilesBanner(false)
     }
@@ -338,8 +344,10 @@ export default function PondDetailedPage(props: PondDetailProps) {
     useEcho(
     `pond.${pond.id}`,
     '.file.scan.finished',
-    (e: any) => {        
-        onReloadFiles()
+    () => {
+        if (!showNewFilesRef.current) {
+        onReloadFiles();
+        }
     }
     );
 
