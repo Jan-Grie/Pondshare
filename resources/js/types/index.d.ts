@@ -41,5 +41,6 @@ export interface User {
     updated_at: string;
     locale: string;
     app_layout?: "sidebar" | "topnav";
+    provider: string | null;
     [key: string]: unknown; // This allows for additional properties...
 }

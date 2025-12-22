@@ -75,7 +75,7 @@ export default function Profile({
                 {auth.user.provider !== null && (
                     
                 <>
-                    <Alert className='border-none bg-amber-600/10 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400'>
+                    <Alert className='border-none bg-amber-600/10 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400 mb-4'>
                         <CircleAlertIcon />
                         <AlertTitle>Account is linked</AlertTitle>
                         <AlertDescription className='text-amber-600/80 dark:text-amber-400/80'>
@@ -83,13 +83,11 @@ export default function Profile({
                         </AlertDescription>
                     </Alert>
 
-                    <Card className="w-full rounded-2xl">
+                    <Card className="w-full rounded-2xl shadow-none">
                         <CardContent className="flex items-center justify-between">
                             {/* Left */}
-                            <div className="flex items-center gap-4 min-w-0">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-lg border bg-white shrink-0">
-                                <Microsoft className="h-15 w-15" />
-                            </div>
+                            <div className="flex items-center gap-4 min-w-0">                            
+                                <Microsoft className="h-15 w-15 rounded" />
 
                             <div className="min-w-0">
                                 <div className="truncate text-base font-semibold">
@@ -287,7 +285,7 @@ export default function Profile({
                     </Form>
                 </div>
 
-                <DeleteUser />
+                <DeleteUser user={auth.user} />
             </SettingsLayout>
         </AppLayout>
     );

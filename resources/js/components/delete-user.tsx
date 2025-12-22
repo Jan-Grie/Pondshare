@@ -14,10 +14,22 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Form } from '@inertiajs/react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
-export default function DeleteUser() {
-    const passwordInput = useRef<HTMLInputElement>(null);
+type DeleteUserProps = {
+  user: {
+    email: string
+    provider: string | null
+  }
+}
+
+export default function DeleteUser({ user }: DeleteUserProps) {
+  const isSocialUser = !!user.provider
+
+  const passwordInput = useRef<HTMLInputElement>(null)
+  const emailInput = useRef<HTMLInputElement>(null)
+
+  const [email, setEmail] = useState('')
 
     return (
         <div className="space-y-6">
@@ -47,72 +59,109 @@ export default function DeleteUser() {
                             Are you sure you want to delete your account?
                         </DialogTitle>
                         <DialogDescription>
-                            Once your account is deleted, all of its resources
-                            and data will also be permanently deleted. Please
-                            enter your password to confirm you would like to
-                            permanently delete your account.
+                            {isSocialUser ? (
+                                <>
+                                This account is connected via Microsoft.
+                                <br />
+                                Please enter your email address to confirm you want to
+                                permanently delete your account.
+                                </>
+                            ) : (
+                                <>
+                                Once your account is deleted, all of its resources and data
+                                will also be permanently deleted. Please enter your password
+                                to confirm you would like to permanently delete your account.
+                                </>
+                            )}
                         </DialogDescription>
 
-                        <Form
+                            <Form
                             {...ProfileController.destroy.form()}
-                            options={{
-                                preserveScroll: true,
-                            }}
-                            onError={() => passwordInput.current?.focus()}
+                            options={{ preserveScroll: true }}
                             resetOnSuccess
+                            onError={() => {
+                                if (isSocialUser) {
+                                emailInput.current?.focus()
+                                } else {
+                                passwordInput.current?.focus()
+                                }
+                            }}
                             className="space-y-6"
-                        >
-                            {({ resetAndClearErrors, processing, errors }) => (
+                            >
+                            {({ processing, errors, resetAndClearErrors }) => (
                                 <>
-                                    <div className="grid gap-2">
-                                        <Label
-                                            htmlFor="password"
-                                            className="sr-only"
-                                        >
-                                            Password
+                                <div className="grid gap-2">
+                                    {isSocialUser ? (
+                                    <>
+                                        <Label htmlFor="email" className="sr-only">
+                                        Email
                                         </Label>
 
                                         <Input
-                                            aria-invalid={!!errors.password}
-                                            id="password"
-                                            type="password"
-                                            name="password"
-                                            ref={passwordInput}
-                                            placeholder="Password"
-                                            autoComplete="current-password"
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        ref={emailInput}
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder={user.email}
+                                        autoComplete="email"
+                                        aria-invalid={!!errors.email}
                                         />
 
-                                        <InputError message={errors.password} />
-                                    </div>
+                                        <InputError message={errors.email} />
+                                    </>
+                                    ) : (
+                                        <>
+                                            <Label htmlFor="password" className="sr-only">
+                                            Password
+                                            </Label>
+
+                                            <Input
+                                            id="password"
+                                            name="password"
+                                            type="password"
+                                            ref={passwordInput}
+                                            autoComplete="current-password"
+                                            placeholder="Password"
+                                            aria-invalid={!!errors.password}
+                                            />
+
+                                            <InputError message={errors.password} />
+                                        </>
+                                        )}
+                                    </div>                                        
+
 
                                     <DialogFooter className="gap-2">
                                         <DialogClose asChild>
-                                            <Button
-                                                variant="secondary"
-                                                onClick={() =>
-                                                    resetAndClearErrors()
-                                                }
-                                            >
-                                                Cancel
-                                            </Button>
+                                        <Button
+                                            variant="secondary"
+                                            onClick={() => {
+                                            resetAndClearErrors()
+                                            setEmail('')
+                                            }}
+                                        >
+                                            Cancel
+                                        </Button>
                                         </DialogClose>
 
                                         <Button
-                                            variant="destructive"
-                                            disabled={processing}
-                                            asChild
+                                        variant="destructive"
+                                        disabled={
+                                            processing ||
+                                            (isSocialUser && email !== user.email)
+                                        }
+                                        asChild
                                         >
-                                            <button
-                                                type="submit"
-                                                data-test="confirm-delete-user-button"
-                                            >
-                                                Delete account
-                                            </button>
+                                        <button type="submit">
+                                            Delete account
+                                        </button>
                                         </Button>
                                     </DialogFooter>
-                                </>
-                            )}
-                        </Form>
+                                    </>
+                                )}
+                                </Form>
                     </DialogContent>
                 </Dialog>
             </div>
