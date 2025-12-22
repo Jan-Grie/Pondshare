@@ -107,4 +107,15 @@ class File extends Model
     {
         return in_array($this->mime_type, self::$previewableMimeTypes, true);
     }
+
+    public function scans()
+    {
+        return $this->hasMany(FileScan::class);
+    }
+
+    public function latestScan()
+    {
+        return $this->hasOne(FileScan::class)->latestOfMany();
+    }
+
 }

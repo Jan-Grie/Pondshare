@@ -242,7 +242,8 @@ export default function PondDetailedPage(props: PondDetailProps) {
                 });
 
 
-                router.reload({ only: ["files"] })
+                // router.reload({ only: ["files"] })
+                onReloadFiles()
             }
         } catch (err: any) {
             if (axios.isCancel(err)) {
@@ -328,11 +329,20 @@ export default function PondDetailedPage(props: PondDetailProps) {
 
     useEcho(
         `pond.${pond.id}`,
-        ".file.uploaded",  // ✅ RICHTIG - muss mit broadcastAs() übereinstimmen
+        ".file.uploaded", 
         (e: any) => {
             setShowNewFilesBanner(true)
         },
     );  
+
+    useEcho(
+    `pond.${pond.id}`,
+    '.file.scan.finished',
+    (e: any) => {        
+        onReloadFiles()
+    }
+    );
+
 
     // -------------------------------------------------------------------------
     // Render

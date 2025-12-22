@@ -9,6 +9,9 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use App\Models\Pond;
 use App\Models\File;
+use App\Models\FileScan;
+use App\Jobs\ScanFileWithClamAV;
+
 
 //Events
 use App\Events\FileUploaded;
@@ -109,7 +112,17 @@ class PondFileController extends Controller
                 'preview_url'  => route('files.preview', ['file' => $newFile->id]),
                 "size" => $newFile->size,
                 "scan_status" => $newFile->scan_status,
-            ];                   
+            ];  
+
+            $scan = FileScan::create([
+                'file_id' => $newFile->id,
+                'status' => 'pending',
+            ]);
+
+            ScanFileWithClamAV::dispatch(
+                fileId: $newFile->id,
+                scanId: $scan->id
+            );
         }
 
         return response()->json([

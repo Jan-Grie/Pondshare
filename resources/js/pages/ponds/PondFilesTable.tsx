@@ -130,7 +130,7 @@ export default function PondFilesTable({ files, onDeleteFile, onPreview, showNew
     failed: (
       <Tooltip>
         <TooltipTrigger asChild>
-          <ShieldX className="h-6 w-6 text-yellow-600" />
+          <ShieldX className="h-6 w-6 text-orange-600" />
         </TooltipTrigger>
         <TooltipContent>
           <p>{t("ponds:details.scan.failed")}</p>
@@ -300,6 +300,7 @@ export default function PondFilesTable({ files, onDeleteFile, onPreview, showNew
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    autoResetPageIndex: false,
   })
 
   const total = table.getFilteredRowModel().rows.length
