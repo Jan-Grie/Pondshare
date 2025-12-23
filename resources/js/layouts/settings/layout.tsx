@@ -10,6 +10,7 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
 import { usePage } from "@inertiajs/react";
+import { security } from '@/routes/profile/index';
 
 
 
@@ -27,22 +28,31 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
         ...(user?.provider === null
             ? [
                 {
-                title: 'Password',
-                href: editPassword(),
-                icon: null,
+                    title: 'Password',
+                    href: editPassword(),
+                    icon: null,
                 },
                 {
-                title: 'Two-Factor Auth',
-                href: show(),
-                icon: null,
+                    title: 'Two-Factor Auth',
+                    href: show(),
+                    icon: null,
                 },
             ]
-            : []),
+            : []),        
         {
             title: 'Appearance',
             href: editAppearance(),
             icon: null,
         },
+        ...(user?.role_id === 1 
+            ? [
+                {
+                    title: 'Security',
+                    href: security(),
+                    icon: null,
+                }
+            ] 
+            : []),         
     ];
 
     // When server-side rendering, we only render the layout on the client...

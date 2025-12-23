@@ -11,5 +11,28 @@
         },
         "sidebar": "Sidebar",
         "topnav": "Top Navigation Bar"
+    },
+    "security": {
+        "page_title": "Security overview",
+        "page_description": "Overview of system security and malware protection status.",
+
+        "clamav_disabled_title": "Malware protection disabled",
+        "clamav_disabled_description": "ClamAV is currently disabled. Uploaded files are not scanned for malware.",
+
+        "clamav_status_title": "ClamAV status",
+
+        "engine_version": "Engine version",
+        "signature_version": "Signature version",
+        "signature_date": "Last signature update",
+        "signature_age": "Signature age",
+        "signature_age_days": "{{days}} days",
+        "status": "Status",
+
+        "status_ok": "Up to date",
+        "status_warning": "Outdated",
+        "status_critical": "Critical",
+        "status_unknown": "Unknown",
+
+        "unknown": "Unknown"
     }    
 }

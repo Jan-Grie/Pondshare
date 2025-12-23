@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
+use App\Jobs\UpdateClamavSignatureCache;
 
 
 Artisan::command('inspire', function () {
@@ -14,4 +15,8 @@ if (config('clamav.enabled')) {
         ->hourly()
         ->withoutOverlapping()
         ->onOneServer();
+
+    Schedule::job(new UpdateClamavSignatureCache)
+        ->everyMinute()
+        ->withoutOverlapping();
 }

@@ -38,7 +38,7 @@ import AppLogoIcon from './app-logo-icon';
 import { index as PondIdex } from '@/routes/ponds';
 import { usage } from "@/routes"
 import { index as BinIndex } from '@/routes/bin';
-import { BookOpen, Folder, LayoutGrid, FolderOpen, FileChartPie, Trash2, Menu, Search } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, FolderOpen, FileChartPie, Trash2, Menu, Search, FileLock } from 'lucide-react';
 import AppLogo from './app-logo';
 import { useTranslation } from 'react-i18next'; 
 import AppearanceToggleDropdown from './appearance-dropdown';
@@ -68,6 +68,9 @@ interface AppHeaderProps {
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const { t } = useTranslation();
     const page = usePage<SharedData>();
+    const { auth } = page.props;
+    const isAdmin = auth?.user?.role_id === 1;
+    
     const mainNavItems: NavItem[] = [
             {
                 title: t('sidebar:dashboard_title'),
@@ -88,9 +91,16 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                 title: t('sidebar:bin_title'),
                 href: BinIndex(),
                 icon: Trash2,
-            }
+            },
+            ...(isAdmin
+                ? [{
+                    title: t('sidebar:security_title'),
+                    href: BinIndex(),
+                    icon: FileLock,
+                }]
+                : []),          
     ];
-    const { auth } = page.props;
+    
     const getInitials = useInitials();
     return (
         <>

@@ -55,4 +55,38 @@ final class ClamAVService
 
         throw new RuntimeException('ClamAV scan error');
     }
+
+    public function getSignatureInfo(): array
+    {
+        $factory = new SocketFactory();
+        $socket  = $factory->createClient($this->socket, 5);
+
+        $client = new QuahogClient(
+            $socket,
+            $this->timeout,
+            PHP_NORMAL_READ
+        );
+
+        $version = $client->version();
+        // z. B.: "ClamAV 1.3.1/27001/Fri Aug 23 07:42:14 2024"
+
+        if (!preg_match(
+            '/ClamAV\s+(?<engine>[^\/]+)\/(?<sigver>\d+)\/(?<date>.+)$/',
+            $version,
+            $m
+        )) {
+            throw new RuntimeException('Unexpected ClamAV version format');
+        }
+
+        $signatureDate = new \DateTimeImmutable($m['date']);
+        $now           = new \DateTimeImmutable();
+
+        return [
+            'engine_version'     => $m['engine'],
+            'signature_version'  => (int) $m['sigver'],
+            'signature_date' => $signatureDate->toIso8601String(),
+            'signature_age_days' => $signatureDate->diff($now)->days,
+            'raw'                => $version,
+        ];
+    }    
 }

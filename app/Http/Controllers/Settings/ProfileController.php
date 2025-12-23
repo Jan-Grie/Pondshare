@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
 
 
 class ProfileController extends Controller
@@ -90,4 +91,17 @@ class ProfileController extends Controller
             ]
         );
     } 
+
+    public function security(): Response
+    {            
+        if(!Auth::user()->isAdmin()){
+            abort(403);
+        }
+
+        $clamavEnabled = config('clamav.enabled');
+        return Inertia::render('settings/security', [
+            'clamavEnabled' => $clamavEnabled,
+            'clamav' => Cache::get('clamav.signature_info'),
+        ]);
+    }
 }
