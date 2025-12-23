@@ -17,6 +17,6 @@ if (config('clamav.enabled')) {
         ->onOneServer();
 
     Schedule::job(new UpdateClamavSignatureCache)
-        ->everyMinute()
+        ->everySixHours()
         ->withoutOverlapping();
 }
