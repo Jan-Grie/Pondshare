@@ -23,9 +23,7 @@ class UpdateClamavSignatureCache implements ShouldQueue
             Cache::put('clamav.signature_info', [
                 'engine_version'     => (string) $info['engine_version'],
                 'signature_version'  => (int) $info['signature_version'],
-                'signature_date'     => is_string($info['signature_date'])
-                    ? $info['signature_date']
-                    : $info['signature_date']->toIso8601String(),
+                'signature_date' => $signatureDate->format(DATE_ATOM),
                 'signature_age_days' => (int) $info['signature_age_days'],
             ], now()->addHours(6));
         } catch (\Throwable $e) {

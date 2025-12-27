@@ -17,12 +17,16 @@ interface LoginProps {
     status?: string;
     canResetPassword: boolean;
     canRegister: boolean;
+    socialProviders: {
+        azure: boolean;
+    };    
 }
 
 export default function Login({
     status,
     canResetPassword,
     canRegister,
+    socialProviders,
 }: LoginProps) {
     return (
         <AuthLayout
@@ -101,6 +105,7 @@ export default function Login({
                                 Log in
                             </Button>
 
+                            {socialProviders.azure  && (
                             <div className="relative">
                                 <div className="absolute inset-0 flex items-center">
                                 <Separator />
@@ -111,18 +116,22 @@ export default function Login({
                                 </span>
                                 </div>
                             </div>
+                            )}
 
-                            <Button
-                                type="button"
-                                className=" w-full"
-                                tabIndex={4}
-                                variant="outline"     
-                                onClick={() => {
-                                    window.location.href = '/auth/azure/redirect'
-                                }}                                                           
-                            >
-                                <Microsoft /> Log in with Microsoft
-                            </Button>                            
+                            {socialProviders.azure && (
+
+                                <Button
+                                    type="button"
+                                    className=" w-full"
+                                    tabIndex={4}
+                                    variant="outline"     
+                                    onClick={() => {
+                                        window.location.href = '/auth/azure/redirect'
+                                    }}                                                           
+                                >
+                                    <Microsoft /> Log in with Microsoft
+                                </Button>
+                            )}                         
 
                         </div>
 

@@ -84,7 +84,7 @@ final class ClamAVService
         return [
             'engine_version'     => $m['engine'],
             'signature_version'  => (int) $m['sigver'],
-            'signature_date' => $signatureDate->toIso8601String(),
+            'signature_date' => $signatureDate->format(DATE_ATOM),
             'signature_age_days' => $signatureDate->diff($now)->days,
             'raw'                => $version,
         ];
