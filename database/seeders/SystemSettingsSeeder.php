@@ -11,6 +11,10 @@ class SystemSettingsSeeder extends Seeder
     {
         $settings = [
             [
+                'key'   => 'app_name',
+                'value' => 'Pondshare', //Default Value
+            ],
+            [
                 'key'   => 'force_password_for_all_links',
                 'value' => '1',
             ],
