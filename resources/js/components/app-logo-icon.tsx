@@ -1,8 +1,25 @@
 import { SVGAttributes } from 'react';
+import { usePage } from '@inertiajs/react';
 
-export default function AppLogoIcon(props: SVGAttributes<SVGElement>) {
+type Props = SVGAttributes<SVGElement>;
+
+export default function AppLogoIcon(props: Props) {
+    const { app_logo, app_name } = usePage().props as {
+        app_logo?: string;
+        app_name?: string;
+    };
+
+    if (app_logo && app_logo !== 'default') {
+        return (
+            <img
+                src={app_logo}
+                alt={app_name ?? 'App Logo'}
+                className="w-10 h-10 object-contain"
+            />
+        );
+    }
+
     return (
-        
 <svg {...props} version="1.0" xmlns="http://www.w3.org/2000/svg"
  width="1024.000000pt" height="1024.000000pt" viewBox="0 0 1024.000000 1024.000000"
  preserveAspectRatio="xMidYMid meet">

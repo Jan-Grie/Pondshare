@@ -15,6 +15,10 @@ class SystemSettingsSeeder extends Seeder
                 'value' => 'Pondshare', //Default Value
             ],
             [
+                'key'   => 'app_logo',
+                'value' => 'default', //Default Value
+            ],
+            [
                 'key'   => 'force_password_for_all_links',
                 'value' => '1',
             ],

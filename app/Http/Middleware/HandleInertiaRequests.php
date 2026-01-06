@@ -42,6 +42,7 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'app_name' => SystemSetting::appName(),
+            'app_logo' => SystemSetting::appLogoUrl(),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => fn () => $request->user()

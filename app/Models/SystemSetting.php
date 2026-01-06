@@ -83,4 +83,9 @@ class SystemSetting extends Model
     {
         return (string) static::getValue('app_name', config('app.name'));
     }
+
+    public static function appLogoUrl(): ?string
+    {
+        return static::getValue('app_logo', null);
+    }
 }
