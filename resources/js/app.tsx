@@ -6,6 +6,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { initializeTheme } from './hooks/use-appearance';
 import { configureEcho } from '@laravel/echo-react';
+import { usePage }  from '@inertiajs/react';
 import i18n from './i18n';
 import "@/bootstrap";
 
@@ -16,7 +17,7 @@ configureEcho({
 
 
 
-const appName = import.meta.env.VITE_APP_NAME || 'Pondshare';
+let appName = import.meta.env.VITE_APP_NAME || 'Pondshare';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
@@ -30,6 +31,11 @@ createInertiaApp({
 
         const locale =
             (props.initialPage.props as any)?.auth?.user?.locale ?? 'en';
+        
+        const sharedAppName = (props.initialPage.props as any)?.app_name ?? (props.initialPage.props as any)?.name;
+        if (sharedAppName) {
+            appName = sharedAppName as string;
+        }
 
         (async () => {
             await i18n.changeLanguage(locale);

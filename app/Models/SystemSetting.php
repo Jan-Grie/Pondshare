@@ -78,4 +78,9 @@ class SystemSetting extends Model
     {
         return (bool) static::getValue('require_expiry_for_links', false);
     }
+
+    public static function appName(): string
+    {
+        return (string) static::getValue('app_name', config('app.name'));
+    }
 }
