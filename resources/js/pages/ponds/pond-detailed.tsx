@@ -70,7 +70,9 @@ import { DownloadZipButton } from "@/components/download-zip-button"
 import { toast } from "sonner"
 import { Label } from "@/components/ui/label";
 import { useEcho, echo } from "@laravel/echo-react";
-
+import { Deferred } from '@inertiajs/react'
+import PondFilesTableSkeleton from "./components/files/PondFilesTableSkeleton"
+import { Skeleton } from "@/components/ui/skeleton"
 
 // -----------------------------------------------------------------------------
 // Types
@@ -99,7 +101,7 @@ interface Pond {
 
 interface PondDetailProps {
     pond: Pond
-    files: FileItem[]
+    files?: FileItem[]
     shareLinks: { items: any[] }
     uploadLinks: { items: any[] }
     force_password_for_links: boolean
@@ -132,7 +134,11 @@ export default function PondDetailedPage(props: PondDetailProps) {
     // Files State
     // -------------------------------------------------------------------------
     // const [files, setFiles] = useState<FileItem[]>(props.files)
-    const files = props.files
+    const lastFilesRef = React.useRef<FileItem[] | null>(null)
+    if (props.files !== undefined) {
+        lastFilesRef.current = props.files
+    }
+    const files = props.files ?? lastFilesRef.current ?? []
 
     const hasFiles = files.length > 0
 
@@ -359,6 +365,13 @@ export default function PondDetailedPage(props: PondDetailProps) {
     }
     );
 
+    const [filesLoadedOnce, setFilesLoadedOnce] = useState(false)
+
+    useEffect(() => {
+    if (props.files) {
+        setFilesLoadedOnce(true)
+    }
+    }, [props.files])
 
     // -------------------------------------------------------------------------
     // Render
@@ -381,13 +394,26 @@ export default function PondDetailedPage(props: PondDetailProps) {
                                 {pond.name}
                             </h1>
 
-                            <p className="text-sm text-muted-foreground">
+
+                            {!filesLoadedOnce ? (
+                                <Deferred data="files" fallback={<Skeleton className="h-4 w-[250px]" />}>
+                                <p className="text-sm text-muted-foreground">
                                 {t("ponds:details.summary", {
                                     count: totalFiles,
                                     date: format(new Date(pond.created_at), "dd.MM.yyyy"),
                                     size: formatBytes(totalSizeBytes),
                                 })}
-                            </p>
+                                </p>
+                                </Deferred>      
+                            ) : (
+                                <p className="text-sm text-muted-foreground">
+                                {t("ponds:details.summary", {
+                                    count: totalFiles,
+                                    date: format(new Date(pond.created_at), "dd.MM.yyyy"),
+                                    size: formatBytes(totalSizeBytes),
+                                })}
+                                </p>
+                            )}               
                         </div>
 
                         <div className="flex items-center gap-2">
@@ -560,6 +586,9 @@ export default function PondDetailedPage(props: PondDetailProps) {
                         < DownloadZipButton pondId={pond.id} pondName={pond.name} disabled={disableDownload} />
                     </div>
 
+                
+                    {!filesLoadedOnce ? (
+                    <Deferred data="files" fallback={<PondFilesTableSkeleton />}>
                     <PondFilesTable
                         files={files}
                         showNewFilesBanner={showNewFilesBanner}
@@ -582,6 +611,31 @@ export default function PondDetailedPage(props: PondDetailProps) {
                             })
                         }
                     />
+                    </Deferred>
+                    ) : (
+                    <PondFilesTable
+                        files={files}
+                        showNewFilesBanner={showNewFilesBanner}
+                        onPreview={(file) => {
+                            setPreviewMime(file.mime_type)
+                            setPreviewName(file.name)
+                            setPreviewUrl(previewFile.url(file.id))
+                            setPreviewOpen(true)
+                        }}
+                        onReloadFiles={onReloadFiles}
+                        onDeleteFile={(id) =>
+                            router.delete(destroyFile.url(id), {
+                                preserveScroll: true,
+                                preserveState: true,
+                                onSuccess: () =>
+                                    // setFiles((prev) =>
+                                    //     prev.filter((f) => f.id !== id)
+                                    // ),
+                                    router.reload({ only: ["files"]})
+                            })
+                        }
+                    />
+                    )}
                 </div>
 
                 {/* -------------------------------------------------------------- */}

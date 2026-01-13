@@ -110,7 +110,34 @@ class PondController extends Controller
                 'size_bytes' => $pond->activeFilesSize(),
                 'created_at' => $pond->created_at,
             ],
-            'files' => $files,
+            // 'files' => $files,
+            'files' => Inertia::defer(fn () =>
+                $pond->files()
+                    ->with('user')
+                    ->get()
+                    ->map(function ($file) {
+                        $isPreviewable = $file->isPreviewable();
+
+                        return [
+                            'id' => $file->id,
+                            'name' => $file->name . '.' . $file->extension,
+                            'human_size' => $file->human_size,
+                            'uploaded_at' => $file->created_at,
+                            'uploader' => $file->user_id
+                                ? optional($file->user)->name
+                                : $file->uploaded_by,
+                            'extension' => $file->extension,
+                            'scan_status' => $file->scan_status,
+                            'mime_type' => $file->mime_type,
+                            'size' => $file->size,
+                            'path' => $file->path,
+                            'previewable' => $isPreviewable,
+                            'preview_url' => $isPreviewable
+                                ? route('files.previewInfo', ['file' => $file->id])
+                                : null,
+                        ];
+                })
+            ),
             'shareLinks' => $shareLinks,
             'uploadLinks' => $uploadLinks,
             'force_password_for_links' => SystemSetting::forcePasswordForLinks(),
