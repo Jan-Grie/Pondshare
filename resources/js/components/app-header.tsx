@@ -95,10 +95,10 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
             ...(isAdmin
                 ? [{
                     title: t('sidebar:security_title'),
-                    href: BinIndex(),
+                    href: '/admin/file-security',
                     icon: FileLock,
                 }]
-                : []),          
+                : []),
     ];
     
     const getInitials = useInitials();
