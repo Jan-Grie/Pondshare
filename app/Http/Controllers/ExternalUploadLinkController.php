@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
@@ -14,7 +14,10 @@ use Illuminate\Support\Str;
 use App\Models\Pond;
 use App\Models\ExternalUploadLink;
 use App\Models\File;
+use App\Models\FileScan;
 use App\Models\SystemSetting;
+use App\Events\FileUploaded;
+use App\Jobs\ScanFileWithClamAV;
 
 class ExternalUploadLinkController extends Controller
 {
@@ -101,7 +104,7 @@ class ExternalUploadLinkController extends Controller
             "password_enabled" => $passwordEnable,
             "password_hash" => $passwordHash,
             "created_at" => now(),
-            "expires_at" => $expiresAt,            
+            "expires_at" => $expiresAt,
             "upload_count" => 0,
         ]);
 
@@ -122,9 +125,9 @@ class ExternalUploadLinkController extends Controller
             ], 201);
     }
 
-    public function update(Pond $pond, ExternalUploadLink $externalUploadLink, Request $request, )
+    public function update(Pond $pond, ExternalUploadLink $externalUploadLink, Request $request)
     {
-        if($pond->user_id !== Auth::id() || $externalUploadLink->pond_id !== $pond->id){            
+        if($pond->user_id !== Auth::id() || $externalUploadLink->pond_id !== $pond->id){
             abort(403, 'Unauthorized action.');
         }
 
@@ -142,53 +145,17 @@ class ExternalUploadLinkController extends Controller
             ],
         ];
 
-        // Current password states
         $hasPasswordInDb     = !empty($externalUploadLink->password_hash);
         $requestHasPassword  = $request->filled("password");
 
-        /*
-        |--------------------------------------------------------------------------
-        | Password Validation Logic
-        |--------------------------------------------------------------------------
-        |
-        | 1) User gibt neues Passwort ein → validate required
-        | 2) Link hatte bisher KEIN Passwort → Passwort required
-        | 3) Link hat PW + User lässt Feld leer → OK (PW bleibt bestehen)
-        |
-        | forcePassword bedeutet:
-        |    - Der Link MUSS Passwortschutz haben
-        |    - ABER: kein neues eingeben, wenn bereits vorhanden!
-        |
-        */
-
         if ($requestHasPassword) {
-            // Neues Passwort eingegeben → validieren
-            $rules["password"] = [
-                "required",
-                "string",
-                "min:$minPasswordLength",
-                "max:255",
-            ];
+            $rules["password"] = ["required", "string", "min:$minPasswordLength", "max:255"];
+        } elseif (!$hasPasswordInDb) {
+            $rules["password"] = ["required", "string", "min:$minPasswordLength", "max:255"];
+        } else {
+            $rules["password"] = ["nullable", "string", "min:$minPasswordLength", "max:255"];
         }
-        elseif (!$hasPasswordInDb) {
-            // Der Link hat KEIN Passwort → eines MUSS gesetzt werden
-            $rules["password"] = [
-                "required",
-                "string",
-                "min:$minPasswordLength",
-                "max:255",
-            ];
-        }
-        else {
-            // User lässt PW leer → Passwort bleibt bestehen
-            $rules["password"] = [
-                "nullable",
-                "string",
-                "min:$minPasswordLength",
-                "max:255",
-            ];
-        }  
-        
+
         $expiresAtRules = [
             "date",
             "after:now",
@@ -207,13 +174,11 @@ class ExternalUploadLinkController extends Controller
 
         $expiresAt = $data["expires_at"] ?? null;
 
-        //Set password only if provided
         if(!empty($data["password"])){
             $externalUploadLink->password_enabled = true;
             $externalUploadLink->password_hash = Hash::make($data["password"]);
         }
 
-        //If Passwordprotection is forced, make sure password is enabled
         if($forcePassword){
             $externalUploadLink->password_enabled = true;
         }
@@ -233,14 +198,14 @@ class ExternalUploadLinkController extends Controller
                 "created_at" => $externalUploadLink->created_at,
                 "expires_at" => $externalUploadLink->expires_at,
                 "password_enabled" => $externalUploadLink->password_enabled,
-                "upload_count" => $externalUploadLink->upload_count,                
+                "upload_count" => $externalUploadLink->upload_count,
             ]
             ]);
     }
 
     public function destroy(Pond $pond, ExternalUploadLink $externalUploadLink)
     {
-        if ($pond->id !== $externalUploadLink->pond_id) {            
+        if ($pond->id !== $externalUploadLink->pond_id) {
             abort(403);
         }
 
@@ -248,7 +213,7 @@ class ExternalUploadLinkController extends Controller
             abort(403);
         }
         $externalUploadLink->delete();
-        
+
         return back()->with('success', 'Upload link deleted successfully.');
     }
 
@@ -256,18 +221,16 @@ class ExternalUploadLinkController extends Controller
     {
         $uploadLink = ExternalUploadLink::where("token", $token)->firstOrFail();
 
-        //Check expiration
         if($uploadLink->isExpired()){
             return Inertia::render("public/upload/upload-expired");
         }
 
-        //Check Passwordprotection
         $sessionKey = "upload_link_authenticated_" . $token;
         if($uploadLink->password_enabled && !$request->session()->get($sessionKey, false)){
-            return Inertia::render("public/upload/upload-uploader", [
+            return Inertia::render("public/upload/upload-password", [
                 "token" => $token,
             ]);
-        } 
+        }
 
         $uploaderSessionKey = "upload_link_uploader_" . $token;
         if(!$request->session()->has($uploaderSessionKey)){
@@ -287,7 +250,7 @@ class ExternalUploadLinkController extends Controller
             "upload_link" => [
                 "id" => $uploadLink->id,
                 "name" => $uploadLink->name,
-                "expires_at" => $uploadLink->expires_at                
+                "expires_at" => $uploadLink->expires_at,
             ],
         ]);
     }
@@ -327,7 +290,7 @@ class ExternalUploadLinkController extends Controller
 
         $request->session()->put("upload_link_uploader_" . $token, $data["uploader_name"]);
 
-        return redircet()->route("uploads.show", ["token" => $token]);
+        return redirect()->route("uploads.show", ["token" => $token]);
     }
 
     public function handleUpload(Request $request, string $token)
@@ -338,24 +301,22 @@ class ExternalUploadLinkController extends Controller
                 ->orWhere("expires_at", ">", now());
             })
             ->firstOrFail();
-        
+
         $maxUpload = $this->convertToBytes(ini_get('upload_max_filesize'));
         $postMax   = $this->convertToBytes(ini_get('post_max_size'));
-
         $maxBytes = min($maxUpload, $postMax);
 
         $sessionKey = "upload_link_authenticated_" . $token;
-        if($uploadLink->password_enabled && !$request->session()->get($sessionKey, false))
-        {
-            return redircet()->route("uploads.show", ["token" => $token]);        
+        if($uploadLink->password_enabled && !$request->session()->get($sessionKey, false)){
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
         $uploaderSessionKey = "upload_link_uploader_" . $token;
         $uploaderName = $request->session()->get($uploaderSessionKey, null);
 
-        $data = $request->validate([
+        $request->validate([
             "file" => "required",
-            "file.*" => "file|max:" . $maxBytes,            
+            "file.*" => "file|max:" . $maxBytes,
         ]);
 
         $pond = $uploadLink->pond;
@@ -366,39 +327,51 @@ class ExternalUploadLinkController extends Controller
 
         $uploaded = [];
         foreach($files as $file){
-            $storedPath = $file->store("ponds/". $pond->id, "local");
+            $storedPath = $file->store("ponds/" . $pond->id, "local");
+
             $newFile = File::create([
-                "pond_id" => $pond->id,
-                "name" => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
-                "extension" => $file->getClientOriginalExtension(),
-                "mime_type" => $file->getMimeType(),
-                "path" => $storedPath,
-                "size" => $file->getSize(),
-                "user_id" => null,
+                "pond_id"     => $pond->id,
+                "name"        => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+                "extension"   => $file->getClientOriginalExtension(),
+                "mime_type"   => $file->getMimeType(),
+                "path"        => $storedPath,
+                "size"        => $file->getSize(),
+                "user_id"     => null,
                 "uploaded_by" => $uploaderName,
+                "scan_status" => "pending",
             ]);
-            $upload[] = [
-                "id" => $newFile->id,
-                "name" => $newFile->name,
+
+            $uploaded[] = [
+                "id"        => $newFile->id,
+                "name"      => $newFile->name,
                 "extension" => $newFile->extension,
-                "size" => $newFile->size,
+                "size"      => $newFile->size,
             ];
 
             $uploadLink->increment("upload_count");
 
-            return response()->json([
-                "success" => true,
-                "message" => __("Files uploaded successfully."),
-                "files" => $uploaded,
+            broadcast(new FileUploaded($newFile->id, $pond->id, 'external'))->toOthers();
+
+            $scan = FileScan::create([
+                'file_id' => $newFile->id,
+                'status'  => 'pending',
             ]);
+
+            ScanFileWithClamAV::dispatch($newFile->id, $scan->id)
+                ->delay(now()->addSeconds(2));
         }
+
+        return response()->json([
+            "success" => true,
+            "message" => __("Files uploaded successfully."),
+            "files"   => $uploaded,
+        ]);
     }
 
-    public function delteUploadFile(Request $request, string $token, File $file)
+    public function deleteUploadedFile(Request $request, string $token, File $file)
     {
         $uploadLink = ExternalUploadLink::where("token", $token)->firstOrFail();
 
-        //Check if file belongs to the pond
         if($file->pond_id !== $uploadLink->pond_id){
             abort(403, 'Unauthorized action.');
         }
@@ -409,9 +382,9 @@ class ExternalUploadLinkController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $file->delete(); //TODO => Prüfen, ob das nicht nur soft delte macht
         Storage::disk("local")->delete($file->path);
-        
+        $file->delete();
+
         return response()->json([
             "success" => true,
             "message" => __("File deleted successfully."),
