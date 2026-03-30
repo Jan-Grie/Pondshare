@@ -33,6 +33,7 @@
   "pagination_showing": "Showing {{start}}–{{end}} of {{total}} entries",
 
   "no_entries_found": "No entries found",
+  "shared_with_me": "Shared",
 
   "create": "Create",
   
@@ -110,15 +111,39 @@
         "password": "Password",
         "downloads": "Downloads",
         "actions": "Actions"
-      },          
-      
+      },
+
       "delete_title": "Delete upload link",
       "delete_message": "Do you really want to delete the link \"{{name}}\"?",
       "no_entries": "No upload links available.",
       "copied": "Upload link copied to clipboard!",
       "success": "Upload link created successfully!",
-      "success_description": "You can now share your link with others."
-    }  
+      "success_description": "You can now share your link with others.",
+      "deleting": "Deleting upload link…",
+      "deleted": "Upload link deleted",
+      "delete_success_description": "The upload link has been removed successfully.",
+      "delete_error": "Error",
+      "delete_error_description": "The upload link could not be deleted."
+    },
+    "collaborators": {
+      "title": "Collaborators",
+      "description": "Grant other users access to this pond.",
+      "add_email_placeholder": "Email address",
+      "select_user": "Select a user…",
+      "no_users_available": "All users already added",
+      "permission_label": "Permission",
+      "permission_read": "Read",
+      "permission_write": "Read & Write",
+      "add_button": "Add",
+      "no_collaborators": "No collaborators yet.",
+      "remove_title": "Remove collaborator",
+      "remove_message": "Do you really want to remove {{name}} from this pond?",
+      "col_user": "User",
+      "col_permission": "Permission",
+      "col_actions": "Actions"
+    },
+    "reload_files": "Reload files",
+    "owned_by": "Created by {{name}}"
   },
   "share_dialog": {
     "create_title": "Create Share Link",

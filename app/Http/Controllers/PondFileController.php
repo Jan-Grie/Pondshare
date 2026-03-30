@@ -11,7 +11,7 @@ use App\Models\Pond;
 use App\Models\File;
 use App\Models\FileScan;
 use App\Jobs\ScanFileWithClamAV;
-
+use App\Services\ActivityLogger;
 
 //Events
 use App\Events\FileUploaded;
@@ -128,6 +128,16 @@ class PondFileController extends Controller
 
         }
 
+        if (!empty($saved)) {
+            $count = count($saved);
+            ActivityLogger::log(
+                Auth::id(),
+                'file_uploaded',
+                'Uploaded ' . $count . ' file(s) to pond "' . $pond->name . '"',
+                ['pond_id' => $pond->id, 'count' => $count]
+            );
+        }
+
         return response()->json([
             "success" => true,
             "files" => $saved,
@@ -236,6 +246,13 @@ class PondFileController extends Controller
     public function destroy(File $file)
     {
         $this->authorize("delete", $file);
+
+        ActivityLogger::log(
+            Auth::id(),
+            'file_deleted',
+            'Deleted file "' . $file->name . '.' . $file->extension . '"',
+            ['file_name' => $file->name . '.' . $file->extension, 'pond_id' => $file->pond_id]
+        );
 
         $file->delete();
 

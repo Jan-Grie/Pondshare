@@ -27,6 +27,7 @@
   "pagination_no_entries": "Keine Einträge vorhanden",
   "pagination_showing": "Zeige {{start}}–{{end}} von {{total}} Einträgen",
   "no_entries_found": "Keine Einträge gefunden",
+  "shared_with_me": "Geteilt",
   "create": "Erstellen",
   "details": {
     "title": "Pond-Details",
@@ -102,8 +103,32 @@
       "no_entries": "Keine Upload-Links vorhanden.",
       "copied": "Upload-Link in die Zwischenablage kopiert!",
       "success": "Upload-Link erfolgreich erstellt!",
-      "success_description": "Du kannst deinen Link jetzt mit anderen teilen."
-    }
+      "success_description": "Du kannst deinen Link jetzt mit anderen teilen.",
+      "deleting": "Upload-Link wird gelöscht…",
+      "deleted": "Upload-Link gelöscht",
+      "delete_success_description": "Der Upload-Link wurde erfolgreich entfernt.",
+      "delete_error": "Fehler",
+      "delete_error_description": "Der Upload-Link konnte nicht gelöscht werden."
+    },
+    "collaborators": {
+      "title": "Mitarbeiter",
+      "description": "Andere Nutzer Zugriff auf diesen Pond gewähren.",
+      "add_email_placeholder": "E-Mail-Adresse",
+      "select_user": "Nutzer auswählen…",
+      "no_users_available": "Alle Nutzer bereits hinzugefügt",
+      "permission_label": "Berechtigung",
+      "permission_read": "Lesen",
+      "permission_write": "Lesen & Schreiben",
+      "add_button": "Hinzufügen",
+      "no_collaborators": "Noch keine Mitarbeiter.",
+      "remove_title": "Mitarbeiter entfernen",
+      "remove_message": "Möchtest du {{name}} wirklich aus diesem Pond entfernen?",
+      "col_user": "Nutzer",
+      "col_permission": "Berechtigung",
+      "col_actions": "Aktionen"
+    },
+    "reload_files": "Dateien neu laden",
+    "owned_by": "Erstellt von {{name}}"
   },
   "share_dialog": {
     "create_title": "Freigabe-Link erstellen",

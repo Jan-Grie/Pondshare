@@ -20,3 +20,8 @@ if (config('clamav.enabled')) {
         ->everySixHours()
         ->withoutOverlapping();
 }
+
+Schedule::command('bin:purge')
+    ->daily()
+    ->withoutOverlapping()
+    ->onOneServer();

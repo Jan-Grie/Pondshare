@@ -6,6 +6,7 @@ use App\Http\Controllers\Settings\SystemManagementController;
 use App\Http\Controllers\Settings\TwoFactorAuthenticationController;
 use App\Http\Controllers\Settings\UserManagementController;
 use App\Http\Controllers\FileSecurityController;
+use App\Http\Controllers\PondCollaboratorController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -33,9 +34,15 @@ Route::middleware('auth')->group(function () {
 
     Route::get('settings/system', [SystemManagementController::class, 'index'])->name('system.management');
     Route::patch('settings/system', [SystemManagementController::class, 'updateSettings'])->name('system.settings.update');
+    Route::patch('settings/system/link-settings', [SystemManagementController::class, 'updateLinkSettings'])->name('system.link-settings.update');
     Route::post('settings/system/domains', [SystemManagementController::class, 'storeDomain'])->name('system.domains.store');
     Route::delete('settings/system/domains/{domain}', [SystemManagementController::class, 'destroyDomain'])->name('system.domains.destroy');
     Route::delete('settings/system/failed-jobs', [SystemManagementController::class, 'clearFailedJobs'])->name('system.failed-jobs.clear');
+
+    Route::get('settings/admin-overview', [SystemManagementController::class, 'adminOverview'])->name('admin.overview');
+
+    Route::post('ponds/{pond}/collaborators', [PondCollaboratorController::class, 'store'])->name('ponds.collaborators.store');
+    Route::delete('ponds/{pond}/collaborators/{user}', [PondCollaboratorController::class, 'destroy'])->name('ponds.collaborators.destroy');
 
     Route::get('settings/users', [UserManagementController::class, 'index'])->name('users.management');
     Route::post('settings/users', [UserManagementController::class, 'store'])->name('users.store');

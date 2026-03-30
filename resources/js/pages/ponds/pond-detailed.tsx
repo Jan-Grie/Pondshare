@@ -44,6 +44,27 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { Badge } from "@/components/ui/badge"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 // Icons
 import {
@@ -53,6 +74,11 @@ import {
     FileIcon,
     Pencil,
     TriangleAlertIcon,
+    Users,
+    Trash2Icon,
+    UserPlus,
+    Check,
+    ChevronsUpDown,
 } from "lucide-react"
 
 // Child Components
@@ -98,6 +124,23 @@ interface Pond {
     name: string
     created_at: string
     size_bytes: number
+    is_owner: boolean
+    my_permission: 'read' | 'write' | null
+    owner_name: string | null
+}
+
+interface Collaborator {
+    id: number
+    user_id: number
+    name: string | null
+    email: string | null
+    permission: 'read' | 'write'
+}
+
+interface AvailableUser {
+    id: number
+    name: string
+    email: string
 }
 
 interface PondDetailProps {
@@ -105,6 +148,8 @@ interface PondDetailProps {
     files?: FileItem[]
     shareLinks: { items: any[] }
     uploadLinks: { items: any[] }
+    collaborators: Collaborator[]
+    available_users: AvailableUser[]
     force_password_for_links: boolean
     min_length_password: number
     max_link_duration: number
@@ -116,7 +161,9 @@ interface PondDetailProps {
 // -----------------------------------------------------------------------------
 
 export default function PondDetailedPage(props: PondDetailProps) {
-    const { pond, shareLinks, uploadLinks } = props
+    const { pond, shareLinks, uploadLinks, collaborators, available_users } = props
+
+    const canWrite = pond.is_owner || pond.my_permission === 'write'
 
     const { t } = useTranslation()
 
@@ -172,6 +219,36 @@ export default function PondDetailedPage(props: PondDetailProps) {
     const [previewMime, setPreviewMime] = useState("")
     const [previewName, setPreviewName] = useState("")
     const [previewUrl, setPreviewUrl] = useState("")
+    const [previewIndex, setPreviewIndex] = useState<number>(-1)
+
+    const previewableFiles = files.filter((f) => f.previewable)
+
+    const openPreview = (file: FileItem) => {
+        const idx = previewableFiles.findIndex((f) => f.id === file.id)
+        setPreviewIndex(idx)
+        setPreviewMime(file.mime_type)
+        setPreviewName(file.name)
+        setPreviewUrl(previewFile.url(file.id))
+        setPreviewOpen(true)
+    }
+
+    const navigatePrev = () => {
+        if (previewIndex <= 0) return
+        const prev = previewableFiles[previewIndex - 1]
+        setPreviewIndex(previewIndex - 1)
+        setPreviewMime(prev.mime_type)
+        setPreviewName(prev.name)
+        setPreviewUrl(previewFile.url(prev.id))
+    }
+
+    const navigateNext = () => {
+        if (previewIndex >= previewableFiles.length - 1) return
+        const next = previewableFiles[previewIndex + 1]
+        setPreviewIndex(previewIndex + 1)
+        setPreviewMime(next.mime_type)
+        setPreviewName(next.name)
+        setPreviewUrl(previewFile.url(next.id))
+    }
 
     // -------------------------------------------------------------------------
     // Upload State
@@ -281,7 +358,7 @@ export default function PondDetailedPage(props: PondDetailProps) {
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         multiple: true,
-        disabled: uploading,
+        disabled: uploading || !canWrite,
         maxSize: 5 * 1024 * 1024 * 1024, // 5 GB
     })
 
@@ -405,7 +482,7 @@ export default function PondDetailedPage(props: PondDetailProps) {
                                     size: formatBytes(totalSizeBytes),
                                 })}
                                 </p>
-                                </Deferred>      
+                                </Deferred>
                             ) : (
                                 <p className="text-sm text-muted-foreground">
                                 {t("ponds:details.summary", {
@@ -414,14 +491,19 @@ export default function PondDetailedPage(props: PondDetailProps) {
                                     size: formatBytes(totalSizeBytes),
                                 })}
                                 </p>
-                            )}               
+                            )}
+                            {!pond.is_owner && pond.owner_name && (
+                                <p className="text-sm text-muted-foreground">
+                                    {t("ponds:details.owned_by", { name: pond.owner_name })}
+                                </p>
+                            )}
                         </div>
 
                         <div className="flex items-center gap-2">
-                            <Dialog open={editDialogOpen} onOpenChange={handleDialogOpenChange}>                                
+                            {canWrite && <Dialog open={editDialogOpen} onOpenChange={handleDialogOpenChange}>
                                     <DialogTrigger asChild>
                                         <Button variant="outline">
-                                            <Pencil />                                        
+                                            <Pencil />
                                         </Button>
                                     </DialogTrigger>
                                     <DialogContent className="sm:max-w-[425px]">
@@ -457,10 +539,10 @@ export default function PondDetailedPage(props: PondDetailProps) {
                                     </DialogFooter>
                                     </form>
                                     </DialogContent>
-                            </Dialog>                            
+                            </Dialog>}
 
                             {/* DELETE POND BUTTON */}
-                            <AlertDialog>
+                            {pond.is_owner && <AlertDialog>
                                 <AlertDialogTrigger asChild>
                                     <Button variant="destructive">
                                         {t("ponds:details.delete_button")}
@@ -500,7 +582,7 @@ export default function PondDetailedPage(props: PondDetailProps) {
                                         </AlertDialogAction>
                                     </AlertDialogFooter>
                                 </AlertDialogContent>
-                            </AlertDialog>
+                            </AlertDialog>}
                         </div>
                     </div>
                 </div>
@@ -508,6 +590,7 @@ export default function PondDetailedPage(props: PondDetailProps) {
                 {/* -------------------------------------------------------------- */}
                 {/* UPLOAD ZONE */}
                 {/* -------------------------------------------------------------- */}
+                {canWrite && <>
                 <div
                     {...getRootProps()}
                     className={cn(
@@ -541,7 +624,7 @@ export default function PondDetailedPage(props: PondDetailProps) {
                 {/* Upload Progress */}
                 {uploading && (
                     <div className="mt-2 space-y-2">
-                        
+
                         <div className="flex items-center gap-4">
                             <progress
                                 value={uploadPercent}
@@ -552,12 +635,12 @@ export default function PondDetailedPage(props: PondDetailProps) {
                                 {uploadPercent}%
                             </p>
                         </div>
-                        
+
                         <p className="text-sm text-muted-foreground">
                             {t("ponds:details.upload_speed", { speed: uploadSpeed })} ·{" "}
                             {t("ponds:details.upload_eta", { eta: uploadEta })}
                         </p>
-                        
+
                         <Button
                             variant="outline"
                             size="sm"
@@ -569,7 +652,6 @@ export default function PondDetailedPage(props: PondDetailProps) {
                     </div>
                 )}
 
-
                 {uploadErrors.length > 0 && (
                     <ul className="text-red-600 list-disc pl-5">
                         {uploadErrors.map((e, i) => (
@@ -577,6 +659,7 @@ export default function PondDetailedPage(props: PondDetailProps) {
                         ))}
                     </ul>
                 )}
+                </>}
 
                 {/* -------------------------------------------------------------- */}
                 {/* FILES TABLE */}
@@ -595,22 +678,15 @@ export default function PondDetailedPage(props: PondDetailProps) {
                     <Deferred data="files" fallback={<PondFilesTableSkeleton />}>
                     <PondFilesTable
                         files={files}
+                        canWrite={canWrite}
                         showNewFilesBanner={showNewFilesBanner}
-                        onPreview={(file) => {
-                            setPreviewMime(file.mime_type)
-                            setPreviewName(file.name)
-                            setPreviewUrl(previewFile.url(file.id))
-                            setPreviewOpen(true)
-                        }}
+                        onPreview={openPreview}
                         onReloadFiles={onReloadFiles}
                         onDeleteFile={(id) =>
                             router.delete(destroyFile.url(id), {
                                 preserveScroll: true,
                                 preserveState: true,
                                 onSuccess: () =>
-                                    // setFiles((prev) =>
-                                    //     prev.filter((f) => f.id !== id)
-                                    // ),
                                     router.reload({ only: ["files"]})
                             })
                         }
@@ -619,22 +695,15 @@ export default function PondDetailedPage(props: PondDetailProps) {
                     ) : (
                     <PondFilesTable
                         files={files}
+                        canWrite={canWrite}
                         showNewFilesBanner={showNewFilesBanner}
-                        onPreview={(file) => {
-                            setPreviewMime(file.mime_type)
-                            setPreviewName(file.name)
-                            setPreviewUrl(previewFile.url(file.id))
-                            setPreviewOpen(true)
-                        }}
+                        onPreview={openPreview}
                         onReloadFiles={onReloadFiles}
                         onDeleteFile={(id) =>
                             router.delete(destroyFile.url(id), {
                                 preserveScroll: true,
                                 preserveState: true,
                                 onSuccess: () =>
-                                    // setFiles((prev) =>
-                                    //     prev.filter((f) => f.id !== id)
-                                    // ),
                                     router.reload({ only: ["files"]})
                             })
                         }
@@ -647,12 +716,12 @@ export default function PondDetailedPage(props: PondDetailProps) {
                 {/* -------------------------------------------------------------- */}
                 <PondShareLinksTable
                     pondId={pond.id}
-                    // initialLinks={shareLinks.items}
+                    canWrite={canWrite}
                     forcePasswordForLinks={props.force_password_for_links}
                     minLengthPassword={props.min_length_password}
                     forceExpirationDate={props.force_expiration_date}
                     onDeleteLink={(id) => {
-                        console.log("Delete link", id)                        
+                        console.log("Delete link", id)
                     }}
                 />
 
@@ -662,11 +731,16 @@ export default function PondDetailedPage(props: PondDetailProps) {
                 <ExternalUploadLinksTable
                     minLengthPassword={props.min_length_password}
                     pondId={pond.id}
-                    // initialLinks={uploadLinks.items}
+                    canWrite={canWrite}
                     forcePasswordForLinks={props.force_password_for_links}
                     maxlinkduration={props.max_link_duration}
                     forceexpirationdate={props.force_expiration_date}
                 />
+
+                {/* -------------------------------------------------------------- */}
+                {/* COLLABORATORS */}
+                {/* -------------------------------------------------------------- */}
+                <CollaboratorsSection pond={pond} collaborators={collaborators} availableUsers={available_users} isOwner={pond.is_owner} />
 
                 {/* -------------------------------------------------------------- */}
                 {/* PREVIEW */}
@@ -677,8 +751,235 @@ export default function PondDetailedPage(props: PondDetailProps) {
                     title={previewName}
                     mimeType={previewMime}
                     url={previewUrl}
+                    hasPrevious={previewIndex > 0}
+                    hasNext={previewIndex < previewableFiles.length - 1}
+                    onPrevious={navigatePrev}
+                    onNext={navigateNext}
                 />
             </div>
         </AppLayout>
+    )
+}
+
+// -----------------------------------------------------------------------------
+// Collaborators Section
+// -----------------------------------------------------------------------------
+
+interface CollaboratorsSectionProps {
+    pond: Pond
+    collaborators: Collaborator[]
+    availableUsers: AvailableUser[]
+    isOwner: boolean
+}
+
+function CollaboratorsSection({ pond, collaborators, availableUsers, isOwner }: CollaboratorsSectionProps) {
+    const { t } = useTranslation()
+    const [dialogOpen, setDialogOpen] = React.useState(false)
+    const [comboOpen, setComboOpen] = React.useState(false)
+    const [selectedUserId, setSelectedUserId] = React.useState<number | null>(null)
+    const [permission, setPermission] = React.useState<"read" | "write">("read")
+    const [adding, setAdding] = React.useState(false)
+    const [removeTarget, setRemoveTarget] = React.useState<Collaborator | null>(null)
+
+    const selectedUser = availableUsers.find((u) => u.id === selectedUserId) ?? null
+
+    const handleAdd = (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!selectedUser) return
+        setAdding(true)
+        router.post(
+            `/ponds/${pond.id}/collaborators`,
+            { email: selectedUser.email, permission },
+            {
+                preserveScroll: true,
+                preserveState: true,
+                onSuccess: () => {
+                    setSelectedUserId(null)
+                    setPermission("read")
+                    setDialogOpen(false)
+                    router.reload({ only: ["collaborators", "available_users"] })
+                },
+                onFinish: () => setAdding(false),
+            }
+        )
+    }
+
+    const handleRemove = () => {
+        if (!removeTarget) return
+        router.delete(`/ponds/${pond.id}/collaborators/${removeTarget.user_id}`, {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: () => {
+                setRemoveTarget(null)
+                router.reload({ only: ["collaborators", "available_users"] })
+            },
+        })
+    }
+
+    return (
+        <div className="space-y-2">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold flex items-center gap-2">
+                    <Users className="h-5 w-5" />
+                    {t("ponds:details.collaborators.title")}
+                </h2>
+
+                {isOwner && <Dialog open={dialogOpen} onOpenChange={(o) => { setDialogOpen(o); if (!o) { setSelectedUserId(null); setPermission("read"); } }}>
+                    <DialogTrigger asChild>
+                        <Button disabled={availableUsers.length === 0}>
+                            <UserPlus className="h-4 w-4 mr-2" />
+                            {t("ponds:details.collaborators.add_button")}
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-md">
+                        <DialogHeader>
+                            <DialogTitle>{t("ponds:details.collaborators.dialog_title")}</DialogTitle>
+                            <DialogDescription>{t("ponds:details.collaborators.dialog_description")}</DialogDescription>
+                        </DialogHeader>
+
+                        <form onSubmit={handleAdd} className="space-y-4 mt-2">
+                            {/* Combobox user picker */}
+                            <div className="space-y-1">
+                                <label className="text-sm font-medium">{t("ponds:details.collaborators.col_user")}</label>
+                                <Popover open={comboOpen} onOpenChange={setComboOpen}>
+                                    <PopoverTrigger asChild>
+                                        <Button
+                                            variant="outline"
+                                            role="combobox"
+                                            aria-expanded={comboOpen}
+                                            className="w-full justify-between font-normal"
+                                        >
+                                            {selectedUser
+                                                ? `${selectedUser.name} (${selectedUser.email})`
+                                                : t("ponds:details.collaborators.select_user")}
+                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
+                                        <Command>
+                                            <CommandInput placeholder={t("ponds:details.collaborators.search_placeholder")} />
+                                            <CommandList>
+                                                <CommandEmpty>{t("ponds:details.collaborators.no_users_available")}</CommandEmpty>
+                                                <CommandGroup>
+                                                    {availableUsers.map((u) => (
+                                                        <CommandItem
+                                                            key={u.id}
+                                                            value={`${u.name} ${u.email}`}
+                                                            onSelect={() => {
+                                                                setSelectedUserId(u.id)
+                                                                setComboOpen(false)
+                                                            }}
+                                                        >
+                                                            <Check className={`mr-2 h-4 w-4 ${selectedUserId === u.id ? "opacity-100" : "opacity-0"}`} />
+                                                            <span>{u.name}</span>
+                                                            <span className="ml-1 text-muted-foreground text-xs">({u.email})</span>
+                                                        </CommandItem>
+                                                    ))}
+                                                </CommandGroup>
+                                            </CommandList>
+                                        </Command>
+                                    </PopoverContent>
+                                </Popover>
+                            </div>
+
+                            {/* Permission select */}
+                            <div className="space-y-1">
+                                <label className="text-sm font-medium">{t("ponds:details.collaborators.permission_label")}</label>
+                                <Select value={permission} onValueChange={(v) => setPermission(v as "read" | "write")}>
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="read">{t("ponds:details.collaborators.permission_read")}</SelectItem>
+                                        <SelectItem value="write">{t("ponds:details.collaborators.permission_write")}</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <DialogFooter>
+                                <DialogClose asChild>
+                                    <Button variant="outline" type="button">{t("common:actions.cancel")}</Button>
+                                </DialogClose>
+                                <Button type="submit" disabled={adding || !selectedUser}>
+                                    {t("ponds:details.collaborators.add_button")}
+                                </Button>
+                            </DialogFooter>
+                        </form>
+                    </DialogContent>
+                </Dialog>}
+            </div>
+
+            {/* Table */}
+            <div className="rounded-2xl border bg-background p-4">
+                {collaborators.length === 0 ? (
+                    <p className="text-sm text-muted-foreground py-2">
+                        {t("ponds:details.collaborators.no_collaborators")}
+                    </p>
+                ) : (
+                    <table className="w-full text-sm">
+                        <thead>
+                            <tr className="border-b">
+                                <th className="pb-2 text-left font-medium text-muted-foreground">{t("ponds:details.collaborators.col_user")}</th>
+                                <th className="pb-2 text-left font-medium text-muted-foreground">{t("ponds:details.collaborators.col_permission")}</th>
+                                {isOwner && <th className="pb-2 text-right font-medium text-muted-foreground">{t("ponds:details.collaborators.col_actions")}</th>}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {collaborators.map((c) => (
+                                <tr key={c.id} className="border-b last:border-0">
+                                    <td className="py-3">
+                                        <div className="font-medium">{c.name}</div>
+                                        <div className="text-xs text-muted-foreground">{c.email}</div>
+                                    </td>
+                                    <td className="py-3">
+                                        <Badge variant="outline" className="font-normal">
+                                            {c.permission === "write"
+                                                ? t("ponds:details.collaborators.permission_write")
+                                                : t("ponds:details.collaborators.permission_read")}
+                                        </Badge>
+                                    </td>
+                                    {isOwner && <td className="py-3 text-right">
+                                        <Button
+                                            size="icon"
+                                            variant="ghost"
+                                            onClick={() => setRemoveTarget(c)}
+                                        >
+                                            <Trash2Icon className="h-4 w-4" />
+                                        </Button>
+                                    </td>}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
+            </div>
+
+            {/* Remove confirm dialog */}
+            <AlertDialog open={!!removeTarget} onOpenChange={(open) => !open && setRemoveTarget(null)}>
+                <AlertDialogContent>
+                    <AlertDialogHeader className="items-center text-center">
+                        <div className="bg-destructive/20 dark:bg-destructive/35 mx-auto mb-2 flex size-12 items-center justify-center rounded-full">
+                            <TriangleAlertIcon className="text-destructive size-6" />
+                        </div>
+                        <AlertDialogTitle>
+                            {t("ponds:details.collaborators.remove_title")}
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                            {t("ponds:details.collaborators.remove_message", { name: removeTarget?.name ?? removeTarget?.email ?? "" })}
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>{t("common:actions.cancel")}</AlertDialogCancel>
+                        <AlertDialogAction
+                            className="bg-destructive dark:bg-destructive/60 hover:bg-destructive text-white"
+                            onClick={handleRemove}
+                        >
+                            {t("common:actions.delete")}
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+        </div>
     )
 }

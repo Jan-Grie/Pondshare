@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Loader2 } from "lucide-react"
+import { Loader2, ChevronLeft, ChevronRight } from "lucide-react"
 import { useTranslation } from "react-i18next";
 
 interface PreviewDialogProps {
@@ -12,20 +12,50 @@ interface PreviewDialogProps {
   title: string
   mimeType: string
   url: string
+  hasPrevious?: boolean
+  hasNext?: boolean
+  onPrevious?: () => void
+  onNext?: () => void
 }
 
-export default function PreviewDialog({ open, onOpenChange, title, mimeType, url }: PreviewDialogProps) {
+export default function PreviewDialog({
+  open,
+  onOpenChange,
+  title,
+  mimeType,
+  url,
+  hasPrevious = false,
+  hasNext = false,
+  onPrevious,
+  onNext,
+}: PreviewDialogProps) {
   const { t } = useTranslation()
 
   // Loading Status
   const [isLoading, setIsLoading] = useState(true)
 
-  // Reset loading whenever the dialog öffnet oder neue URL
+  // Reset loading whenever the dialog opens or new URL
   useEffect(() => {
     if (open) {
       setIsLoading(true)
     }
   }, [open, url])
+
+  // Keyboard navigation
+  useEffect(() => {
+    if (!open) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft" && hasPrevious) {
+        onPrevious?.()
+      } else if (e.key === "ArrowRight" && hasNext) {
+        onNext?.()
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [open, hasPrevious, hasNext, onPrevious, onNext])
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -118,7 +148,28 @@ export default function PreviewDialog({ open, onOpenChange, title, mimeType, url
           )}
         </div>
 
-        <DialogFooter>
+        <DialogFooter className="flex items-center justify-between sm:justify-between">
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              disabled={!hasPrevious}
+              onClick={onPrevious}
+              title={t("common:actions.previous")}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              disabled={!hasNext}
+              onClick={onNext}
+              title={t("common:actions.next")}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+
           <DialogClose asChild>
             <Button variant="secondary">
               {t("common:actions.close")}

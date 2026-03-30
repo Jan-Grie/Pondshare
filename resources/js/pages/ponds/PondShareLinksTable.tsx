@@ -62,7 +62,7 @@ export interface ShareLink {
 
 interface Props {
   pondId: number
-  // initialLinks: ShareLink[]
+  canWrite?: boolean
   forcePasswordForLinks: boolean
   forceExpirationDate: boolean
   minLengthPassword: number
@@ -79,7 +79,7 @@ interface Props {
 
 export default function PondShareLinksTable({
   pondId,
-  // initialLinks,
+  canWrite = true,
   forcePasswordForLinks,
   forceExpirationDate,
   minLengthPassword,
@@ -205,17 +205,16 @@ export default function PondShareLinksTable({
             </Button>
 
             {/* Edit Dialog */}
-            <EditShareLinkDialog
+            {canWrite && <EditShareLinkDialog
               pondId={pondId}
               link={link}
               forcePasswordForLinks={forcePasswordForLinks}
               minLengthPassword={minLengthPassword}
               forceExpirationDate={forceExpirationDate}
-            />
-
+            />}
 
             {/* Delete */}
-            <AlertDialog>
+            {canWrite && <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button size="icon" variant="ghost">
                   <Trash2Icon className="h-4 w-4" />
@@ -306,7 +305,7 @@ export default function PondShareLinksTable({
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
-            </AlertDialog>
+            </AlertDialog>}
           </div>
         )
       },
@@ -348,17 +347,16 @@ export default function PondShareLinksTable({
         </h2>
 
         {/* Create new link */}
-        <CreateShareLinkDialog
+        {canWrite && <CreateShareLinkDialog
           pondId={pondId}
           forcePasswordForLinks={forcePasswordForLinks}
           forceExpirationDate={forceExpirationDate}
           minLengthPassword={minLengthPassword}
           onNewLink={(newLink) => {
-            // setLinks((ls) => [newLink, ...ls])
             router.reload({ only: ['shareLinks'] })
             table.setPageIndex(0)
           }}
-        />
+        />}
       </div>
 
       <div className="rounded-2xl border bg-background p-4">

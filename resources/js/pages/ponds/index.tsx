@@ -69,10 +69,12 @@ import {
     Trash2Icon,
     Search,
     TriangleAlertIcon,
+    Users,
 } from "lucide-react"
 
 import { formatBytes } from "@/lib/formatBytes"
 import { useTranslation } from "react-i18next"
+import { Badge } from "@/components/ui/badge"
 
 // Wayfinder routes
 import { index as pondsIndex, store, show, destroy } from "@/routes/ponds"
@@ -85,6 +87,7 @@ interface Pond {
     files_count: number
     size_bytes: number
     shared_links_count: number
+    is_owner: boolean
 }
 
 export default function MyPonds() {
@@ -136,13 +139,21 @@ export default function MyPonds() {
                 </Button>
             ),
             cell: ({ row }) => (
-                <Link
-                    href={show.url(row.original.id)}
-                    className="flex items-center gap-1 hover:underline"
-                >
-                    {row.original.name}
-                    <SquareArrowOutUpRight className="h-4 w-4 text-muted-foreground" />
-                </Link>
+                <div className="flex items-center gap-1">
+                    <Link
+                        href={show.url(row.original.id)}
+                        className="flex items-center gap-1 hover:underline"
+                    >
+                        {row.original.name}
+                        <SquareArrowOutUpRight className="h-4 w-4 text-muted-foreground" />
+                    </Link>
+                    {!row.original.is_owner && (
+                        <Badge variant="outline" className="ml-1 gap-1 text-xs font-normal text-muted-foreground">
+                            <Users className="h-3 w-3" />
+                            {t("ponds:shared_with_me")}
+                        </Badge>
+                    )}
+                </div>
             ),
         },
         {

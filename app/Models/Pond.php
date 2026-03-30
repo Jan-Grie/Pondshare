@@ -43,6 +43,11 @@ class Pond extends Model
         return $this->hasMany(ExternalUploadLink::class);
     }
 
+    public function collaborators()
+    {
+        return $this->hasMany(PondCollaborator::class);
+    }
+
     public function activeFileCount(): int
     {
         return $this->files()->whereNull('deleted_at')->count();

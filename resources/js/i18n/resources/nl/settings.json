@@ -9,7 +9,8 @@
         "appearance": "Weergave",
         "system_management": "Systeembeheer",
         "security": "Beveiligingsoverzicht",
-        "user_management": "Gebruikersbeheer"
+        "user_management": "Gebruikersbeheer",
+        "admin_overview": "Beheerderoverzicht"
     },
     "profile": {
         "title": "Profielinstellingen",
@@ -207,7 +208,34 @@
         "disk_used_by_app": "Gebruikt door app",
         "disk_other_used": "Gebruikt door systeem",
         "disk_free": "Vrij",
-        "disk_unknown": "Onbekend"
+        "disk_unknown": "Onbekend",
+        "link_settings_title": "Links & Quota",
+        "link_settings_description": "Standaardinstellingen voor deellinks, uploadlinks en opslagquota configureren.",
+        "link_force_password_label": "Wachtwoord verplichten voor alle links",
+        "link_password_min_length_label": "Minimale wachtwoordlengte",
+        "link_require_expiry_label": "Vervaldatum verplichten voor alle links",
+        "link_default_expiry_label": "Standaard vervaltermijn (dagen)",
+        "link_max_expiry_label": "Maximale vervaltermijn (dagen)",
+        "link_default_quota_label": "Standaard opslagquotum per gebruiker (GB)",
+        "link_quota_warning_label": "Opslagwaarschuwingsdrempel (%)",
+        "link_save": "Opslaan",
+        "link_saved": "Opgeslagen"
+    },
+    "admin_overview": {
+        "title": "Beheerderoverzicht",
+        "description": "Systeembrede statistieken en gebruikersoverzicht.",
+        "breadcrumb": "Beheerderoverzicht",
+        "head_title": "Beheerderoverzicht",
+        "stat_total_users": "Totaal gebruikers",
+        "stat_active_users": "Actieve gebruikers",
+        "stat_total_ponds": "Totaal ponds",
+        "stat_total_files": "Totaal bestanden",
+        "stat_total_storage": "Totaal gebruikte opslag",
+        "top_users_title": "Topgebruikers op opslag",
+        "col_user": "Gebruiker",
+        "col_used": "Gebruikt",
+        "col_quota": "Quotum",
+        "col_ponds": "Ponds"
     },
     "users": {
         "title": "Gebruikersbeheer",

@@ -65,5 +65,14 @@
     "type_upload": "Upload-Link",
     "extend_link": "Link verlängern",
     "day": "Tag",
-    "days": "Tage"
+    "days": "Tage",
+
+    "recent_activities_title": "Letzte Aktivitäten",
+    "recent_activities_empty": "Keine aktuellen Aktivitäten.",
+    "activity": {
+        "pond_created": "Pond erstellt",
+        "pond_deleted": "Pond gelöscht",
+        "file_uploaded": "Datei hochgeladen",
+        "file_deleted": "Datei gelöscht"
+    }
 }

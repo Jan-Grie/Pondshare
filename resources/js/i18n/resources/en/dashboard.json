@@ -78,6 +78,14 @@
 
     "extend_link": "Extend Link",
     "day": "day",
-    "days": "days"
+    "days": "days",
 
+    "recent_activities_title": "Recent Activities",
+    "recent_activities_empty": "No recent activities.",
+    "activity": {
+        "pond_created": "Pond created",
+        "pond_deleted": "Pond deleted",
+        "file_uploaded": "File uploaded",
+        "file_deleted": "File deleted"
+    }
 }

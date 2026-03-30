@@ -11,7 +11,10 @@
       "Bash(grep -r \"Datei\\\\|Scan\\\\|gelöscht\" app/Http/Controllers/*.php)",
       "Bash(find resources/js/pages -name \"*.tsx\" -type f -exec wc -l {})",
       "Bash(grep -rn \"['''']Datei\\\\|['''']Dateien\\\\|['''']Fehler\\\\|['''']Infiziert\\\\|['''']Ausstehend\\\\|['''']Übersicht\\\\|['''']File Security\\\\|['''']hochgeladen\\\\|['''']ablegen\\\\|['''']ziehen\" C:JanProgrammePondshare/resources/js --include=*.tsx)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(find C:/Jan/Programme/Pondshare/resources/lang -name *.php)",
+      "Bash(find C:/Jan/Programme/Pondshare/resources/views -name *.blade.php)",
+      "Bash(composer run:*)"
     ]
   }
 }

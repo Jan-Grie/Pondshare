@@ -10,6 +10,7 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use App\Models\ActivityLog;
 use App\Models\ShareLink;
 use App\Models\Pond;
 use App\Models\PondDailyDownload;
@@ -85,7 +86,17 @@ class DashboardController extends Controller
             'expiringLinks'           => $expiringShareLinks,
             'activeUploadLinksCount'  => $activeUploadLinksCount,
             'expiringUploadLinksCount' => $expiringUploadLinksCount,
-            'recentActivities'        => [],
+            'recentActivities'        => ActivityLog::where('user_id', $user->id)
+                ->orderByDesc('created_at')
+                ->limit(10)
+                ->get()
+                ->map(fn ($a) => [
+                    'type'        => $a->type,
+                    'description' => $a->description,
+                    'when'        => $a->created_at->toISOString(),
+                    'metadata'    => $a->metadata,
+                ])
+                ->toArray(),
             'usedPercentage' => $usedPercentage,
             'showWarning' => $showWarning,
         ]);

@@ -60,6 +60,11 @@ export default function SettingsLayout({ children, fullWidth }: PropsWithChildre
                     href: '/settings/users',
                     icon: null,
                 },
+                {
+                    title: t('nav.admin_overview'),
+                    href: '/settings/admin-overview',
+                    icon: null,
+                },
             ]
             : []),
     ];

@@ -62,17 +62,18 @@ export interface FileItem {
 
 interface Props {
   files: FileItem[]
+  canWrite?: boolean
   onDeleteFile: (id: number) => void
   onPreview: (file: FileItem) => void
-  showNewFilesBanner: boolean           
-  onReloadFiles: () => Promise<void> 
+  showNewFilesBanner: boolean
+  onReloadFiles: () => Promise<void>
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export default function PondFilesTable({ files, onDeleteFile, onPreview, showNewFilesBanner, onReloadFiles }: Props) {
+export default function PondFilesTable({ files, canWrite = true, onDeleteFile, onPreview, showNewFilesBanner, onReloadFiles }: Props) {
   const { t } = useTranslation()
   const [isReloading, setIsReloading] = React.useState(false);
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -254,7 +255,7 @@ export default function PondFilesTable({ files, onDeleteFile, onPreview, showNew
             <DownloadSingleFileButton fileId={file.id} disabled={file.scan_status === "infected"} />
 
             {/* DELETE FILE */}
-            <AlertDialog>
+            {canWrite && <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button size="icon" variant="ghost">
                   <Trash2Icon className="h-4 w-4" />
@@ -288,7 +289,7 @@ export default function PondFilesTable({ files, onDeleteFile, onPreview, showNew
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
-            </AlertDialog>
+            </AlertDialog>}
           </div>
         )
       },

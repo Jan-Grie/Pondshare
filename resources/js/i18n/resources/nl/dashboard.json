@@ -65,5 +65,14 @@
     "type_upload": "Uploadlink",
     "extend_link": "Link verlengen",
     "day": "dag",
-    "days": "dagen"
+    "days": "dagen",
+
+    "recent_activities_title": "Recente activiteiten",
+    "recent_activities_empty": "Geen recente activiteiten.",
+    "activity": {
+        "pond_created": "Pond aangemaakt",
+        "pond_deleted": "Pond verwijderd",
+        "file_uploaded": "Bestand geüpload",
+        "file_deleted": "Bestand verwijderd"
+    }
 }

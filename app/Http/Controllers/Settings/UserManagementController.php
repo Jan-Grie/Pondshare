@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Mail\UserInvitation;
 use App\Models\Role;
+use App\Models\SystemSetting;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
@@ -61,10 +64,12 @@ class UserManagementController extends Controller
             'active' => ['boolean'],
         ]);
 
+        $plainPassword = $validated['password'];
+
         User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => $validated['password'],
+            'password' => $plainPassword,
             'role_id' => $validated['role_id'],
             'quota_bytes' => (int) ($validated['quota_gb'] * 1024 * 1024 * 1024),
             'active' => $validated['active'] ?? true,
@@ -72,6 +77,18 @@ class UserManagementController extends Controller
             'locale' => 'de',
             'must_change_password' => true,
         ]);
+
+        try {
+            Mail::to($validated['email'])->send(new UserInvitation(
+                recipientName: $validated['name'],
+                recipientEmail: $validated['email'],
+                plainPassword: $plainPassword,
+                loginUrl: route('login'),
+                appName: SystemSetting::appName(),
+            ));
+        } catch (\Exception) {
+            // Mail failure should not block user creation
+        }
 
         return back();
     }

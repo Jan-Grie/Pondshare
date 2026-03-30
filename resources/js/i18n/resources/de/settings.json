@@ -9,7 +9,8 @@
         "appearance": "Darstellung",
         "system_management": "Systemverwaltung",
         "security": "Sicherheitsübersicht",
-        "user_management": "Nutzerverwaltung"
+        "user_management": "Nutzerverwaltung",
+        "admin_overview": "Admin-Übersicht"
     },
     "profile": {
         "title": "Profileinstellungen",
@@ -207,7 +208,34 @@
         "disk_used_by_app": "Von App genutzt",
         "disk_other_used": "Vom System genutzt",
         "disk_free": "Frei",
-        "disk_unknown": "Unbekannt"
+        "disk_unknown": "Unbekannt",
+        "link_settings_title": "Links & Kontingent",
+        "link_settings_description": "Standardeinstellungen für Freigabe-Links, Upload-Links und Speicherkontingente konfigurieren.",
+        "link_force_password_label": "Für alle Links ein Passwort vorschreiben",
+        "link_password_min_length_label": "Minimale Passwortlänge",
+        "link_require_expiry_label": "Für alle Links ein Ablaufdatum vorschreiben",
+        "link_default_expiry_label": "Standard-Ablauf (Tage)",
+        "link_max_expiry_label": "Maximaler Ablauf (Tage)",
+        "link_default_quota_label": "Standard-Speicherkontingent pro Nutzer (GB)",
+        "link_quota_warning_label": "Warnschwelle für Speicher (%)",
+        "link_save": "Speichern",
+        "link_saved": "Gespeichert"
+    },
+    "admin_overview": {
+        "title": "Admin-Übersicht",
+        "description": "Systemweite Statistiken und Nutzerübersicht.",
+        "breadcrumb": "Admin-Übersicht",
+        "head_title": "Admin-Übersicht",
+        "stat_total_users": "Nutzer gesamt",
+        "stat_active_users": "Aktive Nutzer",
+        "stat_total_ponds": "Ponds gesamt",
+        "stat_total_files": "Dateien gesamt",
+        "stat_total_storage": "Genutzter Speicher gesamt",
+        "top_users_title": "Top-Nutzer nach Speicher",
+        "col_user": "Nutzer",
+        "col_used": "Genutzt",
+        "col_quota": "Kontingent",
+        "col_ponds": "Ponds"
     },
     "users": {
         "title": "Nutzerverwaltung",

@@ -39,11 +39,22 @@ interface FailedJob {
     failed_at: string
 }
 
+interface LinkSettings {
+    force_password_for_all_links: boolean
+    link_password_min_length: number
+    require_expiry_for_links: boolean
+    default_link_expiration_days: number
+    max_links_expiration_days: number
+    default_quota_gb: number
+    quota_email_warning_threshold: number
+}
+
 interface Props {
     settings: {
         registration_enabled: boolean
         restrict_registration_to_domains: boolean
     }
+    linkSettings: LinkSettings
     domains: Domain[]
     queue: {
         pending: number
@@ -57,7 +68,7 @@ interface Props {
     }
 }
 
-export default function SystemManagement({ settings, domains, queue, disk }: Props) {
+export default function SystemManagement({ settings, linkSettings, domains, queue, disk }: Props) {
     const { t } = useTranslation('settings')
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -74,6 +85,8 @@ export default function SystemManagement({ settings, domains, queue, disk }: Pro
                         description={t('system_management.description')}
                     />
                     <RegistrationSection settings={settings} />
+                    <Separator />
+                    <LinkSettingsSection linkSettings={linkSettings} />
                     <Separator />
                     <DomainsSection domains={domains} />
                     <Separator />
@@ -428,5 +441,141 @@ function DiskRow({ label, value, percent }: { label: string; value: string; perc
                 <span className="ml-2 text-xs text-muted-foreground">{percent.toFixed(1)}%</span>
             </span>
         </div>
+    )
+}
+
+function LinkSettingsSection({ linkSettings }: { linkSettings: LinkSettings }) {
+    const { t } = useTranslation('settings')
+    const { data, setData, patch, processing, recentlySuccessful } = useForm({
+        force_password_for_all_links: linkSettings.force_password_for_all_links,
+        link_password_min_length: linkSettings.link_password_min_length,
+        require_expiry_for_links: linkSettings.require_expiry_for_links,
+        default_link_expiration_days: linkSettings.default_link_expiration_days,
+        max_links_expiration_days: linkSettings.max_links_expiration_days,
+        default_quota_gb: linkSettings.default_quota_gb,
+        quota_email_warning_threshold: linkSettings.quota_email_warning_threshold,
+    })
+
+    function submit(e: React.FormEvent) {
+        e.preventDefault()
+        patch('/settings/system/link-settings')
+    }
+
+    return (
+        <section className="space-y-4">
+            <HeadingSmall
+                title={t('system_management.link_settings_title')}
+                description={t('system_management.link_settings_description')}
+            />
+            <form onSubmit={submit} className="space-y-4 max-w-lg">
+                <div className="flex items-center gap-3">
+                    <Checkbox
+                        id="force_password"
+                        checked={data.force_password_for_all_links}
+                        onCheckedChange={(checked) => setData('force_password_for_all_links', !!checked)}
+                    />
+                    <Label htmlFor="force_password">
+                        {t('system_management.link_force_password_label')}
+                    </Label>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                        <Label htmlFor="min_password_length">
+                            {t('system_management.link_password_min_length_label')}
+                        </Label>
+                        <Input
+                            id="min_password_length"
+                            type="number"
+                            min={4}
+                            max={64}
+                            value={data.link_password_min_length}
+                            onChange={(e) => setData('link_password_min_length', parseInt(e.target.value) || 4)}
+                        />
+                    </div>
+
+                    <div className="space-y-1">
+                        <Label htmlFor="quota_warning">
+                            {t('system_management.link_quota_warning_label')}
+                        </Label>
+                        <Input
+                            id="quota_warning"
+                            type="number"
+                            min={1}
+                            max={100}
+                            value={data.quota_email_warning_threshold}
+                            onChange={(e) => setData('quota_email_warning_threshold', parseInt(e.target.value) || 80)}
+                        />
+                    </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                    <Checkbox
+                        id="require_expiry"
+                        checked={data.require_expiry_for_links}
+                        onCheckedChange={(checked) => setData('require_expiry_for_links', !!checked)}
+                    />
+                    <Label htmlFor="require_expiry">
+                        {t('system_management.link_require_expiry_label')}
+                    </Label>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                        <Label htmlFor="default_expiry">
+                            {t('system_management.link_default_expiry_label')}
+                        </Label>
+                        <Input
+                            id="default_expiry"
+                            type="number"
+                            min={1}
+                            max={3650}
+                            value={data.default_link_expiration_days}
+                            onChange={(e) => setData('default_link_expiration_days', parseInt(e.target.value) || 30)}
+                        />
+                    </div>
+
+                    <div className="space-y-1">
+                        <Label htmlFor="max_expiry">
+                            {t('system_management.link_max_expiry_label')}
+                        </Label>
+                        <Input
+                            id="max_expiry"
+                            type="number"
+                            min={1}
+                            max={3650}
+                            value={data.max_links_expiration_days}
+                            onChange={(e) => setData('max_links_expiration_days', parseInt(e.target.value) || 365)}
+                        />
+                    </div>
+                </div>
+
+                <div className="space-y-1">
+                    <Label htmlFor="default_quota">
+                        {t('system_management.link_default_quota_label')}
+                    </Label>
+                    <Input
+                        id="default_quota"
+                        type="number"
+                        min={0}
+                        step={0.5}
+                        value={data.default_quota_gb}
+                        onChange={(e) => setData('default_quota_gb', parseFloat(e.target.value) || 0)}
+                    />
+                </div>
+
+                <div className="flex items-center gap-4">
+                    <Button type="submit" disabled={processing}>
+                        {processing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        {t('system_management.link_save')}
+                    </Button>
+                    {recentlySuccessful && (
+                        <span className="text-sm text-muted-foreground">
+                            {t('system_management.link_saved')}
+                        </span>
+                    )}
+                </div>
+            </form>
+        </section>
     )
 }

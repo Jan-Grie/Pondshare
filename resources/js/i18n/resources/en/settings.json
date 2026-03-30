@@ -9,7 +9,8 @@
         "appearance": "Appearance",
         "system_management": "System Management",
         "security": "Security Overview",
-        "user_management": "User Management"
+        "user_management": "User Management",
+        "admin_overview": "Admin Overview"
     },
     "profile": {
         "title": "Profile Settings",
@@ -207,7 +208,34 @@
         "disk_used_by_app": "Used by app",
         "disk_other_used": "Used by system",
         "disk_free": "Free",
-        "disk_unknown": "Unknown"
+        "disk_unknown": "Unknown",
+        "link_settings_title": "Links & Quota",
+        "link_settings_description": "Configure default settings for share links, upload links, and user storage quotas.",
+        "link_force_password_label": "Require a password for all links",
+        "link_password_min_length_label": "Minimum password length",
+        "link_require_expiry_label": "Require an expiration date for all links",
+        "link_default_expiry_label": "Default expiration (days)",
+        "link_max_expiry_label": "Maximum expiration (days)",
+        "link_default_quota_label": "Default storage quota per user (GB)",
+        "link_quota_warning_label": "Storage warning threshold (%)",
+        "link_save": "Save",
+        "link_saved": "Saved"
+    },
+    "admin_overview": {
+        "title": "Admin Overview",
+        "description": "System-wide statistics and user overview.",
+        "breadcrumb": "Admin Overview",
+        "head_title": "Admin Overview",
+        "stat_total_users": "Total Users",
+        "stat_active_users": "Active Users",
+        "stat_total_ponds": "Total Ponds",
+        "stat_total_files": "Total Files",
+        "stat_total_storage": "Total Storage Used",
+        "top_users_title": "Top Users by Storage",
+        "col_user": "User",
+        "col_used": "Used",
+        "col_quota": "Quota",
+        "col_ponds": "Ponds"
     },
     "users": {
         "title": "User Management",

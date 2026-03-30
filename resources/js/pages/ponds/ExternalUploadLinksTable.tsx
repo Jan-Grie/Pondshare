@@ -68,6 +68,7 @@ export interface UploadLink {
 
 interface Props {
   pondId: number;
+  canWrite?: boolean;
   forcePasswordForLinks: boolean;
   forceexpirationdate: boolean;
   maxlinkduration: number;
@@ -85,6 +86,7 @@ interface Props {
 
 export default function ExternalUploadLinksTable({
   pondId,
+  canWrite = true,
   forcePasswordForLinks,
   forceexpirationdate,
   minLengthPassword,
@@ -229,16 +231,16 @@ export default function ExternalUploadLinksTable({
             </Button>
 
             {/* EDIT */}
-            <EditUploadLinkDialog
+            {canWrite && <EditUploadLinkDialog
               pondId={pondId}
               link={link}
               forcePasswordForLinks={forcePasswordForLinks}
               forceExpirationDate={forceexpirationdate}
               minLengthPassword={minLengthPassword}
-            />
+            />}
 
             {/* DELETE */}
-            <AlertDialog>
+            {canWrite && <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button size="icon" variant="ghost">
                   <Trash2Icon className="h-4 w-4" />
@@ -314,7 +316,7 @@ export default function ExternalUploadLinksTable({
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
-            </AlertDialog>
+            </AlertDialog>}
           </div>
         );
       },
@@ -355,7 +357,7 @@ export default function ExternalUploadLinksTable({
           {t("Upload_links")}
         </h2>
 
-        <CreateUploadLinkDialog
+        {canWrite && <CreateUploadLinkDialog
           pondId={pondId}
           forcePasswordForLinks={forcePasswordForLinks}
           minLengthPassword={minLengthPassword}
@@ -365,7 +367,7 @@ export default function ExternalUploadLinksTable({
             router.reload({ only: ["uploadLinks"] });
             table.setPageIndex(0);
           }}
-        />
+        />}
       </div>
 
       {/* SEARCH */}

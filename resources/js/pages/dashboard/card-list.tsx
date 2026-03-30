@@ -2,7 +2,7 @@
 
 import clsx from 'clsx';
 import React from 'react';
-import { TrendingUpIcon, UploadIcon, ClockIcon, FilesIcon, EllipsisVertical } from 'lucide-react';
+import { TrendingUpIcon, UploadIcon, ClockIcon, FilesIcon, EllipsisVertical, ActivityIcon, FolderPlusIcon, FolderMinusIcon, FileUpIcon, FileMinusIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import {
@@ -43,9 +43,10 @@ import { useTranslation } from 'react-i18next';
 import { router } from '@inertiajs/react';
 
 export interface RecentActivity {
-  icon: 'upload' | 'share' | 'external';
+  type: string;
   description: string;
   when: string;
+  metadata?: Record<string, any> | null;
 }
 
 export interface DashboardStats {
@@ -383,6 +384,45 @@ export function SectionCards({
 
 
 
+      </div>
+
+      {/* Recent Activities */}
+      <div className="grid grid-cols-1 gap-4 px-4 lg:px-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <ActivityIcon className="size-4" />
+              {t("dashboard:recent_activities_title")}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {recentActivities.length === 0 ? (
+              <p className="text-sm text-muted-foreground">{t("dashboard:recent_activities_empty")}</p>
+            ) : (
+              <ul className="space-y-3">
+                {recentActivities.map((activity, idx) => {
+                  const iconMap: Record<string, React.ReactNode> = {
+                    pond_created: <FolderPlusIcon className="size-4 text-green-500" />,
+                    pond_deleted: <FolderMinusIcon className="size-4 text-red-500" />,
+                    file_uploaded: <FileUpIcon className="size-4 text-blue-500" />,
+                    file_deleted: <FileMinusIcon className="size-4 text-orange-500" />,
+                  };
+                  return (
+                    <li key={idx} className="flex items-start gap-3 text-sm">
+                      <span className="mt-0.5 shrink-0">{iconMap[activity.type] ?? <ActivityIcon className="size-4 text-muted-foreground" />}</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="leading-snug">{activity.description}</p>
+                        <p className="text-xs text-muted-foreground tabular-nums">
+                          {new Date(activity.when).toLocaleString(i18n.language)}
+                        </p>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </section>
   );
