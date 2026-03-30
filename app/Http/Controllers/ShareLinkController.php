@@ -324,28 +324,15 @@ class ShareLinkController extends Controller
         }
 
         $shareLink->increment('download_count');
+        $this->incrementDailyDownloadCount($shareLink->pond_id);
 
-        $today = Carbon::now()->toDateString();
+        $fullPath = Storage::disk("local")->path($file->path);
+        if(!file_exists($fullPath)){
+            abort(404, __("File not found"));
+        }
 
-        $daily = PondDailyDownload::firstOrCreate(
-            [
-                "pond_id" => $shareLink->pond_id,
-                "date" => $today,
-            ],
-            [
-                "download_count" => 0,
-            ]
-            );
-
-            $daily->increment('download_count');
-
-            $fullPath = Storage::disk("local")->path($file->path);
-            if(!file_exists($fullPath)){
-                abort(404, __("File not found"));
-            }
-
-            $realFileName = $file->name . "." . $file->extension;
-            return response()->download($fullPath, $realFileName);        
+        $realFileName = $file->name . "." . $file->extension;
+        return response()->download($fullPath, $realFileName);
     }
 
     public function downloadZip(Request $request, string $token){
@@ -359,7 +346,14 @@ class ShareLinkController extends Controller
         }
 
         $pond = $shareLink->pond;
-        $files = $pond->files()->get();
+
+        $fileIds = $request->query('file_ids');
+        $filesQuery = $pond->files();
+        if (!empty($fileIds) && is_array($fileIds)) {
+            $validatedIds = array_values(array_filter(array_map('intval', $fileIds), fn($id) => $id > 0));
+            $filesQuery->whereIn('id', $validatedIds);
+        }
+        $files = $filesQuery->get();
 
         $tempZipPath = tempnam(sys_get_temp_dir(), "sharelink_" . $shareLink->id . "_") . ".zip";
         $zip = new \ZipArchive();
@@ -376,19 +370,7 @@ class ShareLinkController extends Controller
         $zip->close();
 
         $shareLink->increment('download_count');
-
-        $today = Carbon::now()->toDateString();
-        $daily = PondDailyDownload::firstOrCreate(
-            [
-                "pond_id" => $shareLink->pond_id,
-                "date" => $today,
-            ],
-            [
-                "download_count" => 0,
-            ]
-        );
-
-        $daily->increment('download_count');
+        $this->incrementDailyDownloadCount($shareLink->pond_id);
 
         $downloadName = ($pond->name ?: "pond_" . $pond->id) . ".zip";
         return response()->download(
@@ -398,6 +380,29 @@ class ShareLinkController extends Controller
 
     }
 
+
+    private function incrementDailyDownloadCount(int $pondId): void
+    {
+        $today = Carbon::today()->toDateString();
+
+        $updated = PondDailyDownload::where('pond_id', $pondId)
+            ->whereDate('date', $today)
+            ->increment('download_count');
+
+        if ($updated === 0) {
+            try {
+                PondDailyDownload::create([
+                    'pond_id' => $pondId,
+                    'date'     => $today,
+                    'download_count' => 1,
+                ]);
+            } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+                PondDailyDownload::where('pond_id', $pondId)
+                    ->whereDate('date', $today)
+                    ->increment('download_count');
+            }
+        }
+    }
 
     public function previewFile(Request $request, string $token, File $file){
         $shareLink = ShareLink::where("token", $token)
