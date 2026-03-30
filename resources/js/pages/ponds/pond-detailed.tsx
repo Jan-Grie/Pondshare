@@ -388,10 +388,10 @@ export default function PondDetailedPage(props: PondDetailProps) {
                 {/* -------------------------------------------------------------- */}
                 <div className="rounded-2xl border bg-background p-6">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        <div className="space-y-1">
-                            <h1 className="text-3xl font-bold flex items-center gap-2">
-                                <FolderOpen className="h-8 w-8" />
-                                {pond.name}
+                        <div className="space-y-1 min-w-0">
+                            <h1 className="text-3xl font-bold flex items-center gap-2 truncate">
+                                <FolderOpen className="h-8 w-8 shrink-0" />
+                                <span className="truncate">{pond.name}</span>
                             </h1>
 
 

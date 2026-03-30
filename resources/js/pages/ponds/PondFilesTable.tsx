@@ -166,8 +166,15 @@ export default function PondFilesTable({ files, onDeleteFile, onPreview, showNew
               alt={file.extension}
               className="h-8 w-8"
             />
-            {file.name}
 
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="truncate">{file.name}</span>
+              </TooltipTrigger>
+              <TooltipContent>
+                {file.name}
+              </TooltipContent>
+            </Tooltip>            
             {file.previewable && (
               <button
                 onClick={() => onPreview(file)}
