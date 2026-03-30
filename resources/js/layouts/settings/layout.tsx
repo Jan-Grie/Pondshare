@@ -15,7 +15,7 @@ import { security } from '@/routes/profile/index';
 
 
 
-export default function SettingsLayout({ children }: PropsWithChildren) {
+export default function SettingsLayout({ children, fullWidth }: PropsWithChildren<{ fullWidth?: boolean }>) {
     const page = usePage();
     const user = (page.props as any).auth?.user;
 
@@ -44,15 +44,20 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
             href: editAppearance(),
             icon: null,
         },
-        ...(user?.role_id === 1 
+        ...(user?.role_id === 1
             ? [
                 {
-                    title: 'Security',
+                    title: 'Systemverwaltung',
                     href: security(),
                     icon: null,
-                }
-            ] 
-            : []),         
+                },
+                {
+                    title: 'Nutzerverwaltung',
+                    href: '/settings/users',
+                    icon: null,
+                },
+            ]
+            : []),
     ];
 
     // When server-side rendering, we only render the layout on the client...
@@ -98,8 +103,8 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
 
                 <Separator className="my-6 lg:hidden" />
 
-                <div className="flex-1 md:max-w-2xl">
-                    <section className="max-w-xl space-y-12">
+                <div className={fullWidth ? 'flex-1 min-w-0' : 'flex-1 md:max-w-2xl'}>
+                    <section className={fullWidth ? 'space-y-6' : 'max-w-xl space-y-12'}>
                         {children}
                     </section>
                 </div>

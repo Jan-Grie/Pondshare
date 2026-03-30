@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(find C:/Jan/Programme/Pondshare/app/Http/Controllers/Settings -type f -name *.php)"
+    ]
+  }
+}
