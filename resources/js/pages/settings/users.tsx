@@ -1,5 +1,5 @@
 import { Head, router, useForm, usePage } from '@inertiajs/react'
-import { CheckCircle2, KeyRound, MoreHorizontal, Trash2, UserRound, XCircle } from 'lucide-react'
+import { CheckCircle2, KeyRound, MoreHorizontal, Trash2, TriangleAlertIcon, UserRound, XCircle } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -319,7 +319,10 @@ function DeleteUserDialog({ user, open, onClose }: { user: ManagedUser; open: bo
     return (
         <AlertDialog open={open} onOpenChange={(v) => { if (!v) onClose() }}>
             <AlertDialogContent>
-                <AlertDialogHeader>
+                <AlertDialogHeader className="items-center text-center">
+                    <div className="bg-destructive/20 dark:bg-destructive/35 mx-auto mb-2 flex size-12 items-center justify-center rounded-full">
+                        <TriangleAlertIcon className="text-destructive size-6" />
+                    </div>
                     <AlertDialogTitle>{t('users.delete_dialog.title')}</AlertDialogTitle>
                     <AlertDialogDescription>
                         {t('users.delete_dialog.description_before')} <strong>{user.name}</strong> ({user.email}) {t('users.delete_dialog.description_after')}
@@ -327,7 +330,7 @@ function DeleteUserDialog({ user, open, onClose }: { user: ManagedUser; open: bo
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel onClick={onClose}>{t('users.delete_dialog.cancel')}</AlertDialogCancel>
-                    <AlertDialogAction onClick={confirm} disabled={processing} className="bg-destructive text-white hover:bg-destructive/90">
+                    <AlertDialogAction onClick={confirm} disabled={processing} className="bg-destructive dark:bg-destructive/60 hover:bg-destructive text-white">
                         {t('users.delete_dialog.submit')}
                     </AlertDialogAction>
                 </AlertDialogFooter>

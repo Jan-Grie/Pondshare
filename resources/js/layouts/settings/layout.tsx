@@ -47,6 +47,11 @@ export default function SettingsLayout({ children, fullWidth }: PropsWithChildre
             ? [
                 {
                     title: t('nav.system_management'),
+                    href: '/settings/system',
+                    icon: null,
+                },
+                {
+                    title: t('nav.security'),
                     href: security(),
                     icon: null,
                 },

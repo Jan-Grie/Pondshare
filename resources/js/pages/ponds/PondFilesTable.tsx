@@ -18,7 +18,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
-import { Trash2Icon, ArrowUpDown, Eye as EyeIcon, Search, RefreshCcw,  ShieldEllipsis, ShieldCheck, ShieldX, ShieldAlert } from "lucide-react"
+import { Trash2Icon, ArrowUpDown, Eye as EyeIcon, Search, RefreshCcw, ShieldEllipsis, ShieldCheck, ShieldX, ShieldAlert, TriangleAlertIcon } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import {
   Tooltip,
@@ -262,7 +262,10 @@ export default function PondFilesTable({ files, onDeleteFile, onPreview, showNew
               </AlertDialogTrigger>
 
               <AlertDialogContent>
-                <AlertDialogHeader>
+                <AlertDialogHeader className="items-center text-center">
+                  <div className="bg-destructive/20 dark:bg-destructive/35 mx-auto mb-2 flex size-12 items-center justify-center rounded-full">
+                    <TriangleAlertIcon className="text-destructive size-6" />
+                  </div>
                   <AlertDialogTitle>
                     {t("ponds:details.delete_file_title")}
                   </AlertDialogTitle>
@@ -278,7 +281,7 @@ export default function PondFilesTable({ files, onDeleteFile, onPreview, showNew
                   </AlertDialogCancel>
 
                   <AlertDialogAction
-                    className="bg-destructive text-white hover:bg-destructive/90"
+                    className="bg-destructive dark:bg-destructive/60 hover:bg-destructive text-white"
                     onClick={() => onDeleteFile(file.id)}
                   >
                     {t("common:actions.delete")}

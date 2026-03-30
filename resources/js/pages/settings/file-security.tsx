@@ -19,7 +19,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Head, router } from '@inertiajs/react';
-import { AlertTriangle, Clock, RefreshCw, ShieldAlert, Trash2 } from 'lucide-react';
+import { AlertTriangle, Clock, RefreshCw, ShieldAlert, Trash2, TriangleAlertIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -285,7 +285,10 @@ export default function FileSecurity({ files, counts, filters }: FileSecurityPro
                                                     </Button>
                                                 </AlertDialogTrigger>
                                                 <AlertDialogContent>
-                                                    <AlertDialogHeader>
+                                                    <AlertDialogHeader className="items-center text-center">
+                                                        <div className="bg-destructive/20 dark:bg-destructive/35 mx-auto mb-2 flex size-12 items-center justify-center rounded-full">
+                                                            <TriangleAlertIcon className="text-destructive size-6" />
+                                                        </div>
                                                         <AlertDialogTitle>{t('file_security.delete_dialog_title')}</AlertDialogTitle>
                                                         <AlertDialogDescription>
                                                             <strong>{file.name}.{file.extension}</strong> {t('file_security.delete_dialog_description')}
@@ -294,7 +297,7 @@ export default function FileSecurity({ files, counts, filters }: FileSecurityPro
                                                     <AlertDialogFooter>
                                                         <AlertDialogCancel>{t('file_security.delete_cancel')}</AlertDialogCancel>
                                                         <AlertDialogAction
-                                                            className={buttonVariants({ variant: 'destructive' })}
+                                                            className="bg-destructive dark:bg-destructive/60 hover:bg-destructive text-white"
                                                             onClick={() => deleteFile(file.id)}
                                                         >
                                                             {t('file_security.delete_confirm')}

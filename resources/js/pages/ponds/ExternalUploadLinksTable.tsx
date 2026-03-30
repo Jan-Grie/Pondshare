@@ -34,6 +34,7 @@ import {
   Trash2Icon,
   ArrowUpDown,
   CloudUpload,
+  TriangleAlertIcon,
 } from "lucide-react";
 
 import {
@@ -245,7 +246,10 @@ export default function ExternalUploadLinksTable({
               </AlertDialogTrigger>
 
               <AlertDialogContent>
-                <AlertDialogHeader>
+                <AlertDialogHeader className="items-center text-center">
+                  <div className="bg-destructive/20 dark:bg-destructive/35 mx-auto mb-2 flex size-12 items-center justify-center rounded-full">
+                    <TriangleAlertIcon className="text-destructive size-6" />
+                  </div>
                   <AlertDialogTitle>{t("Are_you_sure")}</AlertDialogTitle>
                   <AlertDialogDescription>
                     <Trans
@@ -260,7 +264,7 @@ export default function ExternalUploadLinksTable({
                   <AlertDialogCancel>{t("Cancel")}</AlertDialogCancel>
 
                   <AlertDialogAction
-                    className="bg-destructive text-white hover:bg-destructive/90"
+                    className="bg-destructive dark:bg-destructive/60 hover:bg-destructive text-white"
                     onClick={() => {
                       toast.info(t("ponds:details.upload_links.deleting"), {
                         style: {

@@ -26,7 +26,7 @@ import { router } from "@inertiajs/react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Search, Link as LinkIcon, ShieldIcon, Trash2Icon, ArrowUpDown, ShieldOff } from "lucide-react"
+import { Search, Link as LinkIcon, ShieldIcon, Trash2Icon, ArrowUpDown, ShieldOff, TriangleAlertIcon } from "lucide-react"
 
 import {
   AlertDialog,
@@ -223,7 +223,10 @@ export default function PondShareLinksTable({
               </AlertDialogTrigger>
 
               <AlertDialogContent>
-                <AlertDialogHeader>
+                <AlertDialogHeader className="items-center text-center">
+                  <div className="bg-destructive/20 dark:bg-destructive/35 mx-auto mb-2 flex size-12 items-center justify-center rounded-full">
+                    <TriangleAlertIcon className="text-destructive size-6" />
+                  </div>
                   <AlertDialogTitle>
                     {t("ponds:details.share_links.delete_title")}
                   </AlertDialogTitle>
@@ -243,7 +246,7 @@ export default function PondShareLinksTable({
                   </AlertDialogCancel>
 
                   <AlertDialogAction
-                    className="bg-destructive hover:bg-destructive/90 text-white"
+                    className="bg-destructive dark:bg-destructive/60 hover:bg-destructive text-white"
                     onClick={() => {
                         toast.info(t("ponds:details.share_links.deleting"), {
                             style: {

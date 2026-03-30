@@ -51,7 +51,8 @@ import {
     FolderOpen,
     Trash2,
     FileIcon,
-    Pencil
+    Pencil,
+    TriangleAlertIcon,
 } from "lucide-react"
 
 // Child Components
@@ -467,7 +468,10 @@ export default function PondDetailedPage(props: PondDetailProps) {
                                 </AlertDialogTrigger>
 
                                 <AlertDialogContent>
-                                    <AlertDialogHeader>
+                                    <AlertDialogHeader className="items-center text-center">
+                                        <div className="bg-destructive/20 dark:bg-destructive/35 mx-auto mb-2 flex size-12 items-center justify-center rounded-full">
+                                            <TriangleAlertIcon className="text-destructive size-6" />
+                                        </div>
                                         <AlertDialogTitle>
                                             {t("ponds:details.delete_title")}
                                         </AlertDialogTitle>
@@ -487,7 +491,7 @@ export default function PondDetailedPage(props: PondDetailProps) {
                                         </AlertDialogCancel>
 
                                         <AlertDialogAction
-                                            className={buttonVariants({ variant: "destructive" })}
+                                            className="bg-destructive dark:bg-destructive/60 hover:bg-destructive text-white"
                                             onClick={() =>
                                                 router.delete(destroyPond.url(pond.id))
                                             }

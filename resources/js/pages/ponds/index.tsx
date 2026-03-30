@@ -68,6 +68,7 @@ import {
     ArrowUpDown,
     Trash2Icon,
     Search,
+    TriangleAlertIcon,
 } from "lucide-react"
 
 import { formatBytes } from "@/lib/formatBytes"
@@ -186,7 +187,10 @@ export default function MyPonds() {
                         </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
-                        <AlertDialogHeader>
+                        <AlertDialogHeader className="items-center text-center">
+                            <div className="bg-destructive/20 dark:bg-destructive/35 mx-auto mb-2 flex size-12 items-center justify-center rounded-full">
+                                <TriangleAlertIcon className="text-destructive size-6" />
+                            </div>
                             <AlertDialogTitle>
                                 {t("ponds:delete_confirm_title")}
                             </AlertDialogTitle>
@@ -199,9 +203,7 @@ export default function MyPonds() {
                                 {t("ponds:cancel")}
                             </AlertDialogCancel>
                             <AlertDialogAction
-                                className={buttonVariants({
-                                    variant: "destructive",
-                                })}
+                                className="bg-destructive dark:bg-destructive/60 hover:bg-destructive text-white"
                                 onClick={() =>
                                     router.delete(
                                         destroy.url(row.original.id)

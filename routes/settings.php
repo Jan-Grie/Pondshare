@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Settings\SystemManagementController;
 use App\Http\Controllers\Settings\TwoFactorAuthenticationController;
 use App\Http\Controllers\Settings\UserManagementController;
 use App\Http\Controllers\FileSecurityController;
@@ -29,6 +30,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('settings/two-factor', [TwoFactorAuthenticationController::class, 'show'])
         ->name('two-factor.show');
+
+    Route::get('settings/system', [SystemManagementController::class, 'index'])->name('system.management');
+    Route::patch('settings/system', [SystemManagementController::class, 'updateSettings'])->name('system.settings.update');
+    Route::post('settings/system/domains', [SystemManagementController::class, 'storeDomain'])->name('system.domains.store');
+    Route::delete('settings/system/domains/{domain}', [SystemManagementController::class, 'destroyDomain'])->name('system.domains.destroy');
+    Route::delete('settings/system/failed-jobs', [SystemManagementController::class, 'clearFailedJobs'])->name('system.failed-jobs.clear');
 
     Route::get('settings/users', [UserManagementController::class, 'index'])->name('users.management');
     Route::post('settings/users', [UserManagementController::class, 'store'])->name('users.store');
