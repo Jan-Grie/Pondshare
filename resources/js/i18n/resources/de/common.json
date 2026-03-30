@@ -83,6 +83,12 @@
     }
   },
 
+  "user_menu": {
+    "settings": "Einstellungen",
+    "log_out": "Abmelden",
+    "navigation_menu": "Navigationsmenü"
+  },
+
   "download": {
     "title": "Download",
     "preparing": "Download wird vorbereitet …",

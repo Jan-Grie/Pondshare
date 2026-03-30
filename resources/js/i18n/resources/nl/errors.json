@@ -1,0 +1,18 @@
+{
+    "404": {
+        "title": "Pagina niet gevonden",
+        "description": "De pagina die je zoekt bestaat niet."
+    },
+    "403": {
+        "title": "Toegang geweigerd",
+        "description": "Je hebt geen toestemming om deze pagina te bekijken."
+    },
+    "500": {
+        "title": "Interne serverfout",
+        "description": "Er is iets misgegaan aan onze kant. Probeer het later opnieuw."
+    },
+    "503": {
+        "title": "Dienst niet beschikbaar",
+        "description": "De dienst is momenteel niet beschikbaar. Probeer het later opnieuw."
+    }
+}

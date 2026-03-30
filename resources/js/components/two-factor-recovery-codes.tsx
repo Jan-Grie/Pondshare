@@ -10,6 +10,7 @@ import { regenerateRecoveryCodes } from '@/routes/two-factor';
 import { Form } from '@inertiajs/react';
 import { Eye, EyeOff, LockKeyhole, RefreshCw } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import AlertError from './alert-error';
 
 interface TwoFactorRecoveryCodesProps {
@@ -23,6 +24,7 @@ export default function TwoFactorRecoveryCodes({
     fetchRecoveryCodes,
     errors,
 }: TwoFactorRecoveryCodesProps) {
+    const { t } = useTranslation('settings');
     const [codesAreVisible, setCodesAreVisible] = useState<boolean>(false);
     const codesSectionRef = useRef<HTMLDivElement | null>(null);
     const canRegenerateCodes = recoveryCodesList.length > 0 && codesAreVisible;
@@ -57,11 +59,10 @@ export default function TwoFactorRecoveryCodes({
             <CardHeader>
                 <CardTitle className="flex gap-3">
                     <LockKeyhole className="size-4" aria-hidden="true" />
-                    2FA Recovery Codes
+                    {t('two_factor_recovery.title')}
                 </CardTitle>
                 <CardDescription>
-                    Recovery codes let you regain access if you lose your 2FA
-                    device. Store them in a secure password manager.
+                    {t('two_factor_recovery.description')}
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -76,7 +77,7 @@ export default function TwoFactorRecoveryCodes({
                             className="size-4"
                             aria-hidden="true"
                         />
-                        {codesAreVisible ? 'Hide' : 'View'} Recovery Codes
+                        {codesAreVisible ? t('two_factor_recovery.hide') : t('two_factor_recovery.view')} {t('two_factor_recovery.recovery_codes')}
                     </Button>
 
                     {canRegenerateCodes && (
@@ -92,7 +93,7 @@ export default function TwoFactorRecoveryCodes({
                                     disabled={processing}
                                     aria-describedby="regenerate-warning"
                                 >
-                                    <RefreshCw /> Regenerate Codes
+                                    <RefreshCw /> {t('two_factor_recovery.regenerate')}
                                 </Button>
                             )}
                         </Form>
@@ -145,13 +146,9 @@ export default function TwoFactorRecoveryCodes({
 
                                 <div className="text-xs text-muted-foreground select-none">
                                     <p id="regenerate-warning">
-                                        Each recovery code can be used once to
-                                        access your account and will be removed
-                                        after use. If you need more, click{' '}
-                                        <span className="font-bold">
-                                            Regenerate Codes
-                                        </span>{' '}
-                                        above.
+                                        {t('two_factor_recovery.usage_warning', {
+                                            button: t('two_factor_recovery.regenerate'),
+                                        })}
                                     </p>
                                 </div>
                             </>

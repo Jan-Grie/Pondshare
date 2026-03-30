@@ -1,6 +1,7 @@
 import { Head, router, useForm, usePage } from '@inertiajs/react'
 import { CheckCircle2, KeyRound, MoreHorizontal, Trash2, UserRound, XCircle } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import HeadingSmall from '@/components/heading-small'
 import InputError from '@/components/input-error'
@@ -88,10 +89,6 @@ interface Props {
     filters: { search: string }
 }
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Nutzerverwaltung', href: '/settings/users' },
-]
-
 function formatBytes(bytes: number): string {
     if (bytes === 0) return '0 MB'
     const gb = bytes / (1024 * 1024 * 1024)
@@ -107,6 +104,7 @@ function formatQuotaGb(bytes: number): string {
 
 // ── Create Dialog ──────────────────────────────────────────────────────────────
 function CreateUserDialog({ roles, open, onClose }: { roles: Role[]; open: boolean; onClose: () => void }) {
+    const { t } = useTranslation('settings')
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
@@ -128,26 +126,26 @@ function CreateUserDialog({ roles, open, onClose }: { roles: Role[]; open: boole
         <Dialog open={open} onOpenChange={(v) => { if (!v) { reset(); onClose() } }}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Neuen Nutzer anlegen</DialogTitle>
+                    <DialogTitle>{t('users.create_dialog.title')}</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={submit} className="space-y-4">
                     <div className="grid gap-1.5">
-                        <Label htmlFor="create-name">Name</Label>
+                        <Label htmlFor="create-name">{t('users.create_dialog.name_label')}</Label>
                         <Input id="create-name" value={data.name} onChange={(e) => setData('name', e.target.value)} required />
                         <InputError message={errors.name} />
                     </div>
                     <div className="grid gap-1.5">
-                        <Label htmlFor="create-email">E-Mail</Label>
+                        <Label htmlFor="create-email">{t('users.create_dialog.email_label')}</Label>
                         <Input id="create-email" type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} required />
-                        <InputError message={errors.email} /> 
+                        <InputError message={errors.email} />
                     </div>
                     <div className="grid gap-1.5">
-                        <Label htmlFor="create-password">Passwort</Label>
+                        <Label htmlFor="create-password">{t('users.create_dialog.password_label')}</Label>
                         <Input id="create-password" type="password" value={data.password} onChange={(e) => setData('password', e.target.value)} required />
                         <InputError message={errors.password} />
                     </div>
                     <div className="grid gap-1.5">
-                        <Label>Rolle</Label>
+                        <Label>{t('users.create_dialog.role_label')}</Label>
                         <Select value={data.role_id} onValueChange={(v) => setData('role_id', v)}>
                             <SelectTrigger><SelectValue /></SelectTrigger>
                             <SelectContent>
@@ -157,17 +155,17 @@ function CreateUserDialog({ roles, open, onClose }: { roles: Role[]; open: boole
                         <InputError message={errors.role_id} />
                     </div>
                     <div className="grid gap-1.5">
-                        <Label htmlFor="create-quota">Speicherkontingent (GB)</Label>
+                        <Label htmlFor="create-quota">{t('users.create_dialog.quota_label')}</Label>
                         <Input id="create-quota" type="number" min="0" step="0.1" value={data.quota_gb} onChange={(e) => setData('quota_gb', e.target.value)} />
                         <InputError message={errors.quota_gb} />
                     </div>
                     <div className="flex items-center gap-2">
                         <Checkbox id="create-active" checked={data.active} onCheckedChange={(v) => setData('active', !!v)} />
-                        <Label htmlFor="create-active">Aktiv</Label>
+                        <Label htmlFor="create-active">{t('users.create_dialog.active_label')}</Label>
                     </div>
                     <DialogFooter>
-                        <Button type="button" variant="outline" onClick={() => { reset(); onClose() }}>Abbrechen</Button>
-                        <Button type="submit" disabled={processing}>Anlegen</Button>
+                        <Button type="button" variant="outline" onClick={() => { reset(); onClose() }}>{t('users.create_dialog.cancel')}</Button>
+                        <Button type="submit" disabled={processing}>{t('users.create_dialog.submit')}</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>
@@ -177,6 +175,7 @@ function CreateUserDialog({ roles, open, onClose }: { roles: Role[]; open: boole
 
 // ── Edit Dialog ────────────────────────────────────────────────────────────────
 function EditUserDialog({ user, roles, open, onClose }: { user: ManagedUser; roles: Role[]; open: boolean; onClose: () => void }) {
+    const { t } = useTranslation('settings')
     const { data, setData, patch, processing, errors, reset } = useForm({
         name: user.name,
         email: user.email,
@@ -211,21 +210,21 @@ function EditUserDialog({ user, roles, open, onClose }: { user: ManagedUser; rol
         <Dialog open={open} onOpenChange={(v) => { if (!v) { reset(); onClose() } }}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Nutzer bearbeiten</DialogTitle>
+                    <DialogTitle>{t('users.edit_dialog.title')}</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={submit} className="space-y-4">
                     <div className="grid gap-1.5">
-                        <Label htmlFor="edit-name">Name</Label>
+                        <Label htmlFor="edit-name">{t('users.edit_dialog.name_label')}</Label>
                         <Input id="edit-name" value={data.name} onChange={(e) => setData('name', e.target.value)} required />
                         <InputError message={errors.name} />
                     </div>
                     <div className="grid gap-1.5">
-                        <Label htmlFor="edit-email">E-Mail</Label>
+                        <Label htmlFor="edit-email">{t('users.edit_dialog.email_label')}</Label>
                         <Input id="edit-email" type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} required />
                         <InputError message={errors.email} />
                     </div>
                     <div className="grid gap-1.5">
-                        <Label>Rolle</Label>
+                        <Label>{t('users.edit_dialog.role_label')}</Label>
                         <Select value={data.role_id} onValueChange={(v) => setData('role_id', v)}>
                             <SelectTrigger><SelectValue /></SelectTrigger>
                             <SelectContent>
@@ -235,21 +234,21 @@ function EditUserDialog({ user, roles, open, onClose }: { user: ManagedUser; rol
                         <InputError message={errors.role_id} />
                     </div>
                     <div className="grid gap-1.5">
-                        <Label htmlFor="edit-quota">Speicherkontingent (GB)</Label>
+                        <Label htmlFor="edit-quota">{t('users.edit_dialog.quota_label')}</Label>
                         <Input id="edit-quota" type="number" min="0" step="0.1" value={data.quota_gb} onChange={(e) => setData('quota_gb', e.target.value)} />
                         <InputError message={errors.quota_gb} />
                     </div>
                     <div className="flex items-center gap-2">
                         <Checkbox id="edit-active" checked={data.active} onCheckedChange={(v) => setData('active', !!v)} />
-                        <Label htmlFor="edit-active">Aktiv</Label>
+                        <Label htmlFor="edit-active">{t('users.edit_dialog.active_label')}</Label>
                     </div>
                     <div className="flex items-center gap-2">
                         <Checkbox id="edit-verified" checked={data.email_verified} onCheckedChange={(v) => setData('email_verified', !!v)} />
-                        <Label htmlFor="edit-verified">E-Mail bestätigt</Label>
+                        <Label htmlFor="edit-verified">{t('users.edit_dialog.email_verified_label')}</Label>
                     </div>
                     <DialogFooter>
-                        <Button type="button" variant="outline" onClick={() => { reset(); onClose() }}>Abbrechen</Button>
-                        <Button type="submit" disabled={processing}>Speichern</Button>
+                        <Button type="button" variant="outline" onClick={() => { reset(); onClose() }}>{t('users.edit_dialog.cancel')}</Button>
+                        <Button type="submit" disabled={processing}>{t('users.edit_dialog.submit')}</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>
@@ -259,6 +258,7 @@ function EditUserDialog({ user, roles, open, onClose }: { user: ManagedUser; rol
 
 // ── Reset Password Dialog ──────────────────────────────────────────────────────
 function ResetPasswordDialog({ user, open, onClose }: { user: ManagedUser; open: boolean; onClose: () => void }) {
+    const { t } = useTranslation('settings')
     const { data, setData, post, processing, errors, reset } = useForm({
         password: '',
         password_confirmation: '',
@@ -277,25 +277,25 @@ function ResetPasswordDialog({ user, open, onClose }: { user: ManagedUser; open:
         <Dialog open={open} onOpenChange={(v) => { if (!v) { reset(); onClose() } }}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Passwort zurücksetzen – {user.name}</DialogTitle>
+                    <DialogTitle>{t('users.reset_password_dialog.title', { name: user.name })}</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={submit} className="space-y-4">
                     <div className="grid gap-1.5">
-                        <Label htmlFor="reset-pw">Neues Passwort</Label>
+                        <Label htmlFor="reset-pw">{t('users.reset_password_dialog.new_password_label')}</Label>
                         <Input id="reset-pw" type="password" value={data.password} onChange={(e) => setData('password', e.target.value)} required />
                         <InputError message={errors.password} />
                     </div>
                     <div className="grid gap-1.5">
-                        <Label htmlFor="reset-pw-confirm">Passwort bestätigen</Label>
+                        <Label htmlFor="reset-pw-confirm">{t('users.reset_password_dialog.confirm_password_label')}</Label>
                         <Input id="reset-pw-confirm" type="password" value={data.password_confirmation} onChange={(e) => setData('password_confirmation', e.target.value)} required />
                     </div>
                     <div className="flex items-center gap-2">
                         <Checkbox id="must-change" checked={data.must_change_password} onCheckedChange={(v) => setData('must_change_password', !!v)} />
-                        <Label htmlFor="must-change">Nutzer muss Passwort bei nächster Anmeldung ändern</Label>
+                        <Label htmlFor="must-change">{t('users.reset_password_dialog.must_change_label')}</Label>
                     </div>
                     <DialogFooter>
-                        <Button type="button" variant="outline" onClick={() => { reset(); onClose() }}>Abbrechen</Button>
-                        <Button type="submit" disabled={processing}>Zurücksetzen</Button>
+                        <Button type="button" variant="outline" onClick={() => { reset(); onClose() }}>{t('users.reset_password_dialog.cancel')}</Button>
+                        <Button type="submit" disabled={processing}>{t('users.reset_password_dialog.submit')}</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>
@@ -305,6 +305,7 @@ function ResetPasswordDialog({ user, open, onClose }: { user: ManagedUser; open:
 
 // ── Delete Dialog ──────────────────────────────────────────────────────────────
 function DeleteUserDialog({ user, open, onClose }: { user: ManagedUser; open: boolean; onClose: () => void }) {
+    const { t } = useTranslation('settings')
     const [processing, setProcessing] = useState(false)
 
     function confirm() {
@@ -319,15 +320,15 @@ function DeleteUserDialog({ user, open, onClose }: { user: ManagedUser; open: bo
         <AlertDialog open={open} onOpenChange={(v) => { if (!v) onClose() }}>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Nutzer löschen?</AlertDialogTitle>
+                    <AlertDialogTitle>{t('users.delete_dialog.title')}</AlertDialogTitle>
                     <AlertDialogDescription>
-                        Soll <strong>{user.name}</strong> ({user.email}) wirklich gelöscht werden? Diese Aktion kann nicht rückgängig gemacht werden.
+                        {t('users.delete_dialog.description_before')} <strong>{user.name}</strong> ({user.email}) {t('users.delete_dialog.description_after')}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel onClick={onClose}>Abbrechen</AlertDialogCancel>
+                    <AlertDialogCancel onClick={onClose}>{t('users.delete_dialog.cancel')}</AlertDialogCancel>
                     <AlertDialogAction onClick={confirm} disabled={processing} className="bg-destructive text-white hover:bg-destructive/90">
-                        Löschen
+                        {t('users.delete_dialog.submit')}
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
@@ -337,8 +338,10 @@ function DeleteUserDialog({ user, open, onClose }: { user: ManagedUser; open: bo
 
 // ── Main Page ──────────────────────────────────────────────────────────────────
 export default function UsersManagement({ users, roles, filters }: Props) {
+    const { t } = useTranslation('settings')
     const { auth } = usePage<SharedData>().props
     const getInitials = useInitials()
+    const breadcrumbs: BreadcrumbItem[] = [{ title: t('users.breadcrumb'), href: '/settings/users' }]
 
     const [search, setSearch] = useState(filters.search)
     const [createOpen, setCreateOpen] = useState(false)
@@ -358,21 +361,21 @@ export default function UsersManagement({ users, roles, filters }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Nutzerverwaltung" />
+            <Head title={t('users.title')} />
 
             <SettingsLayout fullWidth>
                 <div className="space-y-6">
-                    <HeadingSmall title="Nutzerverwaltung" description="Alle Nutzer verwalten" />
+                    <HeadingSmall title={t('users.title')} description={t('users.description')} />
 
                     <div className="flex items-center justify-between gap-4">
                         <Input
-                            placeholder="Suche nach E-Mail..."
+                            placeholder={t('users.search_placeholder')}
                             value={search}
                             onChange={(e) => handleSearch(e.target.value)}
                             className="max-w-xs"
                         />
                         <Button onClick={() => setCreateOpen(true)}>
-                            + Neuen Nutzer anlegen
+                            {t('users.create_button')}
                         </Button>
                     </div>
 
@@ -381,12 +384,12 @@ export default function UsersManagement({ users, roles, filters }: Props) {
                             <TableHeader>
                                 <TableRow>
                                     <TableHead className="w-10"></TableHead>
-                                    <TableHead>Nutzer</TableHead>
-                                    <TableHead>E-Mail</TableHead>
-                                    <TableHead>E-Mail bestätigt</TableHead>
-                                    <TableHead>Rolle</TableHead>
-                                    <TableHead>Aktiv</TableHead>
-                                    <TableHead>Speichernutzung</TableHead>
+                                    <TableHead>{t('users.col_user')}</TableHead>
+                                    <TableHead>{t('users.col_email')}</TableHead>
+                                    <TableHead>{t('users.col_email_verified')}</TableHead>
+                                    <TableHead>{t('users.col_role')}</TableHead>
+                                    <TableHead>{t('users.col_active')}</TableHead>
+                                    <TableHead>{t('users.col_storage')}</TableHead>
                                     <TableHead className="w-10"></TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -404,7 +407,7 @@ export default function UsersManagement({ users, roles, filters }: Props) {
                                             <div className="flex items-center gap-2">
                                                 <span className="font-medium">{user.name}</span>
                                                 {user.id === auth.user.id && (
-                                                    <Badge variant="secondary" className="text-xs">Du</Badge>
+                                                    <Badge variant="secondary" className="text-xs">{t('users.you_badge')}</Badge>
                                                 )}
                                             </div>
                                         </TableCell>
@@ -443,15 +446,15 @@ export default function UsersManagement({ users, roles, filters }: Props) {
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
-                                                    <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
+                                                    <DropdownMenuLabel>{t('users.actions_label')}</DropdownMenuLabel>
                                                     <DropdownMenuSeparator />
                                                     <DropdownMenuItem onClick={() => setEditUser(user)}>
                                                         <UserRound className="h-4 w-4" />
-                                                        Bearbeiten
+                                                        {t('users.action_edit')}
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem onClick={() => setResetUser(user)}>
                                                         <KeyRound className="h-4 w-4" />
-                                                        Passwort zurücksetzen
+                                                        {t('users.action_reset_password')}
                                                     </DropdownMenuItem>
                                                     <DropdownMenuSeparator />
                                                     <DropdownMenuItem
@@ -460,7 +463,7 @@ export default function UsersManagement({ users, roles, filters }: Props) {
                                                         onClick={() => setDeleteUser(user)}
                                                     >
                                                         <Trash2 className="h-4 w-4" />
-                                                        Löschen
+                                                        {t('users.action_delete')}
                                                     </DropdownMenuItem>
                                                 </DropdownMenuContent>
                                             </DropdownMenu>
@@ -474,8 +477,8 @@ export default function UsersManagement({ users, roles, filters }: Props) {
                     <div className="flex items-center justify-between text-sm text-muted-foreground">
                         <span>
                             {users.from !== null && users.to !== null
-                                ? `Zeige ${users.from}–${users.to} von ${users.total} Einträgen`
-                                : `${users.total} Einträge`
+                                ? t('users.pagination_showing', { from: users.from, to: users.to, total: users.total })
+                                : t('users.pagination_total', { total: users.total })
                             }
                         </span>
                         <div className="flex gap-2">
@@ -485,7 +488,7 @@ export default function UsersManagement({ users, roles, filters }: Props) {
                                 disabled={!users.prev_page_url}
                                 onClick={() => users.prev_page_url && router.get(users.prev_page_url, {}, { preserveState: true })}
                             >
-                                Zurück
+                                {t('users.pagination_prev')}
                             </Button>
                             <Button
                                 variant="outline"
@@ -493,7 +496,7 @@ export default function UsersManagement({ users, roles, filters }: Props) {
                                 disabled={!users.next_page_url}
                                 onClick={() => users.next_page_url && router.get(users.next_page_url, {}, { preserveState: true })}
                             >
-                                Weiter
+                                {t('users.pagination_next')}
                             </Button>
                         </div>
                     </div>

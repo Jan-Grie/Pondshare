@@ -210,6 +210,21 @@ class ShareLinkController extends Controller
         ], 200);
     }
 
+    public function extend(Request $request, ShareLink $shareLink)
+    {
+        if ($shareLink->pond->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $data = $request->validate([
+            'days' => ['required', 'integer', 'min:1', 'max:365'],
+        ]);
+
+        $shareLink->extendExpiration($data['days']);
+
+        return back()->with('success', 'Link verlängert.');
+    }
+
     public function destroy(Pond $pond, ShareLink $share_link)
     {
         if ($pond->id !== $share_link->pond_id) {

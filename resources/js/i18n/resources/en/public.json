@@ -1,0 +1,56 @@
+{
+  "share": {
+    "password": {
+      "title": "Password required",
+      "description": "This share is password-protected. Please enter the password.",
+      "label": "Password",
+      "submit": "Confirm"
+    },
+    "expired": {
+      "title": "Link expired",
+      "description": "This share link has unfortunately expired and can no longer be used."
+    },
+    "show": {
+      "file_one": "file",
+      "file_other": "files",
+      "total_size": "Total size",
+      "select_all": "Select all",
+      "no_files": "This share contains no files.",
+      "download_selected": "Download selected files ({{count}}) as ZIP",
+      "download_all": "Download all files as ZIP"
+    }
+  },
+  "upload": {
+    "password": {
+      "title": "Password required",
+      "description": "This upload link is password-protected. Please enter the password.",
+      "label": "Password",
+      "submit": "Confirm"
+    },
+    "expired": {
+      "title": "Link expired",
+      "description": "This upload link has unfortunately expired and can no longer be used."
+    },
+    "uploader": {
+      "title": "What's your name?",
+      "description": "Enter your name so the recipient knows who the files are from.",
+      "name_label": "Your name",
+      "name_placeholder": "Jane Smith",
+      "submit": "Continue"
+    },
+    "form": {
+      "title": "Upload files – {{name}}",
+      "description": "Upload files to: {{name}}",
+      "drop_active": "Drop files here…",
+      "drop_idle": "Drag files here or click to select",
+      "any_file_type": "Any file type",
+      "error_fallback": "Error",
+      "error_invalid_response": "Invalid server response",
+      "error_upload_failed": "Upload failed",
+      "error_network": "Network error",
+      "uploaded_count_one": "{{count}} file uploaded.",
+      "uploaded_count_other": "{{count}} files uploaded.",
+      "uploaded_hint": "You can delete files until the page is reloaded."
+    }
+  }
+}

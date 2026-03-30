@@ -20,7 +20,7 @@ class ProfileUpdateRequest extends FormRequest
         $user = Auth::user();
 
         $rules = [
-            'locale' => ['required', 'string', 'in:en,de'],
+            'locale' => ['required', 'string', 'in:en,de,nl'],
             'app_layout' => ['required', 'string', 'in:sidebar,topnav'],
         ];
         

@@ -6,6 +6,7 @@ import { downloadFile, downloadZip } from '@/routes/shares';
 import { Head } from '@inertiajs/react';
 import { Download } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface ShareFile {
     id: number;
@@ -28,6 +29,7 @@ interface ShowProps {
 }
 
 export default function Show({ token, pond, files }: ShowProps) {
+    const { t } = useTranslation('public');
     const [selectedFiles, setSelectedFiles] = useState<Set<number>>(new Set());
 
     const allSelected = files.length > 0 && selectedFiles.size === files.length;
@@ -59,8 +61,8 @@ export default function Show({ token, pond, files }: ShowProps) {
     };
 
     const zipButtonLabel = someSelected
-        ? `Ausgewählte Dateien (${selectedFiles.size}) als ZIP herunterladen`
-        : 'Alle Dateien als ZIP herunterladen';
+        ? t('share.show.download_selected', { count: selectedFiles.size })
+        : t('share.show.download_all');
 
     return (
         <div className="flex min-h-svh items-center justify-center bg-muted p-6">
@@ -70,8 +72,8 @@ export default function Show({ token, pond, files }: ShowProps) {
                     <div className="mb-4">
                         <h1 className="text-xl font-semibold">{pond.name}</h1>
                         <p className="text-sm text-muted-foreground">
-                            {pond.file_count} {pond.file_count === 1 ? 'Datei' : 'Dateien'} ·{' '}
-                            Gesamtgröße {formatBytes(pond.total_size_bytes)}
+                            {t('share.show.file', { count: pond.file_count })} ·{' '}
+                            {t('share.show.total_size')} {formatBytes(pond.total_size_bytes)}
                         </p>
                     </div>
 
@@ -82,7 +84,7 @@ export default function Show({ token, pond, files }: ShowProps) {
                                     checked={allSelected ? true : someSelected ? 'indeterminate' : false}
                                     onCheckedChange={toggleAll}
                                 />
-                                <span className="text-sm text-muted-foreground">Alle auswählen</span>
+                                <span className="text-sm text-muted-foreground">{t('share.show.select_all')}</span>
                             </div>
 
                             <div className="max-h-96 divide-y overflow-y-auto">
@@ -112,7 +114,7 @@ export default function Show({ token, pond, files }: ShowProps) {
 
                     {files.length === 0 && (
                         <p className="py-6 text-center text-sm text-muted-foreground">
-                            Diese Freigabe enthält keine Dateien.
+                            {t('share.show.no_files')}
                         </p>
                     )}
                 </CardContent>

@@ -1,0 +1,108 @@
+{
+  "app_name": "Pondshare",
+
+  "storage_full": "Opslag vol",
+  "storage_almost_full": "Opslag bijna vol",
+  "almost": "bijna",
+  "storage_warning": "Je opslag is voor {{percent}}% {{almost}} vol. Overweeg bestanden te verwijderen om ruimte vrij te maken.",
+
+  "actions": {
+    "save": "Opslaan",
+    "saving": "Opslaan…",
+    "cancel": "Annuleren",
+    "close": "Sluiten",
+    "create": "Aanmaken",
+    "update": "Bijwerken",
+    "edit": "Bewerken",
+    "delete": "Verwijderen",
+    "confirm": "Bevestigen",
+    "copy": "Kopiëren",
+    "share": "Delen",
+    "retry": "Opnieuw proberen",
+    "back": "Terug",
+    "next": "Volgende",
+    "continue": "Doorgaan",
+    "previous": "Vorige",
+    "home": "Naar startpagina"
+  },
+
+  "states": {
+    "loading": "Laden…",
+    "processing": "Verwerken…",
+    "empty": "Geen items beschikbaar",
+    "none": "Geen",
+    "active": "Actief",
+    "inactive": "Inactief"
+  },
+
+  "dialogs": {
+    "are_you_sure": "Weet je het zeker?",
+    "this_action_cannot_be_undone": "Deze actie kan niet ongedaan worden gemaakt."
+  },
+
+  "feedback": {
+    "copied": "Gekopieerd naar klembord!",
+    "error": "Er is een fout opgetreden.",
+    "success": "Actie succesvol voltooid.",
+    "unexpected_error": "Er is een onverwachte fout opgetreden.",
+    "saving_failed": "Opslaan mislukt."
+  },
+
+  "pagination": {
+    "showing": "{{start}}–{{end}} van {{total}} weergegeven",
+    "empty": "Geen items gevonden"
+  },
+
+  "form": {
+    "required": "Verplicht",
+    "optional": "Optioneel",
+    "search": "Zoeken…",
+    "name": "Naam"
+  },
+
+  "previewDialog": {
+    "description": "Voorbeeld – sluit het venster om terug te gaan.",
+    "unsupported_file_type": "Voorbeeld niet beschikbaar voor dit bestandstype."
+  },
+
+  "search": {
+    "placeholder": "Zoeken…",
+    "loading": "Zoeken…",
+    "no_results": "Geen resultaten gevonden.",
+    "items": {
+      "link": "Link",
+      "upload_link": "Uploadlink"
+    },
+    "sections": {
+      "navigation": "Navigatie",
+      "ponds": "Ponds",
+      "files": "Bestanden",
+      "links": "Links",
+      "upload_links": "Uploadlinks",
+      "users": "Gebruikers"
+    }
+  },
+
+  "user_menu": {
+    "settings": "Instellingen",
+    "log_out": "Uitloggen",
+    "navigation_menu": "Navigatiemenu"
+  },
+
+  "download": {
+    "title": "Downloaden",
+    "preparing": "Download voorbereiden…",
+    "loading": "Je bestand wordt geladen.",
+    "started": "Download gestart",
+    "in_progress": "Het bestand wordt gedownload."
+  },
+
+  "zip_download": {
+    "preparing": "ZIP-download voorbereiden…",
+    "loading": "Je ZIP-archief wordt aangemaakt.",
+    "error": "ZIP-download mislukt",
+    "error_description": "Het ZIP-bestand kon niet worden aangemaakt. Probeer het later opnieuw.",
+    "success": "ZIP-download gestart",
+    "success_description": "Je ZIP-bestand wordt gedownload."
+  }
+}

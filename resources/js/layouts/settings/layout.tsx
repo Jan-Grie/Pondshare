@@ -7,52 +7,51 @@ import { edit } from '@/routes/profile';
 import { show } from '@/routes/two-factor';
 import { edit as editPassword } from '@/routes/user-password';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
-import { usePage } from "@inertiajs/react";
 import { security } from '@/routes/profile/index';
-
-
+import { useTranslation } from 'react-i18next';
 
 
 export default function SettingsLayout({ children, fullWidth }: PropsWithChildren<{ fullWidth?: boolean }>) {
+    const { t } = useTranslation('settings');
     const page = usePage();
     const user = (page.props as any).auth?.user;
 
     const sidebarNavItems: NavItem[] = [
         {
-            title: 'Profile',
+            title: t('nav.profile'),
             href: edit(),
             icon: null,
         },
         ...(user?.provider === null
             ? [
                 {
-                    title: 'Password',
+                    title: t('nav.password'),
                     href: editPassword(),
                     icon: null,
                 },
                 {
-                    title: 'Two-Factor Auth',
+                    title: t('nav.two_factor'),
                     href: show(),
                     icon: null,
                 },
             ]
-            : []),        
+            : []),
         {
-            title: 'Appearance',
+            title: t('nav.appearance'),
             href: editAppearance(),
             icon: null,
         },
         ...(user?.role_id === 1
             ? [
                 {
-                    title: 'Systemverwaltung',
+                    title: t('nav.system_management'),
                     href: security(),
                     icon: null,
                 },
                 {
-                    title: 'Nutzerverwaltung',
+                    title: t('nav.user_management'),
                     href: '/settings/users',
                     icon: null,
                 },
@@ -70,8 +69,8 @@ export default function SettingsLayout({ children, fullWidth }: PropsWithChildre
     return (
         <div className="px-4 py-6">
             <Heading
-                title="Settings"
-                description="Manage your profile and account settings"
+                title={t('nav.title')}
+                description={t('nav.description')}
             />
 
             <div className="flex flex-col lg:flex-row lg:space-x-12">

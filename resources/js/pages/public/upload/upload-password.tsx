@@ -9,15 +9,17 @@ import { home } from '@/routes';
 import { verifyPassword } from '@/routes/uploads';
 import { Form, Head, Link } from '@inertiajs/react';
 import { Lock } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface UploadPasswordProps {
     token: string;
 }
 
 export default function UploadPassword({ token }: UploadPasswordProps) {
+    const { t } = useTranslation('public');
     return (
         <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">
-            <Head title="Passwort erforderlich" />
+            <Head title={t('upload.password.title')} />
             <div className="flex w-full max-w-md flex-col gap-6">
                 <Link href={home()} className="flex items-center gap-2 self-center font-medium">
                     <div className="flex h-9 w-9 items-center justify-center">
@@ -30,9 +32,9 @@ export default function UploadPassword({ token }: UploadPasswordProps) {
                         <div className="mb-6 flex flex-col items-center gap-3 text-center">
                             <Lock className="h-12 w-12 text-muted-foreground" />
                             <div>
-                                <h1 className="text-xl font-semibold">Passwort erforderlich</h1>
+                                <h1 className="text-xl font-semibold">{t('upload.password.title')}</h1>
                                 <p className="mt-1 text-sm text-muted-foreground">
-                                    Dieser Upload-Link ist passwortgeschützt. Bitte gib das Passwort ein.
+                                    {t('upload.password.description')}
                                 </p>
                             </div>
                         </div>
@@ -41,7 +43,7 @@ export default function UploadPassword({ token }: UploadPasswordProps) {
                             {({ processing, errors }) => (
                                 <>
                                     <div className="grid gap-2">
-                                        <Label htmlFor="password">Passwort</Label>
+                                        <Label htmlFor="password">{t('upload.password.label')}</Label>
                                         <Input
                                             id="password"
                                             type="password"
@@ -53,7 +55,7 @@ export default function UploadPassword({ token }: UploadPasswordProps) {
                                     </div>
                                     <Button type="submit" className="w-full" disabled={processing}>
                                         {processing && <Spinner />}
-                                        Bestätigen
+                                        {t('upload.password.submit')}
                                     </Button>
                                 </>
                             )}

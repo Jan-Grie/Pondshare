@@ -12,6 +12,7 @@ import { request } from '@/routes/password';
 import { Form, Head } from '@inertiajs/react';
 import { Microsoft } from "developer-icons";
 import { Separator } from "@/components/ui/separator";
+import { useTranslation } from 'react-i18next';
 
 interface LoginProps {
     status?: string;
@@ -19,7 +20,7 @@ interface LoginProps {
     canRegister: boolean;
     socialProviders: {
         azure: boolean;
-    };    
+    };
 }
 
 export default function Login({
@@ -28,12 +29,14 @@ export default function Login({
     canRegister,
     socialProviders,
 }: LoginProps) {
+    const { t } = useTranslation('auth');
+
     return (
         <AuthLayout
-            title="Log in to your account"
-            description="Enter your email and password below to log in"
+            title={t('login.title')}
+            description={t('login.description')}
         >
-            <Head title="Log in" />
+            <Head title={t('login.head_title')} />
 
             <Form
                 {...store.form()}
@@ -44,7 +47,7 @@ export default function Login({
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
+                                <Label htmlFor="email">{t('login.email_label')}</Label>
                                 <Input
                                     aria-invalid={!!errors.email}
                                     id="email"
@@ -54,21 +57,21 @@ export default function Login({
                                     autoFocus
                                     tabIndex={1}
                                     autoComplete="email"
-                                    placeholder="email@example.com"
+                                    placeholder={t('login.email_placeholder')}
                                 />
                                 <InputError message={errors.email} />
                             </div>
 
                             <div className="grid gap-2">
                                 <div className="flex items-center">
-                                    <Label htmlFor="password">Password</Label>
+                                    <Label htmlFor="password">{t('login.password_label')}</Label>
                                     {canResetPassword && (
                                         <TextLink
                                             href={request()}
                                             className="ml-auto text-sm"
                                             tabIndex={6}
                                         >
-                                            Forgot password?
+                                            {t('login.forgot_password')}
                                         </TextLink>
                                     )}
                                 </div>
@@ -80,7 +83,7 @@ export default function Login({
                                     required
                                     tabIndex={2}
                                     autoComplete="current-password"
-                                    placeholder="Password"
+                                    placeholder={t('login.password_placeholder')}
                                 />
                                 <InputError message={errors.password} />
                             </div>
@@ -91,7 +94,7 @@ export default function Login({
                                     name="remember"
                                     tabIndex={3}
                                 />
-                                <Label htmlFor="remember">Remember me</Label>
+                                <Label htmlFor="remember">{t('login.remember_me')}</Label>
                             </div>
 
                             <Button
@@ -102,7 +105,7 @@ export default function Login({
                                 data-test="login-button"
                             >
                                 {processing && <Spinner />}
-                                Log in
+                                {t('login.submit')}
                             </Button>
 
                             {socialProviders.azure  && (
@@ -112,7 +115,7 @@ export default function Login({
                                 </div>
                                 <div className="relative flex justify-center text-xs uppercase">
                                 <span className="bg-background px-2 text-muted-foreground">
-                                    Or continue with
+                                    {t('login.or_continue_with')}
                                 </span>
                                 </div>
                             </div>
@@ -124,22 +127,22 @@ export default function Login({
                                     type="button"
                                     className=" w-full"
                                     tabIndex={4}
-                                    variant="outline"     
+                                    variant="outline"
                                     onClick={() => {
                                         window.location.href = '/auth/azure/redirect'
-                                    }}                                                           
+                                    }}
                                 >
-                                    <Microsoft /> Log in with Microsoft
+                                    <Microsoft /> {t('login.login_with_microsoft')}
                                 </Button>
-                            )}                         
+                            )}
 
                         </div>
 
                         {canRegister && (
                             <div className="text-center text-sm text-muted-foreground">
-                                Don't have an account?{' '}
+                                {t('login.no_account')}{' '}
                                 <TextLink href={register()} tabIndex={5}>
-                                    Sign up
+                                    {t('login.sign_up')}
                                 </TextLink>
                             </div>
                         )}

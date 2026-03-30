@@ -84,6 +84,12 @@
     }
   },
 
+  "user_menu": {
+    "settings": "Settings",
+    "log_out": "Log out",
+    "navigation_menu": "Navigation Menu"
+  },
+
   "download": {
     "title": "Download",
     "preparing": "Preparing download…",

@@ -38,6 +38,9 @@ Route::middleware(['auth', 'verified', 'password.change', 'activated'])->group(f
     Route::put('/ponds/{pond}/share-links/{shareLink}', [ShareLinkController::class, 'update'])
     ->name('ponds.share-links.update');
 
+    Route::patch('/share-links/{shareLink}/extend', [ShareLinkController::class, 'extend'])
+    ->name('share-links.extend');
+
     Route::put("/ponds/{pond}", [PondController::class, 'update'])->name('ponds.update');
 
 

@@ -1,0 +1,18 @@
+{
+    "404": {
+        "title": "Seite nicht gefunden",
+        "description": "Die gesuchte Seite existiert nicht."
+    },
+    "403": {
+        "title": "Zugriff verweigert",
+        "description": "Du hast keine Berechtigung, auf diese Ressource zuzugreifen."
+    },
+    "500": {
+        "title": "Interner Serverfehler",
+        "description": "Bei uns ist etwas schiefgelaufen. Bitte versuche es später erneut."
+    },
+    "503": {
+        "title": "Dienst nicht verfügbar",
+        "description": "Der Dienst ist derzeit nicht verfügbar. Bitte versuche es später erneut."
+    }
+}

@@ -1,0 +1,50 @@
+{
+    "title": "Prullenbak ({{trashSize}})",
+    "description": "Verwijderde items verschijnen hier totdat ze definitief worden verwijderd.",
+    "ponds_tab_title": "Verwijderde ponds ({{count}})",
+    "files_tab_title": "Verwijderde bestanden ({{count}}) ({{size}})",
+    "empty_title": "Prullenbak is leeg",
+    "empty_message": "Geen verwijderde ponds of bestanden gevonden.",
+    "ponds_section": "Verwijderde ponds",
+    "files_section": "Verwijderde bestanden",
+    "columns": {
+        "name": "Naam",
+        "size": "Grootte",
+        "deleted_at": "Verwijderd op",
+        "actions": "Acties"
+    },
+    "actions": {
+        "restore": "Herstellen",
+        "restore_all": "Alles herstellen",
+        "delete_permanently": "Definitief verwijderen",
+        "delete_selected": "Geselecteerde verwijderen",
+        "empty_trash": "Prullenbak leegmaken"
+    },
+    "confirm_restore": {
+        "title": "Item herstellen",
+        "message": "Weet je zeker dat je dit item wilt herstellen?"
+    },
+    "confirm_delete": {
+        "title": "Definitief verwijderen",
+        "message": "Deze actie kan niet ongedaan worden gemaakt. Het item wordt permanent verwijderd."
+    },
+    "confirm_empty": {
+        "title": "Prullenbak leegmaken",
+        "message": "Alle verwijderde items worden permanent verwijderd. Deze actie kan niet ongedaan worden gemaakt."
+    },
+    "messages": {
+        "restored_success": "Item succesvol hersteld.",
+        "deleted_success": "Item definitief verwijderd.",
+        "empty_success": "Prullenbak is geleegd."
+    },
+    "table": {
+        "pond_name": "Pondnaam",
+        "file_name": "Bestandsnaam",
+        "size": "Grootte",
+        "deleted_at": "Verwijderd op",
+        "expires_at": "Verloopt op",
+        "actions": "Acties",
+        "no_ponds": "Geen verwijderde ponds gevonden.",
+        "no_files": "Geen verwijderde bestanden gevonden."
+    }
+}

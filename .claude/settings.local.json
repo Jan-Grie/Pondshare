@@ -5,7 +5,13 @@
       "Bash(find C:/Jan/Programme/Pondshare/app/Http/Controllers/Settings -type f -name *.php)",
       "Bash(grep -E \"\\\\.\\(tsx|jsx\\)$\")",
       "Bash(xargs grep:*)",
-      "Bash(php:*)"
+      "Bash(php:*)",
+      "Bash(grep -n \"previewInfo\" routes/*.php)",
+      "Bash(grep -r \"Datei\\\\|Löschen\\\\|Benutzer\" app/Http/Controllers/*.php --include=\"*.php\")",
+      "Bash(grep -r \"Datei\\\\|Scan\\\\|gelöscht\" app/Http/Controllers/*.php)",
+      "Bash(find resources/js/pages -name \"*.tsx\" -type f -exec wc -l {})",
+      "Bash(grep -rn \"['''']Datei\\\\|['''']Dateien\\\\|['''']Fehler\\\\|['''']Infiziert\\\\|['''']Ausstehend\\\\|['''']Übersicht\\\\|['''']File Security\\\\|['''']hochgeladen\\\\|['''']ablegen\\\\|['''']ziehen\" C:JanProgrammePondshare/resources/js --include=*.tsx)",
+      "Bash(npm run:*)"
     ]
   }
 }

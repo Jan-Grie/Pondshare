@@ -41,7 +41,9 @@ class PondFileController extends Controller
 
     public function store(Request $request, Pond $pond)
     {
-        //TODO Authorize einbauen mit upload Files to this Pond
+        if ($pond->user_id !== Auth::id()) {
+            abort(403);
+        }
 
         $maxUpload = $this->convertToBytes(ini_get('upload_max_filesize'));
         $postMax   = $this->convertToBytes(ini_get('post_max_size'));
@@ -194,6 +196,18 @@ class PondFileController extends Controller
             $tempZipPath,
             $downloadName
         )->deleteFileAfterSend(true);
+    }
+
+    public function previewInfo(File $file)
+    {
+        $this->authorize('download', $file);
+
+        return response()->json([
+            'previewable' => $file->isPreviewable(),
+            'preview_url' => $file->isPreviewable()
+                ? route('files.preview', ['file' => $file->id])
+                : null,
+        ]);
     }
 
     public function preview(File $file)

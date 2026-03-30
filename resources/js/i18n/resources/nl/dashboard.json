@@ -1,0 +1,69 @@
+{
+    "title": "Dashboard",
+    "used_space_heading": "Gebruikte opslagruimte",
+    "used": "gebruikt",
+    "plenty_of_space": "Nog veel vrije ruimte",
+    "more_than_half_occupied": "Meer dan de helft bezet",
+    "slowly_getting_tight": "Het wordt langzaam krap",
+    "soon_no_more_storage_space": "Binnenkort geen opslagruimte meer",
+    "no_storage_space_available": "Geen opslagruimte meer beschikbaar",
+    "delte_files_no_disk_space_available": "Bestanden verwijderen. Geen opslagruimte beschikbaar.",
+    "current_usage": "Je gebruikt momenteel {{used}}",
+    "limit_reached": "Opslaglimiet bereikt",
+    "your_ponds": "Jouw ponds",
+    "count_your_ponds_one": "{{count}} pond",
+    "count_your_ponds_other": "{{count}} ponds",
+    "no_ponds": "Geen ponds aangemaakt",
+    "active": "actief",
+    "inactive": "inactief",
+    "total_ponds_one": "{{count}} pond in totaal",
+    "total_ponds_other": "{{count}} ponds in totaal",
+    "you_have_not_created_any_ponds_yet": "Je hebt nog geen ponds aangemaakt",
+    "expiring_shared_links": "Verlopende deellinks",
+    "count_links_one": "{{count}} link",
+    "count_links_other": "{{count}} links",
+    "everything_valid": "Alles geldig",
+    "expiring_soon": "Verloopt binnenkort",
+    "expires_today": "Verloopt vandaag",
+    "all_links_valid": "Alle links zijn geldig",
+    "links_expiring_soon": "{{count}} link(s) verlopen binnenkort",
+    "external_upload_links": "Externe uploadlinks",
+    "there_are_currently_no_active_external_upload_links": "Er zijn momenteel geen actieve externe uploadlinks",
+    "next_expirations": "Volgende vervaldatums",
+    "no_links_expiring": "Geen links verlopen binnenkort",
+    "usage": {
+        "title": "Opslaggebruik",
+        "subtitle": "Je hebt {{used}} van {{max}} gebruikt",
+        "storage_full_warning_title": "Opslag bijna vol!",
+        "storage_full_warning_desc": "Je hebt nog maar {{free}} over. Verwijder oudere bestanden of neem contact op met je beheerder.",
+        "progress": {
+            "used_percent": "{{percent}}% gebruikt"
+        },
+        "cards": {
+            "total_files": "Bestanden totaal",
+            "total_downloads": "Downloads totaal",
+            "average_file_size": "Gem. bestandsgrootte",
+            "largest_file": "Grootste bestand",
+            "last_upload": "Laatste upload",
+            "top_file_type": "Populairste bestandstype",
+            "active_links": "Actieve deellinks"
+        },
+        "stats": {
+            "downloads_description": "alle historische bestandsdownloads"
+        },
+        "charts": {
+            "downloads_per_day": "Dagelijkse downloads per pond"
+        }
+    },
+    "expiring_links_heading": "Verlopende links",
+    "name": "Naam",
+    "type": "Type",
+    "pond": "Pond",
+    "expires_at": "Verloopt op",
+    "actions": "Acties",
+    "type_share": "Deellink",
+    "type_upload": "Uploadlink",
+    "extend_link": "Link verlengen",
+    "day": "dag",
+    "days": "dagen"
+}

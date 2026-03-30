@@ -40,6 +40,7 @@ import { Button } from '@/components/ui/button';
 import { formatBytes } from '@/lib/formatBytes'
 import { Link as LinkIcon, HardDrive, FolderOpen, ClockAlert, FolderUp } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { router } from '@inertiajs/react';
 
 export interface RecentActivity {
   icon: 'upload' | 'share' | 'external';
@@ -87,9 +88,7 @@ export function SectionCards({
   const { t, i18n } = useTranslation('dashboard');
 
   const extendLink = (id: number, days: number) => {
-    // TODO: Axios-Call an deinen Endpoint, z. B.:
-    // axios.post(`/links/${id}/extend`, { days })
-    console.log("Extend link", id, "by", days, "days");
+    router.patch(`/share-links/${id}/extend`, { days }, { preserveScroll: true });
   };
 
 

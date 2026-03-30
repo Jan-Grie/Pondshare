@@ -15,6 +15,7 @@ use App\Models\Pond;
 use App\Models\PondDailyDownload;
 use App\Models\File;
 use App\Models\SystemSetting;
+use App\Models\ExternalUploadLink;
 
 
 class DashboardController extends Controller
@@ -42,9 +43,11 @@ class DashboardController extends Controller
         $warningTreshold = SystemSetting::quotaWarningThresholdPercent();
         $showWarning = $usedPercentage >= $warningTreshold;
 
+        $userPondIds = Pond::where('user_id', $user->id)->pluck('id');
+
         //Get Expiring Share Links
         $expiringShareLinks = ShareLink::whereHas('pond', function($query) use ($user){
-                $query->where('user_id', $user->id);            
+                $query->where('user_id', $user->id);
             })
             ->whereNotNull('expires_at')
             ->whereBetween('expires_at', [Carbon::now(), Carbon::now()->addDays(7)])
@@ -60,17 +63,31 @@ class DashboardController extends Controller
                 ];
             });
 
-            
+        $activeUploadLinksCount = ExternalUploadLink::whereIn('pond_id', $userPondIds)
+            ->where(function($q) {
+                $q->whereNull('expires_at')
+                  ->orWhere('expires_at', '>', Carbon::now());
+            })
+            ->count();
+
+        $expiringUploadLinksCount = ExternalUploadLink::whereIn('pond_id', $userPondIds)
+            ->whereNotNull('expires_at')
+            ->whereBetween('expires_at', [Carbon::now(), Carbon::now()->addDays(7)])
+            ->count();
+
         return Inertia::render('dashboard/index', [
             'totalPonds' => $totalPonds,
             'totalFiles' => $totalFiles,
             'usedBytes' => $usedBytes,
             'maxBytes' => $maxBytes,
             'remainingBytes' => $remainingBytes,
-            'expiringLinksCount' => $expiringShareLinks->count(),
-            'expiringLinks'      => $expiringShareLinks,
+            'expiringLinksCount'      => $expiringShareLinks->count(),
+            'expiringLinks'           => $expiringShareLinks,
+            'activeUploadLinksCount'  => $activeUploadLinksCount,
+            'expiringUploadLinksCount' => $expiringUploadLinksCount,
+            'recentActivities'        => [],
             'usedPercentage' => $usedPercentage,
-            'showWarning' => $showWarning,            
+            'showWarning' => $showWarning,
         ]);
     }
 

@@ -1,0 +1,50 @@
+{
+    "title": "Papierkorb ({{trashSize}})",
+    "description": "Gelöschte Elemente erscheinen hier, bis sie endgültig entfernt werden.",
+    "ponds_tab_title": "Gelöschte Ponds ({{count}})",
+    "files_tab_title": "Gelöschte Dateien ({{count}}) ({{size}})",
+    "empty_title": "Papierkorb ist leer",
+    "empty_message": "Keine gelöschten Ponds oder Dateien gefunden.",
+    "ponds_section": "Gelöschte Ponds",
+    "files_section": "Gelöschte Dateien",
+    "columns": {
+        "name": "Name",
+        "size": "Größe",
+        "deleted_at": "Gelöscht am",
+        "actions": "Aktionen"
+    },
+    "actions": {
+        "restore": "Wiederherstellen",
+        "restore_all": "Alle wiederherstellen",
+        "delete_permanently": "Endgültig löschen",
+        "delete_selected": "Ausgewählte löschen",
+        "empty_trash": "Papierkorb leeren"
+    },
+    "confirm_restore": {
+        "title": "Element wiederherstellen",
+        "message": "Möchtest du dieses Element wirklich wiederherstellen?"
+    },
+    "confirm_delete": {
+        "title": "Endgültig löschen",
+        "message": "Diese Aktion kann nicht rückgängig gemacht werden. Das Element wird dauerhaft entfernt."
+    },
+    "confirm_empty": {
+        "title": "Papierkorb leeren",
+        "message": "Alle gelöschten Elemente werden dauerhaft entfernt. Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "messages": {
+        "restored_success": "Element erfolgreich wiederhergestellt.",
+        "deleted_success": "Element endgültig gelöscht.",
+        "empty_success": "Papierkorb wurde geleert."
+    },
+    "table": {
+        "pond_name": "Pond-Name",
+        "file_name": "Dateiname",
+        "size": "Größe",
+        "deleted_at": "Gelöscht am",
+        "expires_at": "Läuft ab am",
+        "actions": "Aktionen",
+        "no_ponds": "Keine gelöschten Ponds gefunden.",
+        "no_files": "Keine gelöschten Dateien gefunden."
+    }
+}

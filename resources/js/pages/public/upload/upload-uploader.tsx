@@ -9,15 +9,17 @@ import { home } from '@/routes';
 import { store as storeUploader } from '@/routes/uploads/uploader';
 import { Form, Head, Link } from '@inertiajs/react';
 import { UserRound } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface UploadUploaderProps {
     token: string;
 }
 
 export default function UploadUploader({ token }: UploadUploaderProps) {
+    const { t } = useTranslation('public');
     return (
         <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">
-            <Head title="Name eingeben" />
+            <Head title={t('upload.uploader.title')} />
             <div className="flex w-full max-w-md flex-col gap-6">
                 <Link href={home()} className="flex items-center gap-2 self-center font-medium">
                     <div className="flex h-9 w-9 items-center justify-center">
@@ -30,9 +32,9 @@ export default function UploadUploader({ token }: UploadUploaderProps) {
                         <div className="mb-6 flex flex-col items-center gap-3 text-center">
                             <UserRound className="h-12 w-12 text-muted-foreground" />
                             <div>
-                                <h1 className="text-xl font-semibold">Wie heißt du?</h1>
+                                <h1 className="text-xl font-semibold">{t('upload.uploader.title')}</h1>
                                 <p className="mt-1 text-sm text-muted-foreground">
-                                    Gib deinen Namen ein, damit der Empfänger weiß, von wem die Dateien stammen.
+                                    {t('upload.uploader.description')}
                                 </p>
                             </div>
                         </div>
@@ -41,20 +43,20 @@ export default function UploadUploader({ token }: UploadUploaderProps) {
                             {({ processing, errors }) => (
                                 <>
                                     <div className="grid gap-2">
-                                        <Label htmlFor="uploader_name">Dein Name</Label>
+                                        <Label htmlFor="uploader_name">{t('upload.uploader.name_label')}</Label>
                                         <Input
                                             id="uploader_name"
                                             type="text"
                                             name="uploader_name"
                                             autoFocus
                                             required
-                                            placeholder="Max Mustermann"
+                                            placeholder={t('upload.uploader.name_placeholder')}
                                         />
                                         <InputError message={errors.uploader_name} />
                                     </div>
                                     <Button type="submit" className="w-full" disabled={processing}>
                                         {processing && <Spinner />}
-                                        Weiter
+                                        {t('upload.uploader.submit')}
                                     </Button>
                                 </>
                             )}

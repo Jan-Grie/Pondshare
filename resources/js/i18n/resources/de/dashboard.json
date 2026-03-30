@@ -1,0 +1,69 @@
+{
+    "title": "Dashboard",
+    "used_space_heading": "Genutzter Speicherplatz",
+    "used": "genutzt",
+    "plenty_of_space": "Noch viel freier Speicher",
+    "more_than_half_occupied": "Mehr als halb belegt",
+    "slowly_getting_tight": "Langsam wird es eng",
+    "soon_no_more_storage_space": "Bald kein Speicherplatz mehr",
+    "no_storage_space_available": "Kein Speicherplatz mehr verfügbar",
+    "delte_files_no_disk_space_available": "Dateien löschen. Kein Speicherplatz verfügbar.",
+    "current_usage": "Aktuell verwendest du {{used}}",
+    "limit_reached": "Speicherlimit erreicht",
+    "your_ponds": "Deine Ponds",
+    "count_your_ponds_one": "{{count}} Pond",
+    "count_your_ponds_other": "{{count}} Ponds",
+    "no_ponds": "Keine Ponds erstellt",
+    "active": "aktiv",
+    "inactive": "inaktiv",
+    "total_ponds_one": "{{count}} Pond insgesamt",
+    "total_ponds_other": "{{count}} Ponds insgesamt",
+    "you_have_not_created_any_ponds_yet": "Du hast noch keine Ponds erstellt",
+    "expiring_shared_links": "Ablaufende Freigabe-Links",
+    "count_links_one": "{{count}} Link",
+    "count_links_other": "{{count}} Links",
+    "everything_valid": "Alle gültig",
+    "expiring_soon": "Läuft bald ab",
+    "expires_today": "Läuft heute ab",
+    "all_links_valid": "Alle Links sind gültig",
+    "links_expiring_soon": "{{count}} Link(s) laufen bald ab",
+    "external_upload_links": "Externe Upload-Links",
+    "there_are_currently_no_active_external_upload_links": "Derzeit keine aktiven externen Upload-Links",
+    "next_expirations": "Nächste Abläufe",
+    "no_links_expiring": "Keine Links laufen bald ab",
+    "usage": {
+        "title": "Speichernutzung",
+        "subtitle": "Du hast {{used}} von {{max}} genutzt",
+        "storage_full_warning_title": "Speicher fast voll!",
+        "storage_full_warning_desc": "Du hast nur noch {{free}} übrig. Bitte lösche ältere Dateien oder kontaktiere deinen Administrator.",
+        "progress": {
+            "used_percent": "{{percent}} % genutzt"
+        },
+        "cards": {
+            "total_files": "Dateien gesamt",
+            "total_downloads": "Downloads gesamt",
+            "average_file_size": "Ø Dateigröße",
+            "largest_file": "Größte Datei",
+            "last_upload": "Letzter Upload",
+            "top_file_type": "Beliebtester Dateityp",
+            "active_links": "Aktive Freigabe-Links"
+        },
+        "stats": {
+            "downloads_description": "alle bisherigen Datei-Downloads"
+        },
+        "charts": {
+            "downloads_per_day": "Tägliche Downloads pro Pond"
+        }
+    },
+    "expiring_links_heading": "Ablaufende Links",
+    "name": "Name",
+    "type": "Typ",
+    "pond": "Pond",
+    "expires_at": "Läuft ab am",
+    "actions": "Aktionen",
+    "type_share": "Freigabe-Link",
+    "type_upload": "Upload-Link",
+    "extend_link": "Link verlängern",
+    "day": "Tag",
+    "days": "Tage"
+}

@@ -1,0 +1,56 @@
+{
+    "share": {
+        "password": {
+            "title": "Wachtwoord vereist",
+            "description": "Deze share is beveiligd met een wachtwoord. Voer het wachtwoord in.",
+            "label": "Wachtwoord",
+            "submit": "Bevestigen"
+        },
+        "expired": {
+            "title": "Link verlopen",
+            "description": "Deze deellink is helaas verlopen en kan niet meer worden gebruikt."
+        },
+        "show": {
+            "file_one": "bestand",
+            "file_other": "bestanden",
+            "total_size": "Totale grootte",
+            "select_all": "Alles selecteren",
+            "no_files": "Deze share bevat geen bestanden.",
+            "download_selected": "Geselecteerde bestanden ({{count}}) als ZIP downloaden",
+            "download_all": "Alle bestanden als ZIP downloaden"
+        }
+    },
+    "upload": {
+        "password": {
+            "title": "Wachtwoord vereist",
+            "description": "Deze uploadlink is beveiligd met een wachtwoord. Voer het wachtwoord in.",
+            "label": "Wachtwoord",
+            "submit": "Bevestigen"
+        },
+        "expired": {
+            "title": "Link verlopen",
+            "description": "Deze uploadlink is helaas verlopen en kan niet meer worden gebruikt."
+        },
+        "uploader": {
+            "title": "Wat is je naam?",
+            "description": "Voer je naam in zodat de ontvanger weet van wie de bestanden zijn.",
+            "name_label": "Jouw naam",
+            "name_placeholder": "Jan de Vries",
+            "submit": "Doorgaan"
+        },
+        "form": {
+            "title": "Bestanden uploaden – {{name}}",
+            "description": "Bestanden uploaden naar: {{name}}",
+            "drop_active": "Bestanden hier neerzetten…",
+            "drop_idle": "Bestanden hierheen slepen of klikken om te selecteren",
+            "any_file_type": "Elk bestandstype",
+            "error_fallback": "Fout",
+            "error_invalid_response": "Ongeldig serverantwoord",
+            "error_upload_failed": "Upload mislukt",
+            "error_network": "Netwerkfout",
+            "uploaded_count_one": "{{count}} bestand geüpload.",
+            "uploaded_count_other": "{{count}} bestanden geüpload.",
+            "uploaded_hint": "Je kunt bestanden verwijderen totdat de pagina opnieuw wordt geladen."
+        }
+    }
+}

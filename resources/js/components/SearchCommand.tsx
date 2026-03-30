@@ -176,12 +176,11 @@ export function SearchCommand({ className }: SearchCommandProps) {
                             )}
 
                             {/* Users */}
-                            {/* //TODO => Routing anpassen für Nutzer. -> Gibt es derzeit nicht, aber sobald verfügbar mit E-Mail in URL als Filter*/ }
                             {results.users.length > 0 && (
                                 <CommandGroup heading={t("common:search.sections.users")}>
                                 {results.users.map((u) => (
                                     <CommandItem key={`user-${u.id}`} asChild onSelect={() => setOpen(false)}>
-                                    <Link href={`/users/${u.id}`} className="cursor-pointer">
+                                    <Link href="/settings/users" className="cursor-pointer">
                                         <Users className="mr-2 h-4 w-4" />
                                         {u.name} · {u.email}
                                     </Link>

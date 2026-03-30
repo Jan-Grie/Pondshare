@@ -21,6 +21,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Head, router } from '@inertiajs/react';
 import { AlertTriangle, Clock, RefreshCw, ShieldAlert, Trash2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface LatestScan {
     status: string;
@@ -67,14 +68,13 @@ interface FileSecurityProps {
     filters: Filters;
 }
 
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'File Security', href: '/admin/file-security' }];
-
 function StatusBadge({ status }: { status: SecurityFile['scan_status'] }) {
+    const { t } = useTranslation('settings');
     if (status === 'infected') {
         return (
             <Badge variant="destructive" className="gap-1">
                 <ShieldAlert className="h-3 w-3" />
-                Infiziert
+                {t('file_security.badge_infected')}
             </Badge>
         );
     }
@@ -82,21 +82,24 @@ function StatusBadge({ status }: { status: SecurityFile['scan_status'] }) {
         return (
             <Badge variant="outline" className="gap-1 border-orange-500 text-orange-600 dark:text-orange-400">
                 <AlertTriangle className="h-3 w-3" />
-                Fehler
+                {t('file_security.badge_failed')}
             </Badge>
         );
     }
     return (
         <Badge variant="secondary" className="gap-1">
             <Clock className="h-3 w-3" />
-            Ausstehend
+            {t('file_security.badge_pending')}
         </Badge>
     );
 }
 
 export default function FileSecurity({ files, counts, filters }: FileSecurityProps) {
+    const { t } = useTranslation('settings');
     const [search, setSearch] = useState(filters.search ?? '');
     const searchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const breadcrumbs: BreadcrumbItem[] = [{ title: t('file_security.breadcrumb'), href: '/admin/file-security' }];
 
     const total = counts.infected + counts.failed + counts.pending;
     const activeTab = filters.status ?? 'all';
@@ -140,14 +143,14 @@ export default function FileSecurity({ files, counts, filters }: FileSecurityPro
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="File Security" />
+            <Head title={t('file_security.title')} />
 
             <div className="px-4 py-6 md:max-w-7xl md:mx-auto">
                 {/* Header */}
                 <div className="mb-6">
-                    <h1 className="text-2xl font-semibold">File Security</h1>
+                    <h1 className="text-2xl font-semibold">{t('file_security.title')}</h1>
                     <p className="mt-1 text-sm text-muted-foreground">
-                        Übersicht aller Dateien mit auffälligem Scan-Ergebnis.
+                        {t('file_security.description')}
                     </p>
                 </div>
 
@@ -155,15 +158,15 @@ export default function FileSecurity({ files, counts, filters }: FileSecurityPro
                 <div className="mb-6 flex flex-wrap gap-3">
                     <div className="flex items-center gap-2 rounded-lg border bg-card px-4 py-3">
                         <ShieldAlert className="h-4 w-4 text-destructive" />
-                        <span className="text-sm font-medium">{counts.infected} infiziert</span>
+                        <span className="text-sm font-medium">{counts.infected} {t('file_security.summary_infected')}</span>
                     </div>
                     <div className="flex items-center gap-2 rounded-lg border bg-card px-4 py-3">
                         <AlertTriangle className="h-4 w-4 text-orange-500" />
-                        <span className="text-sm font-medium">{counts.failed} fehlgeschlagen</span>
+                        <span className="text-sm font-medium">{counts.failed} {t('file_security.summary_failed')}</span>
                     </div>
                     <div className="flex items-center gap-2 rounded-lg border bg-card px-4 py-3">
                         <Clock className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm font-medium">{counts.pending} ausstehend</span>
+                        <span className="text-sm font-medium">{counts.pending} {t('file_security.summary_pending')}</span>
                     </div>
                 </div>
 
@@ -172,22 +175,22 @@ export default function FileSecurity({ files, counts, filters }: FileSecurityPro
                     <Tabs value={activeTab} onValueChange={handleTabChange}>
                         <TabsList>
                             <TabsTrigger value="all">
-                                Alle <span className="ml-1.5 text-xs opacity-60">{total}</span>
+                                {t('file_security.tab_all')} <span className="ml-1.5 text-xs opacity-60">{total}</span>
                             </TabsTrigger>
                             <TabsTrigger value="infected">
-                                Infiziert <span className="ml-1.5 text-xs opacity-60">{counts.infected}</span>
+                                {t('file_security.tab_infected')} <span className="ml-1.5 text-xs opacity-60">{counts.infected}</span>
                             </TabsTrigger>
                             <TabsTrigger value="failed">
-                                Fehler <span className="ml-1.5 text-xs opacity-60">{counts.failed}</span>
+                                {t('file_security.tab_failed')} <span className="ml-1.5 text-xs opacity-60">{counts.failed}</span>
                             </TabsTrigger>
                             <TabsTrigger value="pending">
-                                Ausstehend <span className="ml-1.5 text-xs opacity-60">{counts.pending}</span>
+                                {t('file_security.tab_pending')} <span className="ml-1.5 text-xs opacity-60">{counts.pending}</span>
                             </TabsTrigger>
                         </TabsList>
                     </Tabs>
 
                     <Input
-                        placeholder="Datei, Pond oder Nutzer suchen…"
+                        placeholder={t('file_security.search_placeholder')}
                         className="w-full sm:w-64"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
@@ -199,21 +202,21 @@ export default function FileSecurity({ files, counts, filters }: FileSecurityPro
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead className="w-32">Status</TableHead>
-                                <TableHead>Datei</TableHead>
-                                <TableHead>Pond</TableHead>
-                                <TableHead>Hochgeladen von</TableHead>
-                                <TableHead className="text-right">Größe</TableHead>
-                                <TableHead>Befund</TableHead>
-                                <TableHead>Datum</TableHead>
-                                <TableHead className="w-28 text-right">Aktionen</TableHead>
+                                <TableHead className="w-32">{t('file_security.col_status')}</TableHead>
+                                <TableHead>{t('file_security.col_file')}</TableHead>
+                                <TableHead>{t('file_security.col_pond')}</TableHead>
+                                <TableHead>{t('file_security.col_uploaded_by')}</TableHead>
+                                <TableHead className="text-right">{t('file_security.col_size')}</TableHead>
+                                <TableHead>{t('file_security.col_finding')}</TableHead>
+                                <TableHead>{t('file_security.col_date')}</TableHead>
+                                <TableHead className="w-28 text-right">{t('file_security.col_actions')}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {files.data.length === 0 && (
                                 <TableRow>
                                     <TableCell colSpan={8} className="py-10 text-center text-sm text-muted-foreground">
-                                        Keine auffälligen Dateien gefunden.
+                                        {t('file_security.empty')}
                                     </TableCell>
                                 </TableRow>
                             )}
@@ -264,7 +267,7 @@ export default function FileSecurity({ files, counts, filters }: FileSecurityPro
                                                     variant="ghost"
                                                     size="icon"
                                                     className="h-8 w-8"
-                                                    title="Scan neu starten"
+                                                    title={t('file_security.rescan_title')}
                                                     onClick={() => rescanFile(file.id)}
                                                 >
                                                     <RefreshCw className="h-4 w-4" />
@@ -276,25 +279,25 @@ export default function FileSecurity({ files, counts, filters }: FileSecurityPro
                                                         variant="ghost"
                                                         size="icon"
                                                         className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                                                        title="Datei löschen"
+                                                        title={t('file_security.delete_title')}
                                                     >
                                                         <Trash2 className="h-4 w-4" />
                                                     </Button>
                                                 </AlertDialogTrigger>
                                                 <AlertDialogContent>
                                                     <AlertDialogHeader>
-                                                        <AlertDialogTitle>Datei löschen?</AlertDialogTitle>
+                                                        <AlertDialogTitle>{t('file_security.delete_dialog_title')}</AlertDialogTitle>
                                                         <AlertDialogDescription>
-                                                            <strong>{file.name}.{file.extension}</strong> wird dauerhaft gelöscht und kann nicht wiederhergestellt werden.
+                                                            <strong>{file.name}.{file.extension}</strong> {t('file_security.delete_dialog_description')}
                                                         </AlertDialogDescription>
                                                     </AlertDialogHeader>
                                                     <AlertDialogFooter>
-                                                        <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+                                                        <AlertDialogCancel>{t('file_security.delete_cancel')}</AlertDialogCancel>
                                                         <AlertDialogAction
                                                             className={buttonVariants({ variant: 'destructive' })}
                                                             onClick={() => deleteFile(file.id)}
                                                         >
-                                                            Dauerhaft löschen
+                                                            {t('file_security.delete_confirm')}
                                                         </AlertDialogAction>
                                                     </AlertDialogFooter>
                                                 </AlertDialogContent>
@@ -311,7 +314,11 @@ export default function FileSecurity({ files, counts, filters }: FileSecurityPro
                 {files.last_page > 1 && (
                     <div className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
                         <span>
-                            Seite {files.current_page} von {files.last_page} · {files.total} Einträge
+                            {t('file_security.pagination', {
+                                current: files.current_page,
+                                last: files.last_page,
+                                total: files.total,
+                            })}
                         </span>
                         <div className="flex gap-2">
                             <Button
@@ -320,7 +327,7 @@ export default function FileSecurity({ files, counts, filters }: FileSecurityPro
                                 disabled={!files.prev_page_url}
                                 onClick={() => files.prev_page_url && router.get(files.prev_page_url)}
                             >
-                                Zurück
+                                {t('file_security.pagination_prev')}
                             </Button>
                             <Button
                                 variant="outline"
@@ -328,7 +335,7 @@ export default function FileSecurity({ files, counts, filters }: FileSecurityPro
                                 disabled={!files.next_page_url}
                                 onClick={() => files.next_page_url && router.get(files.next_page_url)}
                             >
-                                Weiter
+                                {t('file_security.pagination_next')}
                             </Button>
                         </div>
                     </div>

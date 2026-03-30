@@ -1,0 +1,56 @@
+{
+  "share": {
+    "password": {
+      "title": "Passwort erforderlich",
+      "description": "Diese Freigabe ist passwortgeschützt. Bitte gib das Passwort ein.",
+      "label": "Passwort",
+      "submit": "Bestätigen"
+    },
+    "expired": {
+      "title": "Link abgelaufen",
+      "description": "Dieser Freigabe-Link ist leider abgelaufen und kann nicht mehr verwendet werden."
+    },
+    "show": {
+      "file_one": "Datei",
+      "file_other": "Dateien",
+      "total_size": "Gesamtgröße",
+      "select_all": "Alle auswählen",
+      "no_files": "Diese Freigabe enthält keine Dateien.",
+      "download_selected": "Ausgewählte Dateien ({{count}}) als ZIP herunterladen",
+      "download_all": "Alle Dateien als ZIP herunterladen"
+    }
+  },
+  "upload": {
+    "password": {
+      "title": "Passwort erforderlich",
+      "description": "Dieser Upload-Link ist passwortgeschützt. Bitte gib das Passwort ein.",
+      "label": "Passwort",
+      "submit": "Bestätigen"
+    },
+    "expired": {
+      "title": "Link abgelaufen",
+      "description": "Dieser Upload-Link ist leider abgelaufen und kann nicht mehr verwendet werden."
+    },
+    "uploader": {
+      "title": "Wie heißt du?",
+      "description": "Gib deinen Namen ein, damit der Empfänger weiß, von wem die Dateien stammen.",
+      "name_label": "Dein Name",
+      "name_placeholder": "Max Mustermann",
+      "submit": "Weiter"
+    },
+    "form": {
+      "title": "Dateien hochladen – {{name}}",
+      "description": "Dateien hochladen in: {{name}}",
+      "drop_active": "Dateien hier ablegen…",
+      "drop_idle": "Dateien hierher ziehen oder klicken zum Auswählen",
+      "any_file_type": "Beliebige Dateitypen",
+      "error_fallback": "Fehler",
+      "error_invalid_response": "Ungültige Serverantwort",
+      "error_upload_failed": "Upload fehlgeschlagen",
+      "error_network": "Netzwerkfehler",
+      "uploaded_count_one": "{{count}} Datei hochgeladen.",
+      "uploaded_count_other": "{{count}} Dateien hochgeladen.",
+      "uploaded_hint": "Du kannst Dateien bis zum Neuladen der Seite noch löschen."
+    }
+  }
+}

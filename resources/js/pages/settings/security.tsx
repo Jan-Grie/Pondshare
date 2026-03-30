@@ -29,15 +29,15 @@ interface Props {
   clamav?: ClamavInfo | null
 }
 
-const breadcrumbs: BreadcrumbItem[] = [
-  {
-    title: 'Security settings',
-    href: security().url,
-  },
-]
-
 export default function SecuritySettings({ clamavEnabled, clamav }: Props) {
-  const { t } = useTranslation()
+  const { t } = useTranslation('settings')
+
+  const breadcrumbs: BreadcrumbItem[] = [
+    {
+      title: t('security.breadcrumb'),
+      href: security().url,
+    },
+  ]
 
   const age = clamav?.signature_age_days ?? null
 

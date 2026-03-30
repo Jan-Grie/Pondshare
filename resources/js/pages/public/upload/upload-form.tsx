@@ -7,6 +7,7 @@ import { Head } from '@inertiajs/react';
 import { CheckCircle2, Trash2, Upload, X } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { useTranslation } from 'react-i18next';
 
 interface UploadFormProps {
     token: string;
@@ -44,6 +45,7 @@ function getCsrfToken(): string {
 }
 
 export default function UploadForm({ token, pond, upload_link }: UploadFormProps) {
+    const { t } = useTranslation('public');
     const [uploadingFiles, setUploadingFiles] = useState<UploadingFile[]>([]);
     const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
 
@@ -69,10 +71,10 @@ export default function UploadForm({ token, pond, upload_link }: UploadFormProps
                             const data = JSON.parse(xhr.responseText);
                             resolve(data.files[0] as UploadedFile);
                         } catch {
-                            reject(new Error('Ungültige Serverantwort'));
+                            reject(new Error(t('upload.form.error_invalid_response')));
                         }
                     } else {
-                        let message = 'Upload fehlgeschlagen';
+                        let message = t('upload.form.error_upload_failed');
                         try {
                             const data = JSON.parse(xhr.responseText);
                             if (data?.message) message = data.message;
@@ -81,7 +83,7 @@ export default function UploadForm({ token, pond, upload_link }: UploadFormProps
                     }
                 });
 
-                xhr.addEventListener('error', () => reject(new Error('Netzwerkfehler')));
+                xhr.addEventListener('error', () => reject(new Error(t('upload.form.error_network'))));
 
                 xhr.open('POST', `/uploads/${token}/upload`);
                 xhr.setRequestHeader('X-XSRF-TOKEN', getCsrfToken());
@@ -89,7 +91,7 @@ export default function UploadForm({ token, pond, upload_link }: UploadFormProps
                 xhr.send(formData);
             });
         },
-        [token],
+        [token, t],
     );
 
     const handleFiles = useCallback(
@@ -162,12 +164,12 @@ export default function UploadForm({ token, pond, upload_link }: UploadFormProps
 
     return (
         <div className="flex min-h-svh items-center justify-center bg-muted p-6">
-            <Head title={`Dateien hochladen – ${pond.name}`} />
+            <Head title={t('upload.form.title', { name: pond.name })} />
             <Card className="w-full max-w-xl rounded-xl">
                 <CardContent className="p-6">
                     <div className="mb-6">
                         <h1 className="text-xl font-semibold">{upload_link.name}</h1>
-                        <p className="text-sm text-muted-foreground">Dateien hochladen in: {pond.name}</p>
+                        <p className="text-sm text-muted-foreground">{t('upload.form.description', { name: pond.name })}</p>
                     </div>
 
                     {/* Dropzone */}
@@ -185,11 +187,11 @@ export default function UploadForm({ token, pond, upload_link }: UploadFormProps
                         <div>
                             <p className="text-sm font-medium">
                                 {isDragActive
-                                    ? 'Dateien hier ablegen…'
-                                    : 'Dateien hierher ziehen oder klicken zum Auswählen'}
+                                    ? t('upload.form.drop_active')
+                                    : t('upload.form.drop_idle')}
                             </p>
                             <p className="mt-1 text-xs text-muted-foreground">
-                                Beliebige Dateitypen
+                                {t('upload.form.any_file_type')}
                             </p>
                         </div>
                     </div>
@@ -210,7 +212,7 @@ export default function UploadForm({ token, pond, upload_link }: UploadFormProps
                                                     </span>
                                                 ) : (
                                                     <span className="shrink-0 text-destructive text-xs">
-                                                        {f.errorMessage ?? 'Fehler'}
+                                                        {f.errorMessage ?? t('upload.form.error_fallback')}
                                                     </span>
                                                 )}
                                             </div>
@@ -260,8 +262,9 @@ export default function UploadForm({ token, pond, upload_link }: UploadFormProps
                 {uploadedFiles.length > 0 && (
                     <CardFooter className="px-6 pb-6 pt-0">
                         <p className="text-xs text-muted-foreground">
-                            {uploadedFiles.length} {uploadedFiles.length === 1 ? 'Datei' : 'Dateien'} hochgeladen.
-                            Du kannst Dateien bis zum Neuladen der Seite noch löschen.
+                            {t('upload.form.uploaded_count', { count: uploadedFiles.length })}
+                            {' '}
+                            {t('upload.form.uploaded_hint')}
                         </p>
                     </CardFooter>
                 )}

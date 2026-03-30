@@ -23,12 +23,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import {
-  Card,  
+  Card,
   CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card"
 import { useTranslation } from "react-i18next"
 import { useEffect } from 'react';
@@ -37,15 +33,6 @@ import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
 import { Microsoft } from "developer-icons";
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useInitials } from '@/hooks/use-initials';
-
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Profile settings',
-        href: edit().url,
-    },
-];
-
 
 
 export default function Profile({
@@ -57,36 +44,45 @@ export default function Profile({
 }) {
     const { auth } = usePage<SharedData>().props;
 
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation('settings');
     const userLocale = auth.user.locale;
     const getInitials = useInitials();
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: t('profile.breadcrumb'),
+            href: edit().url,
+        },
+    ];
+
     useEffect(() => {
         if (userLocale) {
             i18n.changeLanguage(userLocale);
             console.log('Locale changed to:', userLocale);
         }
     }, [userLocale, i18n]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Profile settings" />
+            <Head title={t('profile.head_title')} />
 
             <SettingsLayout>
 
                 {auth.user.provider !== null && (
-                    
+
                 <>
                     <Alert className='border-none bg-amber-600/10 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400 mb-4'>
                         <CircleAlertIcon />
-                        <AlertTitle>Account is linked</AlertTitle>
+                        <AlertTitle>{t('profile.linked_title')}</AlertTitle>
                         <AlertDescription className='text-amber-600/80 dark:text-amber-400/80'>
-                            Since your account is linked with a third-party provider, some fields may be disabled to prevent changes that could affect the linkage.
+                            {t('profile.linked_description')}
                         </AlertDescription>
                     </Alert>
 
                     <Card className="w-full rounded-2xl shadow-none">
                         <CardContent className="flex items-center justify-between">
                             {/* Left */}
-                            <div className="flex items-center gap-4 min-w-0">                            
+                            <div className="flex items-center gap-4 min-w-0">
                                 <Microsoft className="h-15 w-15 rounded" />
 
                             <div className="min-w-0">
@@ -115,23 +111,23 @@ export default function Profile({
                 )}
                 <div className="space-y-6">
                     <HeadingSmall
-                        title="Profile information"
-                        description="Update your name and email address"
+                        title={t('profile.info_title')}
+                        description={t('profile.info_description')}
                     />
-                    <Form 
+                    <Form
                         {...ProfileController.update.form()}
-                        
+
                         options={{
                             preserveScroll: true,
-                            
+
                         }}
-                        
+
                         className="space-y-6"
                     >
-                        {({ processing, recentlySuccessful, errors }) => (                            
+                        {({ processing, recentlySuccessful, errors }) => (
                             <>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="name">Name</Label>
+                                    <Label htmlFor="name">{t('profile.name_label')}</Label>
 
                                     <Input
                                         id="name"
@@ -140,7 +136,7 @@ export default function Profile({
                                         name="name"
                                         required
                                         autoComplete="name"
-                                        placeholder="Full name"
+                                        placeholder={t('profile.name_placeholder')}
                                         aria-invalid={!!errors.name}
                                         disabled={auth.user.provider !== null}
                                     />
@@ -152,7 +148,7 @@ export default function Profile({
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="email">Email address</Label>
+                                    <Label htmlFor="email">{t('profile.email_label')}</Label>
 
                                     <Input
                                         id="email"
@@ -162,7 +158,7 @@ export default function Profile({
                                         name="email"
                                         required
                                         autoComplete="username"
-                                        placeholder="Email address"
+                                        placeholder={t('profile.email_placeholder')}
                                         aria-invalid={!!errors.email}
                                         disabled={auth.user.provider !== null}
 
@@ -178,42 +174,39 @@ export default function Profile({
                                     auth.user.email_verified_at === null && (
                                         <div>
                                             <p className="-mt-4 text-sm text-muted-foreground">
-                                                Your email address is
-                                                unverified.{' '}
+                                                {t('profile.email_unverified')}{' '}
                                                 <Link
                                                     href={send()}
                                                     as="button"
                                                     className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
                                                 >
-                                                    Click here to resend the
-                                                    verification email.
+                                                    {t('profile.email_resend')}
                                                 </Link>
                                             </p>
 
                                             {status ===
                                                 'verification-link-sent' && (
                                                 <div className="mt-2 text-sm font-medium text-green-600">
-                                                    A new verification link has
-                                                    been sent to your email
-                                                    address.
+                                                    {t('profile.email_resent')}
                                                 </div>
                                             )}
                                         </div>
                                     )
                                 }
-                                
+
                                 <div className="grid gap-2">
-                                    <Label htmlFor="locale">{t("settings:language")}</Label>
+                                    <Label htmlFor="locale">{t('profile.labels.locale')}</Label>
 
                                     <Select defaultValue={auth.user.locale || "en"} name="locale">
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select language" />
+                                            <SelectValue placeholder={t('profile.select_language')} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
-                                                <SelectLabel>{t("settings:language")}</SelectLabel>
+                                                <SelectLabel>{t('profile.labels.locale')}</SelectLabel>
                                                 <SelectItem value="en">English</SelectItem>
                                                 <SelectItem value="de">Deutsch</SelectItem>
+                                                <SelectItem value="nl">Nederlands</SelectItem>
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>
@@ -226,17 +219,17 @@ export default function Profile({
 
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="layout">{t("settings:profile.labels.app_layout")}</Label>
+                                    <Label htmlFor="layout">{t("profile.labels.app_layout")}</Label>
 
                                     <Select defaultValue={auth.user.app_layout} name="app_layout">
                                         <SelectTrigger>
-                                            <SelectValue placeholder={t("settings:profile.labels.select_layout")} />
+                                            <SelectValue placeholder={t("profile.labels.select_layout")} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
-                                                <SelectLabel>{t("settings:profile.labels.app_layout")}</SelectLabel>
-                                                <SelectItem value="sidebar">{t("settings:profile.sidebar")}</SelectItem>
-                                                <SelectItem value="topnav">{t("settings:profile.topnav")}</SelectItem>
+                                                <SelectLabel>{t("profile.labels.app_layout")}</SelectLabel>
+                                                <SelectItem value="sidebar">{t("profile.sidebar")}</SelectItem>
+                                                <SelectItem value="topnav">{t("profile.topnav")}</SelectItem>
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>
@@ -253,7 +246,7 @@ export default function Profile({
                                         disabled={processing}
                                         data-test="update-profile-button"
                                     >
-                                        Save
+                                        {t('profile.save')}
                                     </Button>
 
                                     <Transition
@@ -264,9 +257,9 @@ export default function Profile({
                                         leaveTo="opacity-0"
                                     >
                                         <p className="text-sm text-green-600">
-                                            Saved
+                                            {t('profile.saved')}
                                         </p>
-                                    </Transition>                                    
+                                    </Transition>
 
                                     <Transition
                                         show={Object.keys(errors).length > 0}
@@ -276,9 +269,9 @@ export default function Profile({
                                         leaveTo="opacity-0"
                                     >
                                         <p className="text-sm text-destructive">
-                                            Failed to save
+                                            {t('profile.failed_to_save')}
                                         </p>
-                                    </Transition>                                    
+                                    </Transition>
                                 </div>
                             </>
                         )}
